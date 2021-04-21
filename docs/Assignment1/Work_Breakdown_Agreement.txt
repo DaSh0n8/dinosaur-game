@@ -1,0 +1,18 @@
+WBA:
+
+As both of us think that we might have very different design ideas, we have decided to discuss the design idea for all
+features. After deciding the design ideas, we are going to split the features evenly and start constructing the
+Class and Interaction diagrams. By discussing together, we can achieve a better design idea and will also be familiar 
+with the way how each feature is going to work.
+
+For design rationale, we will write based on the features which we have been constructing the diagrams for. We will
+explain how each feature will work and why we choose to implement the designs.
+
+
+Time arrangement:
+
+We will review our work on 23/4 or the day before to make sure our works are fine.
+
+
+Signatures:
+Zi Jie (I accept this WBA)
