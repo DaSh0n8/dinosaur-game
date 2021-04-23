@@ -15,3 +15,47 @@ method to produce a ripe Fruit object under a certain chance.
 
 Fruit will stores its rotting progress. If the situation is valid in a turn,
 the rotting progress will be incremented.
+
+
+Hungry dinosaurs & Brachiosaur:
+
+Create a new class call HerbivoryBehaviour, implements interface Behaviour.
+Create a new class call FeedAction, inherits from class Action.
+Create a new abstract class call Dinosaur.
+Create a new class call Brachiosaur, inherits from actor.
+
+HerbivoryBehaviour class will find a Bush or Tree object as a target if 
+there is no target object yet. When a herbivore dinosaur is hungry, it will
+have this behaviour. Every turn, dinosaur with this behaviour will move one
+step closer to its target.
+
+FeedAction class allows player to target a dinosaur next to him, and feed it.
+
+Since there will be different types of dinosaurs, create the abstract class
+Dinosaur for every Dinosaur to inherit. Every dinosaurs will have the same
+attributes like gender, maximum food level, current food level, 
+unconsciousness length and so on. Many methods can also be created in the 
+abstract class. By doing this, we can avoid lots of duplicated code.
+
+For Brachiosaur, check if it's stepping on a bush every turn. If yes, remove
+the bush from the map under 50% chance. As Brachiosaur is the only dinosaur
+who will destroy the bush, implement this inside this class.
+
+
+Breeding:
+
+Create a new class call BreedAction, inherits from class Action.
+Create a new class call Egg, inherits from class PortableItem.
+
+If a dinosaur wanted to breed, it will have a FollowBehaviour to target a
+opposite sex dinosaur. Once an opposite sex dinosaur appears next to it, 
+BreedAction allows the female dinosaur to mate under a certain chance.
+
+Class Egg will have attributes like dinosaur type and number of turns exist.
+This class will also have a method to determine if the egg is ready to
+produce a dinosour, and another method to return a dinosaur object.
+
+For baby dinosaur, since most of the dinosaurs will be a baby at first, we
+just need to update the Dinosaur abstract class. Add attributes baby period
+and number of baby's turn. Add also a method to change the baby's states to
+adult's states when the dinosaur is already adult.
