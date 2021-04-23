@@ -1,3 +1,8 @@
+We will create several packages to group similar classes in the package game.
+The packages we will create are Actor, Item, Ground, Action, Behaviour,
+EcoPoint.
+
+
 
 Dirt, trees and bushes feature:
 
@@ -17,12 +22,16 @@ Fruit will stores its rotting progress. If the situation is valid in a turn,
 the rotting progress will be incremented.
 
 
+
 Hungry dinosaurs & Brachiosaur:
 
+Create a new enum call Gender.
 Create a new class call HerbivoryBehaviour, implements interface Behaviour.
 Create a new class call FeedAction, inherits from class Action.
 Create a new abstract class call Dinosaur.
 Create a new class call Brachiosaur, inherits from actor.
+
+Gender enum contains 2 constant, MALE and FEMALE.
 
 HerbivoryBehaviour class will find a Bush or Tree object as a target if 
 there is no target object yet. When a herbivore dinosaur is hungry, it will
@@ -32,14 +41,16 @@ step closer to its target.
 FeedAction class allows player to target a dinosaur next to him, and feed it.
 
 Since there will be different types of dinosaurs, create the abstract class
-Dinosaur for every Dinosaur to inherit. Every dinosaurs will have the same
+Dinosaur for every Dinosaur to inherit. Every dinosaur will have the same
 attributes like gender, maximum food level, current food level, 
-unconsciousness length and so on. Many methods can also be created in the 
+unconsciousness length and so on. For gender, store either one of the
+constants from Gender enum. There are many methods can also be created in the 
 abstract class. By doing this, we can avoid lots of duplicated code.
 
 For Brachiosaur, check if it's stepping on a bush every turn. If yes, remove
 the bush from the map under 50% chance. As Brachiosaur is the only dinosaur
 who will destroy the bush, implement this inside this class.
+
 
 
 Breeding:
@@ -61,6 +72,7 @@ and number of baby's turn. Add also a method to change the baby's states to
 adult's states when the dinosaur is already adult.
 
 
+
 Eco points and purchasing:
 
 Create a new class call EcoPoints.
@@ -77,5 +89,28 @@ machine will have several methods. Each of them is responsible on returning
 (selling) an Item. Among the items, there are things like MealKit, which is
 either type of vegetarian or carnivore, and LaserGun, which is a weapon. When
 selling items, those methods will subtract a certain amount of EcoPoints.
+
+
+
+Allosaur & Death:
+
+Create a new enum call Status.
+Create a new class call Allosaur, inherits from abstract class Dinosaur.
+
+Status enum contains 2 constants, ALIVE and DEAD. In Dinosaur, store a
+status. When a dinosaur die, its status will changed from ALIVE to DEAD.
+
+Allosaur is behaving just like other dinosaurs, so it is better for it to
+inherit from the class Dinosaur same as other dinosaurs. To know more about
+the abstract class Dinosaur, refer to the explanation for features Hungry
+dinosaurs & Brachiosaur.
+
+The only difference is that allosaur's a carnivore, so they will either go
+towards a death dinosaur or a living stegosaur. They will have a 
+FollowBehaviour to move towards its target, then attack when a valid dinosaur 
+is next to it.
+
+
+
 
 
