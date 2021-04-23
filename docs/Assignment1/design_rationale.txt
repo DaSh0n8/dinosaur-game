@@ -53,9 +53,29 @@ BreedAction allows the female dinosaur to mate under a certain chance.
 
 Class Egg will have attributes like dinosaur type and number of turns exist.
 This class will also have a method to determine if the egg is ready to
-produce a dinosour, and another method to return a dinosaur object.
+produce a dinosaur, and another method to return a dinosaur object.
 
 For baby dinosaur, since most of the dinosaurs will be a baby at first, we
 just need to update the Dinosaur abstract class. Add attributes baby period
 and number of baby's turn. Add also a method to change the baby's states to
 adult's states when the dinosaur is already adult.
+
+
+Eco points and purchasing:
+
+Create a new class call EcoPoints.
+Create new classes call VendingMachine, MealKit inherits from class Item.
+Create a new class call LaserGun, inherits from class WeaponItem.
+
+To use a currency in game, we create EcoPoints for holding only class
+attributes and class methods. There will have a class attribute for storing
+the amount of points and class methods for adding and subtracting the points.
+This class will not be instantiated.
+
+Besides, we will have a VendingMachine that is not portable. This vending
+machine will have several methods. Each of them is responsible on returning
+(selling) an Item. Among the items, there are things like MealKit, which is
+either type of vegetarian or carnivore, and LaserGun, which is a weapon. When
+selling items, those methods will subtract a certain amount of EcoPoints.
+
+
