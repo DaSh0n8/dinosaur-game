@@ -1,0 +1,17 @@
+
+Dirt, trees and bushes feature:
+
+Create new classes call Dirt & Bush, both inherits from class Ground.
+Create a new class call Fruit, inherits from class Item.
+
+To grow from dirt to bush, Dirt will have a method to consider the grounds
+next to it and calculate the chances to become a bush. This method returns a
+boolean to tell its decision. If the caller receives a true, it will replace
+the Dirt with a Bush at the location. This method is created so that all 
+dirts can decides to grow or not all by themselves.
+
+Both Tree & Bush may have store one or more Fruit objects. They will have a
+method to produce a ripe Fruit object under a certain chance.
+
+Fruit will stores its rotting progress. If the situation is valid in a turn,
+the rotting progress will be incremented.
