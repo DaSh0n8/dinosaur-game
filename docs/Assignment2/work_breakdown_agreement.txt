@@ -1,0 +1,35 @@
+WBA:
+
+After reviewing our design ideas with feedback given by teachers, we start splitting our works
+according to the features specified in the assignment specification.
+
+Brandon will be responsible for implementing the following features:
+
+	1. Dirt, trees and bushes
+
+	2. Eco points and purchasing
+
+	3. Death
+
+Zi Jie will be responsible for implementing the following features:
+
+	1. Hungry dinosaurs
+
+	2. Brachiosaurs
+
+	3. Breeding
+
+	4. Allosaurs
+
+The reason we split them up this way is because some features are very related to each other, so it might be more efficient if one person implement all those related features. 
+
+When one of us figure out another design ideas during implementation, we will discuss and see if it is better than the one we have. If we decided to change the way to implement it, the person who are responsible for implementing the feature will need to update the design documents.
+
+
+Time arrangement:
+
+Finish before 6th May and review our works together on that day.
+
+
+Signatures:
+Zi Jie (I accept this WBA)
