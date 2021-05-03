@@ -13,6 +13,8 @@ import edu.monash.fit2099.engine.GameMap;
  */
 public class Stegosaur extends Dinosaur {
     // Will need to change this to a collection if Stegosaur gets additional Behaviours.
+    private final static int MAX_FOOD_LEVEL = 100;
+    private final static int MAX_UNCONSCIOUS_LENGTH = 20;
     private Behaviour behaviour;
 
     /**
@@ -22,7 +24,7 @@ public class Stegosaur extends Dinosaur {
      * @param name the name of this Stegosaur
      */
     public Stegosaur(String name) {
-        super(name, 'd', 100);
+        super(name, 'd', 100, 50);
 
         behaviour = new WanderBehaviour();
     }
@@ -42,6 +44,9 @@ public class Stegosaur extends Dinosaur {
      */
     @Override
     public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
+        // decrease food level by 1
+        decrement_food_level();
+
         Action wander = behaviour.getAction(this, map);
         if (wander != null)
             return wander;
