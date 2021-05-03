@@ -153,5 +153,5 @@ fabric.properties
 # .idea folder
 /.idea/
 
-# 
+# IntelliJ module file
 /ProjectJurassicPark.iml
