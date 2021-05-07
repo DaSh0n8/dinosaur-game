@@ -8,9 +8,7 @@ import edu.monash.fit2099.engine.Actor;
 public abstract class Dinosaur extends Actor {
 
     private Behaviour behaviour;
-    private int MAX_FOOD_LEVEL;
-    private int current_food_level;
-    private int current_unconscious_length = 0;
+    private int unconsciousTurns;
 
     /**
      * Enum represents gender of the dinosaur.
@@ -26,17 +24,23 @@ public abstract class Dinosaur extends Actor {
      * @param displayChar the character that will represent this type of Dinosaur
      * @param hitPoints   the Actor's starting hit points
      */
-    public Dinosaur(String name, char displayChar, int hitPoints, int food_level) {
+    public Dinosaur(String name, char displayChar, int hitPoints) {
         super(name, displayChar, hitPoints);
         behaviour = new WanderBehaviour();
-        current_food_level = food_level;
     }
 
     /**
-     * Decrease the food level by 1.
+     * Increment the dinosaur's number of unconscious turns.
      */
-    public void decrement_food_level() {
-        current_food_level -= 1;
+    public void incrementUnconsciousTurns() {
+        this.unconsciousTurns++;
+    }
+
+    /**
+     * Reset the dinosaur's unconscious turns to 0 because it have regained consciousness.
+     */
+    public void awake() {
+        this.unconsciousTurns = 0;
     }
 
 }
