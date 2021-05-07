@@ -9,6 +9,7 @@ public class Floor extends Ground {
 
 	public Floor() {
 		super('_');
+		addCapability(GroundType.FLOOR);
 	}
 
 }
