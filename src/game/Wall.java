@@ -7,6 +7,7 @@ public class Wall extends Ground {
 
 	public Wall() {
 		super('#');
+		addCapability(GroundType.WALL);
 	}
 	
 	@Override

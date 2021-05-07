@@ -9,5 +9,6 @@ public class Dirt extends Ground {
 
 	public Dirt() {
 		super('.');
+		addCapability(GroundType.DIRT);
 	}
 }
