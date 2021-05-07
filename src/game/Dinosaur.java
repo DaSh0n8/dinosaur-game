@@ -8,7 +8,7 @@ import edu.monash.fit2099.engine.Actor;
 public abstract class Dinosaur extends Actor {
 
     private Behaviour behaviour;
-    private int current_unconscious_length = 0;
+    private int unconsciousTurns;
 
     /**
      * Enum represents gender of the dinosaur.
@@ -27,6 +27,20 @@ public abstract class Dinosaur extends Actor {
     public Dinosaur(String name, char displayChar, int hitPoints) {
         super(name, displayChar, hitPoints);
         behaviour = new WanderBehaviour();
+    }
+
+    /**
+     * Increment the dinosaur's number of unconscious turns.
+     */
+    public void incrementUnconsciousTurns() {
+        this.unconsciousTurns++;
+    }
+
+    /**
+     * Reset the dinosaur's unconscious turns to 0 because it have regained consciousness.
+     */
+    public void awake() {
+        this.unconsciousTurns = 0;
     }
 
 }
