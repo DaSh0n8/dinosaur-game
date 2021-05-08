@@ -12,11 +12,11 @@ import edu.monash.fit2099.engine.Location;
 public class WanderBehaviour implements Behaviour {
 	
 	private Random random = new Random();
-
+	private final static String name = "WANDER";
 
 	/**
 	 * Returns a MoveAction to wander to a random location, if possible.  
-	 * If no movement is possible, returns null.
+	 * If no movement is possible, returns null. Dinosaur won't wander when hungry.
 	 * 
 	 * @param actor the Actor enacting the behaviour
 	 * @param map the map that actor is currently on
@@ -40,6 +40,15 @@ public class WanderBehaviour implements Behaviour {
 			return null;
 		}
 
+	}
+
+	/**
+	 * Returns Behaviour name for others to check what kind of Behaviour it is.
+	 *
+	 * @return Behaviour name
+	 */
+	public String getName() {
+		return name;
 	}
 
 }

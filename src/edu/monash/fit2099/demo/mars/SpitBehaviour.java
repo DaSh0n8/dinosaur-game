@@ -6,6 +6,7 @@ import edu.monash.fit2099.engine.*;
 public class SpitBehaviour extends Action implements Behaviour{
 
 	private Actor target;
+	private final static String name = "TRAVEL";
 
 	public SpitBehaviour(Actor subject) {
 		this.target = subject;
@@ -42,4 +43,9 @@ public class SpitBehaviour extends Action implements Behaviour{
 	public String menuDescription(Actor actor) {
 		return "";
 	}
+
+	public String getName() {
+		return name;
+	}
+
 }
