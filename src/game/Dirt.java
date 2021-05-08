@@ -18,6 +18,5 @@ public class Dirt extends Ground {
 	@Override
 	public void tick(Location location) {
 		super.tick(location);
-		System.out.println();
 	}
 }
