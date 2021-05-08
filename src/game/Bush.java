@@ -10,6 +10,8 @@ public class Bush extends FruitPlant {
 
     public Bush() {
         super('=');
+        addCapability(GroundType.FRUITPLANT);
+        addCapability(GroundType.BUSH);
     }
 
     @Override

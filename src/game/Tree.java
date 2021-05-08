@@ -8,6 +8,8 @@ public class Tree extends Ground {
 
 	public Tree() {
 		super('+');
+		addCapability(GroundType.FRUITPLANT);
+		addCapability(GroundType.TREE);
 	}
 
 	@Override
