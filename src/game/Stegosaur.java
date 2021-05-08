@@ -3,9 +3,6 @@ package game;
 
 import edu.monash.fit2099.engine.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * A herbivorous dinosaur.
  */
@@ -44,7 +41,20 @@ public class Stegosaur extends Dinosaur {
      */
     @Override
     public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
-        super.playTurn(actions, lastAction, map, display);
+        // if unconscious, count the unconscious length and do nothing
+        if (!this.isConscious()) {
+            System.out.println("hi");
+            this.incrementUnconsciousTurns();
+            if (getUnconsciousTurns() == MAX_UNCONSCIOUS_TURNS) {
+                // Dinosaur disappear
+            }
+            else {
+                return new DoNothingAction();
+            }
+        }
+        else {
+            this.hurt(1);
+        }
 
         Action thisAction = null;
         String thisBehaviourName = this.behaviour.getName();
@@ -77,9 +87,8 @@ public class Stegosaur extends Dinosaur {
             thisAction = this.behaviour.getAction(this, map);
         }
 
-        if (thisAction != null) {
+        if (thisAction != null)
             return thisAction;
-        }
         return new DoNothingAction();
     }
 
@@ -130,6 +139,13 @@ public class Stegosaur extends Dinosaur {
      */
     private static int distance(Location a, Location b) {
         return Math.abs(a.x() - b.x()) + Math.abs(a.y() - b.y());
+    }
+
+    public void Death(){
+        int uncturns = getUnconsciousTurns();
+        if (MAX_UNCONSCIOUS_TURNS == uncturns){
+
+        };
     }
 
 }

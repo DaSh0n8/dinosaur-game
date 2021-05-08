@@ -2,9 +2,6 @@ package game;
 
 import edu.monash.fit2099.engine.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Class representing dinosaur type
  */
@@ -32,20 +29,6 @@ public abstract class Dinosaur extends Actor {
         this.behaviour = new WanderBehaviour();
     }
 
-    @Override
-    public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
-        // if unconscious, count the unconscious length and do nothing
-        if (!this.isConscious()) {
-            this.incrementUnconsciousTurns();
-            return new DoNothingAction();
-        }
-        else {
-            this.hurt(1);
-        }
-
-        return new DoNothingAction();
-    }
-
     /**
      * Increment the dinosaur's number of unconscious turns.
      */
@@ -58,6 +41,10 @@ public abstract class Dinosaur extends Actor {
      */
     public void awake() {
         this.unconsciousTurns = 0;
+    }
+
+    public int getUnconsciousTurns() {
+        return this.unconsciousTurns;
     }
 
     /**
