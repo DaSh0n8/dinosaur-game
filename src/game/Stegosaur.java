@@ -57,6 +57,7 @@ public class Stegosaur extends Dinosaur {
         }
 
         Action thisAction = null;
+
         String thisBehaviourName = this.behaviour.getName();
         if (this.hitPoints >= SATISFIED_HIT_POINTS) {
             if (!thisBehaviourName.equals("WANDER")) {
@@ -87,8 +88,17 @@ public class Stegosaur extends Dinosaur {
             thisAction = this.behaviour.getAction(this, map);
         }
 
+        // if behaviour doesn't return action, try wander behaviour
         if (thisAction != null)
             return thisAction;
+
+        this.behaviour = new WanderBehaviour();
+        thisAction = this.behaviour.getAction(this, map);
+
+        // if wander behaviour also doesn't return action, return DoNothingAction()
+        if (thisAction != null)
+            return thisAction;
+
         return new DoNothingAction();
     }
 
@@ -145,7 +155,7 @@ public class Stegosaur extends Dinosaur {
         int uncturns = getUnconsciousTurns();
         if (MAX_UNCONSCIOUS_TURNS == uncturns){
 
-        };
+        }
     }
 
 }
