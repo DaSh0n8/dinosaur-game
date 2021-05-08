@@ -35,9 +35,14 @@ public class Bush extends FruitPlant {
                 }
             }
         }
+    }
 
+    public int getFruitAmount(){
+        return fruit;
+    }
 
-
+    public int getFruitOnGround(){
+        return fruitOnGround;
     }
 
 }
