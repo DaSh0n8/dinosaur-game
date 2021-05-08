@@ -3,12 +3,14 @@ package game;
 import edu.monash.fit2099.engine.Item;
 
 import java.util.Scanner;
+import edu.monash.fit2099.engine.Ground;
 import java.util.ArrayList;
 
-public class VendingMachine extends Item {
+public class VendingMachine extends Ground {
 
-    public VendingMachine(String name, char displayChar, boolean portable) {
-        super("Vending Machine", 'V', false);
+    public VendingMachine() {
+        super('V');
+        addCapability(GroundType.VENDINGMACHINE);
     }
 
     public Item displayMenu(){
@@ -31,28 +33,56 @@ public class VendingMachine extends Item {
                 System.out.println("Invalid option");
             }
             if (option == 1){
-                EcoPoints.decrease_points(30);
-                return new Fruit();
+                buyFruit();
             }else if (option == 2){
-                EcoPoints.decrease_points(100);
-                return new VegetarianMealKit();
+                buyVegetarianMealKit();
             }else if (option == 3){
-                EcoPoints.decrease_points(500);
-                return new CarnivoreMealKit();
+                buyCarnivoreMealKit();
             }else if (option == 4){
-                EcoPoints.decrease_points(200);
-                return new StegosaurEgg();
+                buyStegosaurEgg();
             }else if (option == 5){
-                EcoPoints.decrease_points(500);
-                return new BrachiosaurEgg();
+                buyBrachiosaurEgg();
             }else if (option == 6){
-                EcoPoints.decrease_points(1000);
-                return new AllosaurEgg();
+                buyAllosaurEgg();
             }else if (option == 7){
-                EcoPoints.decrease_points(500);
-                return new LaserGun();
+                buyLaserGun();
             }
         } while (option!=8);
         return null;
+    }
+
+    public Item buyFruit(){
+        EcoPoints.decrease_points(30);
+        return new Fruit();
+    }
+
+    public Item buyVegetarianMealKit(){
+        EcoPoints.decrease_points(100);
+        return new VegetarianMealKit();
+    }
+
+    public Item buyCarnivoreMealKit(){
+        EcoPoints.decrease_points(500);
+        return new CarnivoreMealKit();
+    }
+
+    public Item buyStegosaurEgg(){
+        EcoPoints.decrease_points(200);
+        return new StegosaurEgg();
+    }
+
+    public Item buyBrachiosaurEgg(){
+        EcoPoints.decrease_points(500);
+        return new BrachiosaurEgg();
+    }
+
+    public Item buyAllosaurEgg(){
+        EcoPoints.decrease_points(1000);
+        return new AllosaurEgg();
+    }
+
+    public Item buyLaserGun(){
+        EcoPoints.decrease_points(500);
+        return new LaserGun();
     }
 }

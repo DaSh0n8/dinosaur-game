@@ -1,11 +1,6 @@
 package game;
 
-import edu.monash.fit2099.engine.Action;
-import edu.monash.fit2099.engine.Actions;
-import edu.monash.fit2099.engine.Actor;
-import edu.monash.fit2099.engine.Display;
-import edu.monash.fit2099.engine.GameMap;
-import edu.monash.fit2099.engine.Menu;
+import edu.monash.fit2099.engine.*;
 
 /**
  * Class representing the Player.
@@ -31,5 +26,17 @@ public class Player extends Actor {
 		if (lastAction.getNextAction() != null)
 			return lastAction.getNextAction();
 		return menu.showMenu(this, actions, display);
+	}
+
+
+
+	private void checkVendingMachine(Location location){
+		GameMap map = location.map();
+		int x = location.x();
+		int y = location.y();
+		if (map.at(x,y).getGround().hasCapability(GroundType.VENDINGMACHINE)){
+			VendingMachine v1 = new VendingMachine();
+			addItemToInventory(v1.displayMenu());
+		}
 	}
 }
