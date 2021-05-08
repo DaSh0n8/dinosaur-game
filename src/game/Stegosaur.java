@@ -41,9 +41,16 @@ public class Stegosaur extends Dinosaur {
      */
     @Override
     public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
+        // if Stegasaur is hungry, print message
+        if (this.hitPoints < SATISFIED_HIT_POINTS) {
+            Location location = map.locationOf(this);
+            int x = location.x();
+            int y = location.y();
+            System.out.println("Stegosaur at (" + x + ", " + y + ") is getting hungry!");
+        }
+
         // if unconscious, count the unconscious length and do nothing
         if (!this.isConscious()) {
-            System.out.println("hi");
             this.incrementUnconsciousTurns();
             if (getUnconsciousTurns() == MAX_UNCONSCIOUS_TURNS) {
                 // Dinosaur disappear
