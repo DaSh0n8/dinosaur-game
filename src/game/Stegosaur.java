@@ -56,8 +56,9 @@ public class Stegosaur extends Dinosaur {
             if (getUnconsciousTurns() == MAX_UNCONSCIOUS_TURNS) {
                 Location location = map.locationOf(this);
                 GameMap map1 = location.map(); ;
-                location.setGround(new Corpse());
+                location.setGround(new Corpse(DinosaurSpecies.STEGOSAUR));
                 map1.removeActor(this);
+
             }
             else {
                 return new DoNothingAction();
