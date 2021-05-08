@@ -2,7 +2,10 @@ package game;
 
 import edu.monash.fit2099.engine.*;
 
+import java.util.Random;
+
 public class Brachiosaur extends Dinosaur {
+    Random random = new Random();
     private final static int MAX_HIT_POINTS = 160;
     private final static int SATISFIED_HIT_POINTS = 140;
     private final static int HUNGRY_HIT_POINTS = 70;
@@ -50,9 +53,18 @@ public class Brachiosaur extends Dinosaur {
             this.hurt(1);
         }
 
-        Action thisAction = null;
+        // in its current Location, if it is standing on a bush, it have 50% to kill the bush
+        Location thisLocation = map.locationOf(this);
+        Ground thisGround = thisLocation.getGround();
+        if (thisGround.hasCapability(GroundType.BUSH)) {
+            int rand = random.nextInt(2);
+            if (rand == 1)
+                thisLocation.setGround(new Dirt());
+        }
 
         // get a suitable Behaviour for the situation, and get the Action of the Behaviour
+        Action thisAction = null;
+
         String thisBehaviourName = this.behaviour.getName();
         if (this.hitPoints >= SATISFIED_HIT_POINTS) {
             if (!thisBehaviourName.equals("WANDER")) {
