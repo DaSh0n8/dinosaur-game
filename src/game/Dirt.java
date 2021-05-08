@@ -34,6 +34,8 @@ public class Dirt extends Ground {
 				becomeBushChance = 1;
 		}
 		int rand = random.nextInt(100) + 1;
+		if (rand == 1)
+			System.out.println(location.x() + " " + location.y());
 		if (rand <= becomeBushChance) {
 			location.setGround(new Bush());
 		}
