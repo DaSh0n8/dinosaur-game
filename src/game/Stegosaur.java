@@ -24,6 +24,7 @@ public class Stegosaur extends Dinosaur {
         super(name, 'd', MAX_HIT_POINTS);
         this.hurt(50);
         this.behaviour = new WanderBehaviour();
+        addCapability(DinosaurSpecies.STEGOSAUR);
     }
 
     @Override
@@ -53,7 +54,11 @@ public class Stegosaur extends Dinosaur {
         if (!this.isConscious()) {
             this.incrementUnconsciousTurns();
             if (getUnconsciousTurns() == MAX_UNCONSCIOUS_TURNS) {
-                // Dinosaur disappear
+                Location location = map.locationOf(this);
+                GameMap map1 = location.map(); ;
+                location.setGround(new Corpse(DinosaurSpecies.STEGOSAUR));
+                map1.removeActor(this);
+
             }
             else {
                 return new DoNothingAction();
