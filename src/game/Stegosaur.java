@@ -46,7 +46,12 @@ public class Stegosaur extends Dinosaur {
         // if unconscious, count the unconscious length and do nothing
         if (!this.isConscious()) {
             this.incrementUnconsciousTurns();
-            return new DoNothingAction();
+            if (getUnconsciousTurns() == MAX_UNCONSCIOUS_TURNS){
+                //Dinosaur disappear
+            }
+            else{
+                return new DoNothingAction();
+            }
         }
         // decrease food level by 1
         this.hurt(1);
@@ -56,6 +61,13 @@ public class Stegosaur extends Dinosaur {
             return wander;
 
         return new DoNothingAction();
+    }
+
+    public void Death(){
+        int uncturns = getUnconsciousTurns();
+        if (MAX_UNCONSCIOUS_TURNS == uncturns){
+
+        };
     }
 
 }

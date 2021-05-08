@@ -17,6 +17,10 @@ public abstract class Dinosaur extends Actor {
         MALE, FEMALE
     }
 
+    private enum Status{
+        ALIVE,DEAD
+    }
+
     /**
      * Constructor.
      *
@@ -43,4 +47,7 @@ public abstract class Dinosaur extends Actor {
         this.unconsciousTurns = 0;
     }
 
+    public int getUnconsciousTurns() {
+        return unconsciousTurns;
+    }
 }
