@@ -41,49 +41,47 @@ public class Player extends Actor {
 		}
 	}
 
-	public void pickFruit(Location location){
-		GameMap map = location.map();
-		int x = location.x();
-		int y = location.y();
-		if (map.at(x,y).getGround().hasCapability(GroundType.TREE)){
-			Tree tree = new Tree();
-			if(tree.getFruitAmount()!= 0){
-				if (rand*100 < 60) {
-					addItemToInventory(new Fruit());
-				}
-				else{
-					System.out.println("You search the tree or bush for fruit, but you can’t find any ripe ones.");
-				}
-			}
-
-		}else if(map.at(x,y).getGround().hasCapability(GroundType.BUSH)){
-			Bush bush = new Bush();
-			if(bush.getFruitAmount()!= 0){
-				if (rand*100 < 60) {
-					addItemToInventory(new Fruit());
-				}
-				else{
-					System.out.println("You search the tree or bush for fruit, but you can’t find any ripe ones.");
-				}
-			}
-
-		}
-	}
+//	public void pickFruit(Location location){
+//		GameMap map = location.map();
+//		int x = location.x();
+//		int y = location.y();
+//		if (map.at(x,y).getGround().hasCapability(GroundType.TREE)){
+//			Tree tree = new Tree();
+//			if(tree.getFruitOnTreeAmount()!= 0){
+//				if (rand*100 < 60) {
+//					addItemToInventory(new Fruit());
+//				}
+//				else{
+//					System.out.println("You search the tree or bush for fruit, but you can’t find any ripe ones.");
+//				}
+//			}
+//
+//		}else if(map.at(x,y).getGround().hasCapability(GroundType.BUSH)){
+//			Bush bush = new Bush();
+//			if(bush.getFruitAmount()!= 0){
+//				if (rand*100 < 60) {
+//					addItemToInventory(new Fruit());
+//				}
+//				else{
+//					System.out.println("You search the tree or bush for fruit, but you can’t find any ripe ones.");
+//				}
+//			}
+//
+//		}
+//	}
 
 	public void pickUpFruit(Location location){
 		GameMap map = location.map();
 		int x = location.x();
 		int y = location.y();
-		if (map.at(x,y).getGround().hasCapability(GroundType.TREE)){
-			Tree tree = new Tree();
-			if (tree.getFruitOnGround()!= 0){
-				addItemToInventory(new Fruit());
-			}
-		}else if (map.at(x,y).getGround().hasCapability(GroundType.BUSH)){
-			Bush bush = new Bush();
-			if (bush.getFruitOnGround()!= 0){
-				addItemToInventory(new Fruit());
+		Ground thisGround = map.at(x, y).getGround();
+		if (thisGround.hasCapability(GroundType.FRUITPLANT)) {
+			for (Item thisItem: location.getItems()) {
+				if (thisItem.hasCapability(ItemType.FRUIT))
+					addItemToInventory(new Fruit());
+					break;
 			}
 		}
 	}
+
 }

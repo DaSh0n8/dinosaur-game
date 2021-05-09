@@ -1,27 +1,62 @@
 package game;
 
 import edu.monash.fit2099.engine.Ground;
-import edu.monash.fit2099.engine.Location;
 
-public class FruitPlant extends Ground {
-    private float spawnFruitChance;
-    private double d = Math.random();
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+public abstract class FruitPlant extends Ground {
+    private int fruits = 0; // fruits on FruitPlant
+    private int spawnFruitChance;
+    private Random random = new Random();
 
     /**
-     * Constructor. Initialize its display char and add its GroundType into capabilities.
+     * Constructor. Initialize its display char, add its GroundType into capabilities, and set its chances for spawning
+     * Fruit.
      *
      * @param displayChar character to display for this type of terrain
      */
-    public FruitPlant(char displayChar) {
+    public FruitPlant(char displayChar, int spawnFruitChance) {
         super(displayChar);
         addCapability(GroundType.FRUITPLANT);
-    }
-
-    public void setSpawnFruitChance(int spawnFruitChance) {
         this.spawnFruitChance = spawnFruitChance;
     }
 
-    public boolean spawnFruit(double spawnFruitChance) {
-        return !(d * 100 > spawnFruitChance);
+    /**
+     * A FruitPlant has a certain chance to produce a ripe fruit.
+     *
+     * @return If successfully produced, return a Fruit object. Otherwise returns null.
+     */
+    public boolean spawnFruit() {
+        int rand = random.nextInt(100) + 1;
+        return rand <= this.spawnFruitChance;
     }
+
+    /**
+     * Increment number of fruits on FruitPlant.
+     *
+     */
+    public void incrementFruits() {
+        this.fruits++;
+    }
+
+    /**
+     * Remove a number of fruits from FruitPlant.
+     *
+     * @param totalRemovedFruits Number of fruits removed
+     */
+    public void reduceFruits(int totalRemovedFruits) {
+        this.fruits -= totalRemovedFruits;
+    }
+
+    /**
+     * Get the total number of fruits on tree.
+     *
+     * @return an integer
+     */
+    public int getTotalFruits() {
+        return this.fruits;
+    }
+
 }
