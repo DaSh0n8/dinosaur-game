@@ -1,8 +1,0 @@
-package game;
-
-/**
- * Type of an item.
- */
-public enum ItemType {
-    FRUIT, EGG, ALLOSAUR_EGG, STEGOSAUR_EGG, BRACHIOSAUR_EGG, MEALKIT, VEGETARIAN_MEALKIT, CARNIVORE_MEALKIT, LASERGUN
-}
