@@ -10,12 +10,6 @@ public abstract class Dinosaur extends Actor {
     private Behaviour behaviour;
     private int unconsciousTurns;
 
-    /**
-     * Enum represents gender of the dinosaur.
-     */
-    private enum Gender {
-        MALE, FEMALE
-    }
 
     /**
      * Constructor.
@@ -47,11 +41,17 @@ public abstract class Dinosaur extends Actor {
         return this.unconsciousTurns;
     }
 
+
+
     /**
      * Dinosaur will search for a specific location that might have their foods.
      *
      * @return location of nearest food source
      */
     public abstract Location findFoodSource(GameMap map);
+
+    public abstract Location findMatingPartner(GameMap map);
+
+    public abstract boolean surroundingMatingPartner(Location location,GameMap map);
 
 }

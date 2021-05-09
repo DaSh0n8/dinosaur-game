@@ -53,12 +53,12 @@ public class Stegosaur extends Dinosaur {
         // if unconscious, count the unconscious length and do nothing
         if (!this.isConscious()) {
             this.incrementUnconsciousTurns();
+            // if reached max unconscious turns, dinosaur dies
             if (getUnconsciousTurns() == MAX_UNCONSCIOUS_TURNS) {
                 Location location = map.locationOf(this);
-                GameMap map1 = location.map(); ;
                 location.setGround(new Corpse(DinosaurSpecies.STEGOSAUR));
-                map1.removeActor(this);
-
+                map.removeActor(this);
+                return new DoNothingAction();
             }
             else {
                 return new DoNothingAction();
@@ -150,6 +150,93 @@ public class Stegosaur extends Dinosaur {
         }
 
         return there;
+    }
+
+    @Override
+    public Location findMatingPartner(GameMap map) {
+        if (!map.contains(this)) {
+            return null;
+        }
+
+        Location here = map.locationOf(this);
+        int topLeftX = map.getXRange().min();
+        int topLeftY = map.getYRange().min();
+        Location there = map.at(topLeftX, topLeftY);
+        int minDistance = distance(here, there);
+
+        NumberRange heights = map.getYRange();
+        NumberRange widths = map.getXRange();
+        for (int y : heights) {
+            for (int x : widths) {
+                Location thisLocation = map.at(x, y);
+                if (thisLocation.containsAnActor()){
+                    if (thisLocation.getActor().hasCapability(DinosaurSpecies.STEGOSAUR)){
+                        int thisDistance = distance(here,thisLocation);
+                        if (thisDistance < minDistance && thisDistance != 0){
+                            minDistance = thisDistance;
+                            there = thisLocation;
+                        }
+                    }
+                }
+            }
+        }
+        return there;
+    }
+
+    @Override
+    public boolean surroundingMatingPartner(Location location, GameMap map) {
+        int x = location.x();
+        int y = location.y();
+        int maxX = map.getXRange().max();
+        int maxY = map.getYRange().max();
+        int minX = map.getXRange().min();
+        int minY = map.getYRange().min();
+
+        if(y-2 >= minY){
+            if(map.at(x,y-2).getActor().hasCapability(DinosaurSpecies.STEGOSAUR) || map.at(x,y-2).getActor().hasCapability(DinosaurGender.FEMALE) )
+                return true;
+        }
+        if (y-2 >= minY) {
+            if(map.at(x,y-2).getActor().hasCapability(DinosaurSpecies.STEGOSAUR) || map.at(x,y-2).getActor().hasCapability(DinosaurGender.FEMALE) )
+                return true;
+        }
+        // check ground on upper right
+        if (x+2 <= maxX && y-2 >= minY) {
+            if(map.at(x+2,y-2).getActor().hasCapability(DinosaurSpecies.STEGOSAUR) || map.at(x+2,y-2).getActor().hasCapability(DinosaurGender.FEMALE) )
+                return true;
+        }
+        // check ground on right
+        if (x+1 <= maxX) {
+            if(map.at(x+2,y).getActor().hasCapability(DinosaurSpecies.STEGOSAUR) || map.at(x+2,y).getActor().hasCapability(DinosaurGender.FEMALE) )
+                return true;
+        }
+        // check ground on lower right
+        if (x+2 <= maxX && y+2 <= maxY) {
+            if(map.at(x+2,y+2).getActor().hasCapability(DinosaurSpecies.STEGOSAUR) || map.at(x+2,y+2).getActor().hasCapability(DinosaurGender.FEMALE) )
+                return true;
+        }
+        // check ground on below
+        if (y+2 <= maxY) {
+            if(map.at(x,y+2).getActor().hasCapability(DinosaurSpecies.STEGOSAUR) || map.at(x,y+2).getActor().hasCapability(DinosaurGender.FEMALE) )
+                return true;
+        }
+        // check ground on lower left
+        if (x-2 >= minX && y+2 <= maxY) {
+            if(map.at(x-2,y+2).getActor().hasCapability(DinosaurSpecies.STEGOSAUR) || map.at(x-2,y+2).getActor().hasCapability(DinosaurGender.FEMALE) )
+                return true;
+        }
+        // check ground on left
+        if (x-2 >= minX) {
+            if(map.at(x-2,y).getActor().hasCapability(DinosaurSpecies.STEGOSAUR) || map.at(x-2,y).getActor().hasCapability(DinosaurGender.FEMALE) )
+                return true;
+        }
+        // check ground on upper left
+        if (x-2 >= minX && y-2 >= minY) {
+            if(map.at(x-2,y-2).getActor().hasCapability(DinosaurSpecies.STEGOSAUR) || map.at(x-2,y-2).getActor().hasCapability(DinosaurGender.FEMALE) )
+                return true;
+        }
+
+        return false;
     }
 
     /**

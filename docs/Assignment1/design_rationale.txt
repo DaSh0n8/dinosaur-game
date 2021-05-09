@@ -7,13 +7,14 @@ EcoPoint.
 Dirt, trees and bushes feature:
 
 Create new classes call Dirt & Bush, both inherits from class Ground.
+Create a new class called FruitPlant, which is the parent class of tree and bush.
 Create a new class call Fruit, inherits from class Item.
 
 To grow from dirt to bush, Dirt will have a method to consider the grounds
-next to it and calculate the chances to become a bush. This method returns a
-boolean to tell its decision. If the caller receives a true, it will replace
-the Dirt with a Bush at the location. This method is created so that all 
-dirts can decides to grow or not all by themselves.
+next to it and calculate the chances to become a bush. This method returns an
+integer. The integer will then be used as a chance for the bush to spawn.
+This method is created so that all
+dirts can decide to grow or not all by themselves.
 
 Both Tree & Bush may have store one or more Fruit objects. They will have a
 method to produce a ripe Fruit object under a certain chance.
@@ -25,24 +26,24 @@ the rotting progress will be incremented.
 
 Hungry dinosaurs & Brachiosaur:
 
-Create a new enum call Gender.
+Create a new enum call DinosaurGender, and another one called DinosaurSpecies
 Create a new class call HerbivoryBehaviour, implements interface Behaviour.
 Create a new class call FeedAction, inherits from class Action.
-Create a new abstract class call Dinosaur.
+Create a new abstract class called Dinosaur.
 Create a new class call Brachiosaur, inherits from actor.
 
 Gender enum contains 2 constant, MALE and FEMALE.
 
-HerbivoryBehaviour class will find a Bush or Tree object as a target if 
-there is no target object yet. When a herbivore dinosaur is hungry, it will
-have this behaviour. Every turn, dinosaur with this behaviour will move one
-step closer to its target.
+The abstract class Dinosaur will have a function called findFoodSource.
+The different types of dinosaurs will have an overridden version of this class.
+For Brachiosaur and Stegosaur classes, this method will find a FruitPlant,
+whereas for Allosaur, this method will find either a corpse or a Stegosaur.
+This method will be called under playTurn, where dinosaurs will move towards
+their food source one tile per turn depending on their food levels.
 
-FeedAction class allows player to target a dinosaur next to him, and feed it.
 
-Since there will be different types of dinosaurs, create the abstract class
-Dinosaur for every Dinosaur to inherit. Every dinosaur will have the same
-attributes like gender, maximum food level, current food level, 
+By inheriting the abstract class Dinosaur, every dinosaur will have the same
+attributes like maximum food level, current food level,
 unconsciousness length and so on. For gender, store either one of the
 constants from Gender enum. There are many methods can also be created in the 
 abstract class. By doing this, we can avoid lots of duplicated code.
@@ -57,6 +58,11 @@ Breeding:
 
 Create a new class call BreedAction, inherits from class Action.
 Create a new class call Egg, inherits from class PortableItem.
+
+The method surroundingMatingPartner will check to see if there are any
+dinosaurs of the opposite sex around a certain radius. Whereas the method
+findMatingPartner will lead the dinosaur to its mating partner, similar
+to the findFoodSource method.
 
 If a dinosaur wanted to breed, it will have a FollowBehaviour to target a
 opposite sex dinosaur. Once an opposite sex dinosaur appears next to it, 
@@ -75,8 +81,10 @@ adult's states when the dinosaur is already adult.
 
 Eco points and purchasing:
 
-Create a new class call EcoPoints.
-Create new classes call VendingMachine, MealKit inherits from class Item.
+Create a new class call EcoPoints, which holds a static variable ecoPoints.
+Create new classes call VendingMachine which inherits from ground.
+Vending Machines will spawn at the beginning of the game.
+MealKit inherits from class Item.
 Create a new class call LaserGun, inherits from class WeaponItem.
 
 To use a currency in game, we create EcoPoints for holding only class
@@ -84,18 +92,19 @@ attributes and class methods. There will have a class attribute for storing
 the amount of points and class methods for adding and subtracting the points.
 This class will not be instantiated.
 
-Besides, we will have a VendingMachine that is not portable. This vending
-machine will have several methods. Each of them is responsible on returning
-(selling) an Item. Among the items, there are things like MealKit, which is
-either type of vegetarian or carnivore, and LaserGun, which is a weapon. When
-selling items, those methods will subtract a certain amount of EcoPoints.
-
+As for the VendingMachine, upon moving onto the same tile as the VendingMachine,
+the player will have the option to interact with it. It will appear as a choice
+under the player's menu. If the player chooses to interact with it, the VendingMachine
+will call a function that will display all items on sale. This function also returns
+whatever item the user wishes to purchase and displays a message when there's
+insufficient ecoPoints.
 
 
 Allosaur & Death:
 
 Create a new enum call Status.
 Create a new class call Allosaur, inherits from abstract class Dinosaur.
+Create a new class called Corpse, which inherits from Ground class.
 
 Status enum contains 2 constants, ALIVE and DEAD. In Dinosaur, store a
 status. When a dinosaur die, its status will changed from ALIVE to DEAD.
@@ -110,7 +119,7 @@ towards a death dinosaur or a living stegosaur. They will have a
 FollowBehaviour to move towards its target, then attack when a valid dinosaur 
 is next to it.
 
-
-
-
+There will be a method to check every turn if a dinosaur's conscious or not.
+If the amount of turns a dinosaur stays unconscious reaches its max amount,
+the removeActor method will be called and a new corpse will be created.
 
