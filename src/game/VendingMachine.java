@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 public class VendingMachine extends Ground {
 
+    private int itemPrice;
+
     public VendingMachine() {
         super('V');
         addCapability(GroundType.VENDINGMACHINE);
@@ -52,37 +54,86 @@ public class VendingMachine extends Ground {
     }
 
     public Item buyFruit(){
-        EcoPoints.decrease_points(30);
-        return new Fruit();
+        itemPrice = 30;
+        if (EcoPoints.getEcoPoints() <= itemPrice){
+            EcoPoints.decrease_points(itemPrice);
+            return new Fruit();
+        }
+        else{
+            System.out.println("No sufficient eco points for this purchase");
+            return null;
+        }
     }
 
     public Item buyVegetarianMealKit(){
-        EcoPoints.decrease_points(100);
-        return new VegetarianMealKit();
+        itemPrice = 100;
+        if (EcoPoints.getEcoPoints() <= itemPrice){
+            EcoPoints.decrease_points(itemPrice);
+            return new VegetarianMealKit();
+        }
+        else{
+            System.out.println("No sufficient eco points for this purchase");
+            return null;
+        }
     }
 
     public Item buyCarnivoreMealKit(){
-        EcoPoints.decrease_points(500);
-        return new CarnivoreMealKit();
+        itemPrice = 500;
+        if (EcoPoints.getEcoPoints() <= itemPrice){
+            EcoPoints.decrease_points(itemPrice);
+            return new CarnivoreMealKit();
+        }
+        else{
+            System.out.println("No sufficient eco points for this purchase");
+            return null;
+        }
     }
 
     public Item buyStegosaurEgg(){
-        EcoPoints.decrease_points(200);
-        return new StegosaurEgg();
+        itemPrice = 200;
+        if (EcoPoints.getEcoPoints() <= itemPrice){
+            EcoPoints.decrease_points(itemPrice);
+            return new StegosaurEgg();
+        }
+        else{
+            System.out.println("No sufficient eco points for this purchase");
+            return null;
+        }
     }
 
     public Item buyBrachiosaurEgg(){
-        EcoPoints.decrease_points(500);
-        return new BrachiosaurEgg();
+        itemPrice = 500;
+        if (EcoPoints.getEcoPoints() <= itemPrice){
+            EcoPoints.decrease_points(itemPrice);
+            return new BrachiosaurEgg();
+        }
+        else{
+            System.out.println("No sufficient eco points for this purchase");
+            return null;
+        }
     }
 
     public Item buyAllosaurEgg(){
-        EcoPoints.decrease_points(1000);
-        return new AllosaurEgg();
+        itemPrice = 1000;
+        if (EcoPoints.getEcoPoints() <= itemPrice){
+            EcoPoints.decrease_points(itemPrice);
+            return new AllosaurEgg();
+        }
+        else{
+            System.out.println("No sufficient eco points for this purchase");
+            return null;
+        }
     }
 
     public Item buyLaserGun(){
-        EcoPoints.decrease_points(500);
-        return new LaserGun();
+        itemPrice = 500;
+        if (EcoPoints.getEcoPoints() <= itemPrice){
+            EcoPoints.decrease_points(itemPrice);
+            return new LaserGun();
+        }
+        else{
+            System.out.println("No sufficient eco points for this purchase");
+            return null;
+        }
     }
 }
