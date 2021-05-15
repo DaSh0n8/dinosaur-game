@@ -11,6 +11,7 @@ public abstract class Dinosaur extends Actor {
 
     private Behaviour behaviour;
     private int unconsciousTurns;
+    private int thirstLevel;
 
 
     /**
@@ -39,6 +40,22 @@ public abstract class Dinosaur extends Actor {
         this.unconsciousTurns = 0;
     }
 
+    public void increaseThirst (int points){
+        thirstLevel += points;
+    }
+
+    public void decreaseThirst(){
+        thirstLevel-=1;
+    }
+
+    public int getThirstLevel(){
+        return thirstLevel;
+    }
+
+    public boolean isThirsty(){
+        return thirstLevel>0;
+    }
+
     public int getUnconsciousTurns() {
         return this.unconsciousTurns;
     }
@@ -55,5 +72,7 @@ public abstract class Dinosaur extends Actor {
     public abstract Location findMatingPartner(GameMap map);
 
     public abstract boolean surroundingMatingPartner(Location location,GameMap map);
+
+
 
 }

@@ -20,6 +20,8 @@ public class Stegosaur extends Dinosaur {
     private final static int SATISFIED_HIT_POINTS = 90;
     private final static int HUNGRY_HIT_POINTS = 50;
     private final static int MAX_UNCONSCIOUS_TURNS = 20;
+    private final static int MAX_WATER_LEVEL = 100;
+    private final static int THIRSTY_WATER_LEVEL = 40;
     private Behaviour behaviour;
 
     /**
@@ -57,9 +59,17 @@ public class Stegosaur extends Dinosaur {
             int y = location.y();
             System.out.println("Stegosaur at (" + x + ", " + y + ") is getting hungry!");
         }
+        // if Stegasaur is thirsty, print message
+        if (this.getThirstLevel() < THIRSTY_WATER_LEVEL) {
+            Location location = map.locationOf(this);
+            int x = location.x();
+            int y = location.y();
+            System.out.println("Stegosaur at (" + x + ", " + y + ") is getting thirsty!");
+        }
+
 
         // if unconscious, count the unconscious length and do nothing
-        if (!this.isConscious()) {
+        if (!this.isConscious() || this.isThirsty()) {
             this.incrementUnconsciousTurns();
             // if reached max unconscious turns, dinosaur dies
             if (getUnconsciousTurns() == MAX_UNCONSCIOUS_TURNS) {
@@ -74,6 +84,7 @@ public class Stegosaur extends Dinosaur {
         }
         else {
             this.hurt(1);
+            this.decreaseThirst();
         }
 
         Action thisAction = null;
