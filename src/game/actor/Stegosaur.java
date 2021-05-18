@@ -2,14 +2,18 @@ package game.actor;
 
 
 import edu.monash.fit2099.engine.*;
-import game.*;
+import game.action.AttackAction;
 import game.behaviour.Behaviour;
-import game.behaviour.TravelBehaviour;
+import game.behaviour.HungryBehaviour;
 import game.behaviour.WanderBehaviour;
 import game.enumeration.DinosaurGender;
 import game.enumeration.DinosaurSpecies;
 import game.enumeration.GroundType;
+import game.enumeration.Status;
 import game.ground.Corpse;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A herbivorous dinosaur.
@@ -20,7 +24,8 @@ public class Stegosaur extends Dinosaur {
     private final static int SATISFIED_HIT_POINTS = 90;
     private final static int HUNGRY_HIT_POINTS = 50;
     private final static int MAX_UNCONSCIOUS_TURNS = 20;
-    private Behaviour behaviour;
+    private final static GroundType TARGET_FOOD_SOURCE_TYPE = GroundType.FRUITPLANT;
+    private List<Behaviour> actionFactories = new ArrayList<>();
 
     /**
      * Constructor.
@@ -31,8 +36,11 @@ public class Stegosaur extends Dinosaur {
     public Stegosaur(String name) {
         super(name, 'd', MAX_HIT_POINTS);
         this.hurt(50);
-        this.behaviour = new WanderBehaviour();
         addCapability(DinosaurSpecies.STEGOSAUR);
+        this.addCapability(Status.HUNGRY);
+        this.actionFactories.add(new HungryBehaviour(TARGET_FOOD_SOURCE_TYPE));
+        this.actionFactories.add(new WanderBehaviour());
+
     }
 
     @Override
@@ -76,88 +84,38 @@ public class Stegosaur extends Dinosaur {
             this.hurt(1);
         }
 
-        Action thisAction = null;
-
-        String thisBehaviourName = this.behaviour.getName();
+        // adjust Dinosaur Status
         if (this.hitPoints >= SATISFIED_HIT_POINTS) {
-            if (!thisBehaviourName.equals("WANDER")) {
-                this.behaviour = new WanderBehaviour();
+            if (!this.hasCapability(Status.SATISFY)) {
+                this.addCapability(Status.SATISFY);
+                this.removeCapability(Status.HUNGRY);
+                this.removeCapability(Status.STARVE);
             }
-            thisAction = this.behaviour.getAction(this, map);
         }
         else if (this.hitPoints >= HUNGRY_HIT_POINTS) {
-            if (!thisBehaviourName.equals("TRAVEL")) {
-                Location destination = findFoodSource(map);
-                this.behaviour = new TravelBehaviour(destination);
+            if (!this.hasCapability(Status.HUNGRY)) {
+                this.addCapability(Status.HUNGRY);
+                this.removeCapability(Status.SATISFY);
+                this.removeCapability(Status.STARVE);
             }
-            else if (this.behaviour.getAction(this, map) == null){
-                Location destination = findFoodSource(map);
-                this.behaviour = new TravelBehaviour(destination);
-            }
-            thisAction = this.behaviour.getAction(this, map);
         }
         else {
-            if (!thisBehaviourName.equals("TRAVEL")) {
-                Location destination = findFoodSource(map);
-                this.behaviour = new TravelBehaviour(destination);
+            if (!this.hasCapability(Status.STARVE)) {
+                this.addCapability(Status.STARVE);
+                this.removeCapability(Status.SATISFY);
+                this.removeCapability(Status.HUNGRY);
             }
-            else if (this.behaviour.getAction(this, map) == null){
-                Location destination = findFoodSource(map);
-                this.behaviour = new TravelBehaviour(destination);
-            }
-            thisAction = this.behaviour.getAction(this, map);
         }
 
-        // if behaviour doesn't return action, try wander behaviour
-        if (thisAction != null)
-            return thisAction;
-
-        this.behaviour = new WanderBehaviour();
-        thisAction = this.behaviour.getAction(this, map);
-
-        // if wander behaviour also doesn't return action, return DoNothingAction()
-        if (thisAction != null)
-            return thisAction;
+        // get one valid Behaviour among all
+        for (Behaviour thisFactory : this.actionFactories) {
+            Action thisAction = thisFactory.getAction(this, map);
+            if (thisAction != null) {
+                return thisAction;
+            }
+        }
 
         return new DoNothingAction();
-    }
-
-    /**
-     * Find a location of a nearest Bush or Tree for Stegasaur.
-     * Stegasaur current Location is not considered.
-     *
-     * @return location of a FruitPlant
-     */
-    @Override
-    public Location findFoodSource(GameMap map) {
-        if (!map.contains(this)) {
-            return null;
-        }
-
-        Location here = map.locationOf(this);
-        // initialize target place to be the top left corner of the map
-        int topLeftX = map.getXRange().min();
-        int topLeftY = map.getYRange().min();
-        Location there = map.at(topLeftX, topLeftY);
-        int minDistance = distance(here, there);
-        // find a nearest FruitPlant
-        NumberRange heights = map.getYRange();
-        NumberRange widths = map.getXRange();
-        for (int y : heights) {
-            for (int x : widths) {
-                Location thisLocation = map.at(x, y);
-                Ground thisGround = thisLocation.getGround();
-                if (thisGround.hasCapability(GroundType.FRUITPLANT)) {
-                    int thisDistance = distance(here, thisLocation);
-                    if (thisDistance < minDistance && thisDistance != 0) {
-                        minDistance = thisDistance;
-                        there = thisLocation;
-                    }
-                }
-            }
-        }
-
-        return there;
     }
 
     @Override
