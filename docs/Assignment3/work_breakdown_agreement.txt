@@ -1,0 +1,22 @@
+WBA:
+
+For this iteration, we will be splitting the work based on our past experiences with iteration 1, and how each classes are related to each other (eg: lake related to thirsty dinosaur)
+
+Brandon will be responsible for implementing the following features:
+1.	Lake, water and rain
+2.	Thirsty Dinosaur
+3.	Second map
+
+Zi Jie will be responsible for implementing the following features:
+1.	Pterodactyls
+2.	A more sophisticated game driver
+3.	Remaining iteration 1 features (Breeding, Eating)
+
+Although the features are split up here, we will actively help each other when encountering a problem.
+
+Time arrangement:
+Set up multiple due dates to check progress of work, and ultimately finishing everything by 25th May
+
+Signatures:
+Zi Jie
+Brandon ( I accept this WBA)
