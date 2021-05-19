@@ -21,6 +21,8 @@ public class Brachiosaur extends Dinosaur {
     private final static int SATISFIED_HIT_POINTS = 140;
     private final static int HUNGRY_HIT_POINTS = 70;
     private final static int MAX_UNCONSCIOUS_TURNS = 15;
+    private final static int MAX_WATER_LEVEL = 200;
+    private final static int THIRSTY_WATER_LEVEL = 40;
     private final static GroundType TARGET_FOOD_SOURCE_TYPE = GroundType.TREE;
     private List<Behaviour> actionFactories = new ArrayList<>();
 
@@ -53,9 +55,16 @@ public class Brachiosaur extends Dinosaur {
             int y = location.y();
             System.out.println("Brachiosaur at (" + x + ", " + y + ") is getting hungry!");
         }
+        // if Stegasaur is thirsty, print message
+        if (this.getThirstLevel() < THIRSTY_WATER_LEVEL) {
+            Location location = map.locationOf(this);
+            int x = location.x();
+            int y = location.y();
+            System.out.println("Stegosaur at (" + x + ", " + y + ") is getting thirsty!");
+        }
 
         // if unconscious, count the unconscious length and do nothing
-        if (!this.isConscious()) {
+        if (!this.isConscious() || this.isThirsty()) {
             this.incrementUnconsciousTurns();
             if (getUnconsciousTurns() == MAX_UNCONSCIOUS_TURNS) {
                 Location location = map.locationOf(this);
@@ -69,6 +78,7 @@ public class Brachiosaur extends Dinosaur {
         }
         else {
             this.hurt(1);
+            this.decreaseThirst();
         }
 
         // in its current Location, if it is standing on a bush, it have 50% to kill the bush
