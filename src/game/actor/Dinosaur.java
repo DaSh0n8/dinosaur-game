@@ -3,15 +3,16 @@ package game.actor;
 import edu.monash.fit2099.engine.*;
 import game.behaviour.WanderBehaviour;
 import game.behaviour.Behaviour;
+import game.enumeration.DinosaurGender;
+
+import java.util.Random;
 
 /**
  * Class representing dinosaur type
  */
 public abstract class Dinosaur extends Actor {
 
-    private Behaviour behaviour;
     private int unconsciousTurns;
-
 
     /**
      * Constructor.
@@ -22,7 +23,6 @@ public abstract class Dinosaur extends Actor {
      */
     public Dinosaur(String name, char displayChar, int hitPoints) {
         super(name, displayChar, hitPoints);
-        this.behaviour = new WanderBehaviour();
     }
 
     /**

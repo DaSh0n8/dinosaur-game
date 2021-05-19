@@ -14,6 +14,7 @@ import game.ground.Corpse;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * A herbivorous dinosaur.
@@ -25,6 +26,9 @@ public class Stegosaur extends Dinosaur {
     private final static int HUNGRY_HIT_POINTS = 50;
     private final static int MAX_UNCONSCIOUS_TURNS = 20;
     private final static GroundType TARGET_FOOD_SOURCE_TYPE = GroundType.FRUITPLANT;
+    private static int totalMale = 0;
+    private static int totalFemale = 0;
+    private DinosaurGender gender;
     private List<Behaviour> actionFactories = new ArrayList<>();
 
     /**
@@ -37,10 +41,25 @@ public class Stegosaur extends Dinosaur {
         super(name, 'd', MAX_HIT_POINTS);
         this.hurt(50);
         addCapability(DinosaurSpecies.STEGOSAUR);
+        this.decideGender();
         this.addCapability(Status.HUNGRY);
         this.actionFactories.add(new HungryBehaviour(TARGET_FOOD_SOURCE_TYPE));
         this.actionFactories.add(new WanderBehaviour());
+    }
 
+    /**
+     * Try to maintain a same number of male and female Stegosaur. If the total are the same, produce a female Stegosaur.
+     *
+     */
+    private void decideGender() {
+        if (totalMale < totalFemale) {
+            totalMale++;
+            this.gender = DinosaurGender.MALE;
+        }
+        else {
+            totalFemale++;
+            this.gender = DinosaurGender.FEMALE;
+        }
     }
 
     @Override

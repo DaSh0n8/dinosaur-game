@@ -22,6 +22,9 @@ public class Brachiosaur extends Dinosaur {
     private final static int HUNGRY_HIT_POINTS = 70;
     private final static int MAX_UNCONSCIOUS_TURNS = 15;
     private final static GroundType TARGET_FOOD_SOURCE_TYPE = GroundType.TREE;
+    private static int totalMale = 0;
+    private static int totalFemale = 0;
+    private DinosaurGender gender;
     private List<Behaviour> actionFactories = new ArrayList<>();
 
     /**
@@ -34,9 +37,25 @@ public class Brachiosaur extends Dinosaur {
         super(name, 'B', MAX_HIT_POINTS);
         this.hurt(60);
         addCapability(DinosaurSpecies.BRACHIOSAUR);
+        this.decideGender();
         this.addCapability(Status.HUNGRY);
         this.actionFactories.add(new HungryBehaviour(TARGET_FOOD_SOURCE_TYPE));
         this.actionFactories.add(new WanderBehaviour());
+    }
+
+    /**
+     * Try to maintain a same number of male and female Stegosaur. If the total are the same, produce a female Stegosaur.
+     *
+     */
+    private void decideGender() {
+        if (totalMale < totalFemale) {
+            totalMale++;
+            this.gender = DinosaurGender.MALE;
+        }
+        else {
+            totalFemale++;
+            this.gender = DinosaurGender.FEMALE;
+        }
     }
 
     /**
