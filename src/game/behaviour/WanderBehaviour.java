@@ -13,7 +13,6 @@ import game.behaviour.Behaviour;
 public class WanderBehaviour implements Behaviour {
 	
 	private Random random = new Random();
-	private final static String name = "WANDER";
 
 	/**
 	 * Returns a MoveAction to wander to a random location, if possible.  
@@ -41,15 +40,6 @@ public class WanderBehaviour implements Behaviour {
 			return null;
 		}
 
-	}
-
-	/**
-	 * Returns Behaviour name for others to check what kind of Behaviour it is.
-	 *
-	 * @return Behaviour name
-	 */
-	public String getName() {
-		return name;
 	}
 
 }

@@ -16,7 +16,6 @@ public class HungryBehaviour implements Behaviour {
 
     private Location foodSource = null;
     private GroundType foodSourceType;
-    private final static String name = "TRAVEL";
 
     public HungryBehaviour(GroundType foodSourceType) {
         this.foodSourceType = foodSourceType;
@@ -127,15 +126,6 @@ public class HungryBehaviour implements Behaviour {
      */
     private int distance(Location a, Location b) {
         return Math.abs(a.x() - b.x()) + Math.abs(a.y() - b.y());
-    }
-
-    /**
-     * Returns Behaviour name for others to check what kind of Behaviour it is.
-     *
-     * @return Behaviour name
-     */
-    public String getName() {
-        return name;
     }
 
 }

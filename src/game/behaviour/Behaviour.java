@@ -30,5 +30,4 @@ public interface Behaviour {
 
 	Action getAction(Actor actor, GameMap map);
 
-	String getName();
 }

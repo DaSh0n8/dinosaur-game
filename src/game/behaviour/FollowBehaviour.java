@@ -10,7 +10,6 @@ import game.behaviour.Behaviour;
 public class FollowBehaviour implements Behaviour {
 
     private Actor target;
-    private final static String name = "FOLLOW";
 
     /**
      * Constructor.
@@ -52,15 +51,6 @@ public class FollowBehaviour implements Behaviour {
      */
     private int distance(Location a, Location b) {
         return Math.abs(a.x() - b.x()) + Math.abs(a.y() - b.y());
-    }
-
-    /**
-     * Returns Behaviour name for others to check what kind of Behaviour it is.
-     *
-     * @return Behaviour name
-     */
-    public String getName() {
-        return name;
     }
 
 }
