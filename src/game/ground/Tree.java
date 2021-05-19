@@ -57,7 +57,7 @@ public class Tree extends FruitPlant {
 				totalRemovedFruits++;
 			}
 		}
-		reduceFruits(totalRemovedFruits);
+		this.reduceFruits(totalRemovedFruits);
 	}
 
 }

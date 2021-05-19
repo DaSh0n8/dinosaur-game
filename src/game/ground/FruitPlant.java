@@ -2,6 +2,7 @@ package game.ground;
 
 import edu.monash.fit2099.engine.Ground;
 import game.enumeration.GroundType;
+import game.item.Fruit;
 
 import java.util.Random;
 
@@ -56,6 +57,19 @@ public abstract class FruitPlant extends Ground {
      */
     public int getTotalFruits() {
         return this.fruits;
+    }
+
+    /**
+     * Returns a Fruit object if there is any.
+     *
+     * @return a Fruit object
+     */
+    public Fruit getFruit() {
+        if (this.fruits > 0) {
+            this.fruits -= 1;
+            return new Fruit();
+        }
+        return null;
     }
 
 }

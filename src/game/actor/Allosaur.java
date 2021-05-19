@@ -32,45 +32,45 @@ public class Allosaur extends Dinosaur {
         return null;
     }
 
-    @Override
-    public Location findFoodSource(GameMap map) {
-        if (!map.contains(this)){
-            return null;
-        }
-
-        Location here = map.locationOf(this);
-        int topLeftX = map.getXRange().min();
-        int topLeftY = map.getYRange().min();
-        Location there = map.at(topLeftX,topLeftY);
-        int minDistance = distance(here,there);
-        // find a nearest corpse
-        NumberRange heights = map.getYRange();
-        NumberRange widths = map.getXRange();
-        for(int y : heights){
-            for(int x : widths){
-                Location location = new Location(map,x,y);
-                Location thisLocation = map.at(x,y);
-                Ground thisGround = thisLocation.getGround();
-                if(thisGround.hasCapability(GroundType.CORPSE) ){
-                    int thisDistance = distance(here,thisLocation);
-                    if (thisDistance<minDistance && thisDistance != 0){
-                        minDistance = thisDistance;
-                        there = thisLocation;
-                    }
-                }else if (location.containsAnActor()){
-                    Actor thisActor = location.getActor();
-                    if(thisActor.hasCapability(DinosaurSpecies.STEGOSAUR)){
-                        int thisDistance = distance(here,thisLocation);
-                        if(thisDistance<minDistance && thisDistance != 0){
-                            minDistance = thisDistance;
-                            there = thisLocation;
-                        }
-                    }
-                }
-            }
-        }
-        return there;
-    }
+//    @Override
+//    public Location findFoodSource(GameMap map) {
+//        if (!map.contains(this)){
+//            return null;
+//        }
+//
+//        Location here = map.locationOf(this);
+//        int topLeftX = map.getXRange().min();
+//        int topLeftY = map.getYRange().min();
+//        Location there = map.at(topLeftX,topLeftY);
+//        int minDistance = distance(here,there);
+//        // find a nearest corpse
+//        NumberRange heights = map.getYRange();
+//        NumberRange widths = map.getXRange();
+//        for(int y : heights){
+//            for(int x : widths){
+//                Location location = new Location(map,x,y);
+//                Location thisLocation = map.at(x,y);
+//                Ground thisGround = thisLocation.getGround();
+//                if(thisGround.hasCapability(GroundType.CORPSE) ){
+//                    int thisDistance = distance(here,thisLocation);
+//                    if (thisDistance<minDistance && thisDistance != 0){
+//                        minDistance = thisDistance;
+//                        there = thisLocation;
+//                    }
+//                }else if (location.containsAnActor()){
+//                    Actor thisActor = location.getActor();
+//                    if(thisActor.hasCapability(DinosaurSpecies.STEGOSAUR)){
+//                        int thisDistance = distance(here,thisLocation);
+//                        if(thisDistance<minDistance && thisDistance != 0){
+//                            minDistance = thisDistance;
+//                            there = thisLocation;
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        return there;
+//    }
 
     @Override
     public Location findMatingPartner(GameMap map) {
