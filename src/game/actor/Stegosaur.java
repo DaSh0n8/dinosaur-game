@@ -27,6 +27,8 @@ public class Stegosaur extends Dinosaur {
     private final static int HUNGRY_HIT_POINTS = 50;
     private final static int MAX_UNCONSCIOUS_TURNS = 20;
     private final static int MAX_PREGNANT_TURNS = 10;
+    private final static int MAX_WATER_LEVEL = 100;
+    private final static int THIRSTY_WATER_LEVEL = 40;
     private final static GroundType TARGET_FOOD_SOURCE_TYPE = GroundType.FRUITPLANT;
     private static int totalMale = 0;
     private static int totalFemale = 0;
@@ -90,7 +92,7 @@ public class Stegosaur extends Dinosaur {
     @Override
     public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
         // if unconscious, count the unconscious length and do nothing
-        if (!this.isConscious()) {
+        if (!this.isConscious() || this.isThirsty()) {
             this.unconsciousTurns++;
             // if reached max unconscious turns, dinosaur dies
             if (this.unconsciousTurns == MAX_UNCONSCIOUS_TURNS) {
@@ -109,6 +111,7 @@ public class Stegosaur extends Dinosaur {
                 this.unconsciousTurns = 0;
             }
             this.hurt(1);
+            this.decreaseThirst();
         }
 
         // if pregnancy is mature, lay an egg
@@ -123,6 +126,13 @@ public class Stegosaur extends Dinosaur {
             }
         }
 
+        // if Stegasaur is thirsty, print message
+        if (this.getThirstLevel() < THIRSTY_WATER_LEVEL) {
+            Location location = map.locationOf(this);
+            int x = location.x();
+            int y = location.y();
+            System.out.println("Stegosaur at (" + x + ", " + y + ") is getting thirsty!");
+        }
         // if Stegosaur is hungry, print message
         if (this.hitPoints < SATISFIED_HIT_POINTS) {
             Location location = map.locationOf(this);

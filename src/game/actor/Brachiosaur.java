@@ -24,6 +24,8 @@ public class Brachiosaur extends Dinosaur {
     private final static int HUNGRY_HIT_POINTS = 70;
     private final static int MAX_UNCONSCIOUS_TURNS = 15;
     private final static int MAX_PREGNANT_TURNS = 30;
+    private final static int MAX_WATER_LEVEL = 200;
+    private final static int THIRSTY_WATER_LEVEL = 40;
     private final static GroundType TARGET_FOOD_SOURCE_TYPE = GroundType.TREE;
     private static int totalMale = 0;
     private static int totalFemale = 0;
@@ -74,7 +76,7 @@ public class Brachiosaur extends Dinosaur {
     @Override
     public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
         // if unconscious, count the unconscious length and do nothing
-        if (!this.isConscious()) {
+        if (!this.isConscious() || this.isThirsty()) {
             this.unconsciousTurns++;
             if (this.unconsciousTurns == MAX_UNCONSCIOUS_TURNS) {
                 Location location = map.locationOf(this);
@@ -92,6 +94,7 @@ public class Brachiosaur extends Dinosaur {
                 this.unconsciousTurns = 0;
             }
             this.hurt(1);
+            this.decreaseThirst();
         }
 
         // if pregnancy is mature, lay an egg
@@ -106,6 +109,13 @@ public class Brachiosaur extends Dinosaur {
             }
         }
 
+        // if Stegasaur is thirsty, print message
+        if (this.getThirstLevel() < THIRSTY_WATER_LEVEL) {
+            Location location = map.locationOf(this);
+            int x = location.x();
+            int y = location.y();
+            System.out.println("Stegosaur at (" + x + ", " + y + ") is getting thirsty!");
+        }
         // if Brachiosaur is hungry, print message
         if (this.hitPoints < SATISFIED_HIT_POINTS) {
             Location location = map.locationOf(this);

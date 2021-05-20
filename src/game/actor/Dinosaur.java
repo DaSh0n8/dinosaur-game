@@ -13,6 +13,7 @@ import java.util.Random;
 public abstract class Dinosaur extends Actor {
 
     private int unconsciousTurns;
+    private int thirstLevel;
 
 
     /**
@@ -38,6 +39,22 @@ public abstract class Dinosaur extends Actor {
      */
     public void awake() {
         this.unconsciousTurns = 0;
+    }
+
+    public void increaseThirst (int points){
+        thirstLevel += points;
+    }
+
+    public void decreaseThirst(){
+        thirstLevel-=1;
+    }
+
+    public int getThirstLevel(){
+        return thirstLevel;
+    }
+
+    public boolean isThirsty(){
+        return thirstLevel>0;
     }
 
     public int getUnconsciousTurns() {
