@@ -21,6 +21,14 @@ public class HungryBehaviour implements Behaviour {
         this.foodSourceType = foodSourceType;
     }
 
+    /**
+     * If the current place of the Dinosaur is a valid food source and have foods, Dinosaur will eats at the Location.
+     * Otherwise, it will searches for a new food source and move towards the Location.
+     *
+     * @param actor the Actor acting
+     * @param map the GameMap containing the Actor
+     * @return EatAction to eat at its current Location, or MoveActorAction to move towards a food source
+     */
     @Override
     public Action getAction(Actor actor, GameMap map) {
         if (!map.contains(actor) || actor.hasCapability(Status.SATISFY)) {

@@ -7,6 +7,9 @@ import game.enumeration.ItemType;
 import game.ground.Bush;
 import game.ground.FruitPlant;
 
+/**
+ * A class that will makes a Dinosaur to eat in its own way at current Location.
+ */
 public class EatAction extends Action {
 
     public EatAction() {

@@ -43,8 +43,4 @@ public abstract class Dinosaur extends Actor {
         return this.unconsciousTurns;
     }
 
-    public abstract Location findMatingPartner(GameMap map);
-
-    public abstract boolean surroundingMatingPartner(Location location,GameMap map);
-
 }
