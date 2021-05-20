@@ -14,6 +14,7 @@ public abstract class Dinosaur extends Actor {
 
     private int unconsciousTurns;
 
+
     /**
      * Constructor.
      *

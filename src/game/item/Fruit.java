@@ -18,9 +18,9 @@ public class Fruit extends PortableItem {
      * Increase the rot turns of this Fruit if the situation is valid. If it is fully rotted, remove from the game.
      *
      * @param currentLocation The location of the actor carrying this Item.
-     * @param actor           The actor carrying this Item.
      */
-    public void tick(Location currentLocation, Actor actor) {
+    @Override
+    public void tick(Location currentLocation) {
         // increase rotTurns if it is on the ground
         if (currentLocation.getItems().contains(this)) {
             this.rotTurns++;

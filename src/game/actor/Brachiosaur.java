@@ -1,6 +1,7 @@
 package game.actor;
 
 import edu.monash.fit2099.engine.*;
+import game.action.LayEggAction;
 import game.behaviour.Behaviour;
 import game.behaviour.HungryBehaviour;
 import game.behaviour.MateBehaviour;
@@ -22,10 +23,13 @@ public class Brachiosaur extends Dinosaur {
     private final static int SATISFIED_HIT_POINTS = 140;
     private final static int HUNGRY_HIT_POINTS = 70;
     private final static int MAX_UNCONSCIOUS_TURNS = 15;
+    private final static int MAX_PREGNANT_TURNS = 30;
     private final static GroundType TARGET_FOOD_SOURCE_TYPE = GroundType.TREE;
     private static int totalMale = 0;
     private static int totalFemale = 0;
     private DinosaurGender oppositeGender;
+    private int unconsciousTurns = 0;
+    private int pregnantTurns = 0;
     private List<Behaviour> actionFactories = new ArrayList<>();
 
     /**
@@ -69,20 +73,12 @@ public class Brachiosaur extends Dinosaur {
      */
     @Override
     public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
-        // if Brachiosaur is hungry, print message
-        if (this.hitPoints < SATISFIED_HIT_POINTS) {
-            Location location = map.locationOf(this);
-            int x = location.x();
-            int y = location.y();
-            System.out.println("Brachiosaur at (" + x + ", " + y + ") is getting hungry!");
-        }
-
         // if unconscious, count the unconscious length and do nothing
         if (!this.isConscious()) {
-            this.incrementUnconsciousTurns();
-            if (getUnconsciousTurns() == MAX_UNCONSCIOUS_TURNS) {
+            this.unconsciousTurns++;
+            if (this.unconsciousTurns == MAX_UNCONSCIOUS_TURNS) {
                 Location location = map.locationOf(this);
-                location.setGround(new Corpse(DinosaurSpecies.STEGOSAUR));
+                location.setGround(new Corpse(DinosaurSpecies.BRACHIOSAUR));
                 map.removeActor(this);
                 return new DoNothingAction();
             }
@@ -91,7 +87,31 @@ public class Brachiosaur extends Dinosaur {
             }
         }
         else {
+            // reset unconscious turns
+            if (this.unconsciousTurns > 0) {
+                this.unconsciousTurns = 0;
+            }
             this.hurt(1);
+        }
+
+        // if pregnancy is mature, lay an egg
+        if (this.hasCapability(Status.PREGNANT)) {
+            if (this.pregnantTurns == MAX_PREGNANT_TURNS) {
+                this.pregnantTurns = 0;
+                this.removeCapability(Status.PREGNANT);
+                return new LayEggAction();
+            }
+            else {
+                this.pregnantTurns++;
+            }
+        }
+
+        // if Brachiosaur is hungry, print message
+        if (this.hitPoints < SATISFIED_HIT_POINTS) {
+            Location location = map.locationOf(this);
+            int x = location.x();
+            int y = location.y();
+            System.out.println("Brachiosaur at (" + x + ", " + y + ") is getting hungry!");
         }
 
         // in its current Location, if it is standing on a bush, it have 50% to kill the bush

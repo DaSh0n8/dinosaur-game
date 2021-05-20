@@ -5,6 +5,7 @@ import edu.monash.fit2099.engine.Item;
 import java.util.Scanner;
 import edu.monash.fit2099.engine.Ground;
 import game.EcoPoints;
+import game.enumeration.DinosaurSpecies;
 import game.enumeration.GroundType;
 import game.item.*;
 
@@ -95,7 +96,7 @@ public class VendingMachine extends Ground {
         itemPrice = 200;
         if (EcoPoints.getEcoPoints() <= itemPrice){
             EcoPoints.decrease_points(itemPrice);
-            return new StegosaurEgg();
+            return new Egg(DinosaurSpecies.STEGOSAUR);
         }
         else{
             System.out.println("No sufficient eco points for this purchase");
@@ -107,7 +108,7 @@ public class VendingMachine extends Ground {
         itemPrice = 500;
         if (EcoPoints.getEcoPoints() <= itemPrice){
             EcoPoints.decrease_points(itemPrice);
-            return new BrachiosaurEgg();
+            return new Egg(DinosaurSpecies.BRACHIOSAUR);
         }
         else{
             System.out.println("No sufficient eco points for this purchase");
@@ -119,7 +120,7 @@ public class VendingMachine extends Ground {
         itemPrice = 1000;
         if (EcoPoints.getEcoPoints() <= itemPrice){
             EcoPoints.decrease_points(itemPrice);
-            return new AllosaurEgg();
+            return new Egg(DinosaurSpecies.ALLOSAUR);
         }
         else{
             System.out.println("No sufficient eco points for this purchase");

@@ -3,6 +3,7 @@ package game.actor;
 
 import edu.monash.fit2099.engine.*;
 import game.action.AttackAction;
+import game.action.LayEggAction;
 import game.behaviour.Behaviour;
 import game.behaviour.HungryBehaviour;
 import game.behaviour.MateBehaviour;
@@ -30,6 +31,8 @@ public class Stegosaur extends Dinosaur {
     private static int totalMale = 0;
     private static int totalFemale = 0;
     private DinosaurGender oppositeGender;
+    private int unconsciousTurns = 0;
+    private int pregnantTurns = 0;
     private List<Behaviour> actionFactories = new ArrayList<>();
 
     /**
@@ -88,9 +91,9 @@ public class Stegosaur extends Dinosaur {
     public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
         // if unconscious, count the unconscious length and do nothing
         if (!this.isConscious()) {
-            this.incrementUnconsciousTurns();
+            this.unconsciousTurns++;
             // if reached max unconscious turns, dinosaur dies
-            if (getUnconsciousTurns() == MAX_UNCONSCIOUS_TURNS) {
+            if (this.unconsciousTurns == MAX_UNCONSCIOUS_TURNS) {
                 Location location = map.locationOf(this);
                 location.setGround(new Corpse(DinosaurSpecies.STEGOSAUR));
                 map.removeActor(this);
@@ -101,7 +104,23 @@ public class Stegosaur extends Dinosaur {
             }
         }
         else {
+            // reset unconscious turns
+            if (this.unconsciousTurns > 0) {
+                this.unconsciousTurns = 0;
+            }
             this.hurt(1);
+        }
+
+        // if pregnancy is mature, lay an egg
+        if (this.hasCapability(Status.PREGNANT)) {
+            if (this.pregnantTurns == MAX_PREGNANT_TURNS) {
+                this.pregnantTurns = 0;
+                this.removeCapability(Status.PREGNANT);
+                return new LayEggAction();
+            }
+            else {
+                this.pregnantTurns++;
+            }
         }
 
         // if Stegosaur is hungry, print message
