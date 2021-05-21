@@ -27,9 +27,9 @@ public class DrinkAction extends Action {
             if(lake.getSips()>0){
                 try {
                     if (actor.hasCapability(DinosaurSpecies.STEGOSAUR) || actor.hasCapability(DinosaurSpecies.ALLOSAUR)) {
-                        dinosaur.increaseThirst(30);
+                        dinosaur.increaseWaterLevel(30);
                     } else if (actor.hasCapability(DinosaurSpecies.BRACHIOSAUR)) {
-                        dinosaur.increaseThirst(80);
+                        dinosaur.increaseWaterLevel(80);
                     }
                 }
                 catch (ClassCastException e){

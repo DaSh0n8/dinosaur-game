@@ -12,6 +12,11 @@ public class Allosaur extends Dinosaur {
     private final static int SATISFIED_HIT_POINTS = 90;
     private final static int HUNGRY_HIT_POINTS = 50;
     private final static int MAX_UNCONSCIOUS_TURNS = 20;
+    private static int totalMale = 0;
+    private static int totalFemale = 0;
+    private DinosaurGender oppositeGender;
+    private int unconsciousTurns = 0;
+    private int pregnantTurns = 0;
     private Behaviour behaviour;
 
     public Allosaur(String name) {
@@ -20,15 +25,26 @@ public class Allosaur extends Dinosaur {
         this.behaviour = new WanderBehaviour();
     }
 
+    /**
+     * Try to maintain a same number of male and female Stegosaur. If the total are the same, produce a female Stegosaur.
+     *
+     */
+    @Override
+    public void decideGender() {
+        if (totalMale < totalFemale) {
+            totalMale++;
+            this.addCapability(DinosaurGender.MALE);
+            this.oppositeGender = DinosaurGender.FEMALE;
+        }
+        else {
+            totalFemale++;
+            this.addCapability(DinosaurGender.FEMALE);
+            this.oppositeGender = DinosaurGender.MALE;
+        }
+    }
+
     @Override
     public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
-        if(!this.isConscious()){
-            this.incrementUnconsciousTurns();
-        }
-        else{
-            this.hurt(1);
-        }
-
         return null;
     }
 
