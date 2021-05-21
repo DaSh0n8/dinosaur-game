@@ -4,10 +4,7 @@ package game.actor;
 import edu.monash.fit2099.engine.*;
 import game.action.AttackAction;
 import game.action.LayEggAction;
-import game.behaviour.Behaviour;
-import game.behaviour.HungryBehaviour;
-import game.behaviour.MateBehaviour;
-import game.behaviour.WanderBehaviour;
+import game.behaviour.*;
 import game.enumeration.DinosaurGender;
 import game.enumeration.DinosaurSpecies;
 import game.enumeration.GroundType;
@@ -16,12 +13,12 @@ import game.ground.Corpse;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * A herbivorous dinosaur.
  */
 public class Stegosaur extends Dinosaur {
+    // Will need to change this to a collection if Stegosaur gets additional Behaviours.
     private final static int MAX_HIT_POINTS = 100;
     private final static int SATISFIED_HIT_POINTS = 90;
     private final static int HUNGRY_HIT_POINTS = 50;
@@ -30,12 +27,14 @@ public class Stegosaur extends Dinosaur {
     private final static int MAX_WATER_LEVEL = 100;
     private final static int THIRSTY_WATER_LEVEL = 40;
     private final static GroundType TARGET_FOOD_SOURCE_TYPE = GroundType.FRUITPLANT;
+    private final static GroundType TARGET_WATER_SOURCE_TYPE = GroundType.LAKE;
     private static int totalMale = 0;
     private static int totalFemale = 0;
     private DinosaurGender oppositeGender;
     private int unconsciousTurns = 0;
     private int pregnantTurns = 0;
     private List<Behaviour> actionFactories = new ArrayList<>();
+
 
     /**
      * Constructor.
@@ -46,12 +45,15 @@ public class Stegosaur extends Dinosaur {
     public Stegosaur(String name) {
         super(name, 'd', MAX_HIT_POINTS);
         this.hurt(50);
+        this.setThirstLevel(60);
         addCapability(DinosaurSpecies.STEGOSAUR);
         this.decideGender();
         this.addCapability(Status.HUNGRY);
+        this.actionFactories.add(new ThirstyBehaviour(TARGET_WATER_SOURCE_TYPE));
         this.actionFactories.add(new MateBehaviour(DinosaurSpecies.STEGOSAUR, this.oppositeGender));
         this.actionFactories.add(new HungryBehaviour(TARGET_FOOD_SOURCE_TYPE));
         this.actionFactories.add(new WanderBehaviour());
+
     }
 
     /**
@@ -71,21 +73,17 @@ public class Stegosaur extends Dinosaur {
         }
     }
 
+
     @Override
     public Actions getAllowableActions(Actor otherActor, String direction, GameMap map) {
         return new Actions(new AttackAction(this));
     }
 
     /**
-     * If Stegosaur is conscious and not laying egg, it will either try mating, try eating, or wandering around.
-     * The priority is:
-     * If it has Status SATISFY, it will first try to breed with another valid Dinosaur next to it. If not possible,
-     * then it will try to search for a nearest valid Dinosaur and follows it. If didn't found one, then it will wanders
-     * around.
-     * If it has Status HUNGRY, it will first try to breed with another valid Dinosaur next to it. If not possible, it
-     * will try to eat foods at its current Location. If eating is not valid, it will move towards a valid food source.
-     * If it has Status STARVE, it will first try to eat at its current Location. Otherwise, it will move towards a
-     * valid food source.
+     * Figure out what to do next.
+     * <p>
+     * FIXME: Stegosaur wanders around at random, or if no suitable MoveActions are available, it
+     * just stands there.  That's boring.
      *
      * @see edu.monash.fit2099.engine.Actor#playTurn(Actions, Action, GameMap, Display)
      */
@@ -132,7 +130,11 @@ public class Stegosaur extends Dinosaur {
             int x = location.x();
             int y = location.y();
             System.out.println("Stegosaur at (" + x + ", " + y + ") is getting thirsty!");
+            this.addCapability(Status.THIRSTY);
+        }else if (this.getThirstLevel() > THIRSTY_WATER_LEVEL){
+            this.removeCapability(Status.THIRSTY);
         }
+
         // if Stegosaur is hungry, print message
         if (this.hitPoints < SATISFIED_HIT_POINTS) {
             Location location = map.locationOf(this);
@@ -174,6 +176,8 @@ public class Stegosaur extends Dinosaur {
 
         return new DoNothingAction();
     }
+
+
 
     /**
      * Compute the Manhattan distance between two locations.

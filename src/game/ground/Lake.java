@@ -3,14 +3,17 @@ package game.ground;
 import edu.monash.fit2099.engine.Ground;
 import edu.monash.fit2099.engine.Location;
 import game.Sky;
+import game.enumeration.GroundType;
 
 public class Lake extends Ground {
 
     private int sips = 25;
     private int fish = 5;
 
+
     public Lake() {
         super('~');
+        addCapability(GroundType.LAKE);
     }
 
     @Override

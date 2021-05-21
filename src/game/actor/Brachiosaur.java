@@ -2,10 +2,7 @@ package game.actor;
 
 import edu.monash.fit2099.engine.*;
 import game.action.LayEggAction;
-import game.behaviour.Behaviour;
-import game.behaviour.HungryBehaviour;
-import game.behaviour.MateBehaviour;
-import game.behaviour.WanderBehaviour;
+import game.behaviour.*;
 import game.enumeration.DinosaurGender;
 import game.enumeration.DinosaurSpecies;
 import game.enumeration.GroundType;
@@ -27,6 +24,7 @@ public class Brachiosaur extends Dinosaur {
     private final static int MAX_WATER_LEVEL = 200;
     private final static int THIRSTY_WATER_LEVEL = 40;
     private final static GroundType TARGET_FOOD_SOURCE_TYPE = GroundType.TREE;
+    private final static GroundType TARGET_WATER_SOURCE_TYPE = GroundType.LAKE;
     private static int totalMale = 0;
     private static int totalFemale = 0;
     private DinosaurGender oppositeGender;
@@ -43,9 +41,11 @@ public class Brachiosaur extends Dinosaur {
     public Brachiosaur(String name) {
         super(name, 'B', MAX_HIT_POINTS);
         this.hurt(60);
+        this.setThirstLevel(60);
         addCapability(DinosaurSpecies.BRACHIOSAUR);
         this.decideGender();
         this.addCapability(Status.HUNGRY);
+        this.actionFactories.add(new ThirstyBehaviour(TARGET_WATER_SOURCE_TYPE));
         this.actionFactories.add(new MateBehaviour(DinosaurSpecies.BRACHIOSAUR, this.oppositeGender));
         this.actionFactories.add(new HungryBehaviour(TARGET_FOOD_SOURCE_TYPE));
         this.actionFactories.add(new WanderBehaviour());
@@ -67,6 +67,7 @@ public class Brachiosaur extends Dinosaur {
             this.oppositeGender = DinosaurGender.MALE;
         }
     }
+
 
     /**
      * Brachiosaur will move towards a tree when it's hungry. Otherwise, it will wander around.
@@ -109,12 +110,15 @@ public class Brachiosaur extends Dinosaur {
             }
         }
 
-        // if Stegasaur is thirsty, print message
+        // if Brachiosaur is thirsty, print message
         if (this.getThirstLevel() < THIRSTY_WATER_LEVEL) {
             Location location = map.locationOf(this);
             int x = location.x();
             int y = location.y();
             System.out.println("Stegosaur at (" + x + ", " + y + ") is getting thirsty!");
+            this.addCapability(Status.THIRSTY);
+        }else if (this.getThirstLevel() > THIRSTY_WATER_LEVEL){
+            this.removeCapability(Status.THIRSTY);
         }
         // if Brachiosaur is hungry, print message
         if (this.hitPoints < SATISFIED_HIT_POINTS) {
@@ -166,6 +170,8 @@ public class Brachiosaur extends Dinosaur {
 
         return new DoNothingAction();
     }
+
+
 
     /**
      * Compute the Manhattan distance between two locations.

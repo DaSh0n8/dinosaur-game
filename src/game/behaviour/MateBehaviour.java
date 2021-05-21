@@ -34,7 +34,7 @@ public class MateBehaviour implements Behaviour{
      */
     @Override
     public Action getAction(Actor actor, GameMap map) {
-        if (!map.contains(actor) || actor.hasCapability(Status.STARVE) || actor.hasCapability(Status.PREGNANT)) {
+        if (!map.contains(actor) || actor.hasCapability(Status.STARVE) || actor.hasCapability(Status.PREGNANT) || actor.hasCapability(Status.THIRSTY)) {
             return null;
         }
 

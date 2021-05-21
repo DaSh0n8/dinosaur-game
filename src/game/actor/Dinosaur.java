@@ -15,6 +15,13 @@ public abstract class Dinosaur extends Actor {
     private int unconsciousTurns;
     private int thirstLevel;
 
+    public int getHp(){
+        return this.hitPoints;
+    }
+
+    public void setThirstLevel(int points){
+        thirstLevel = points;
+    }
 
     /**
      * Constructor.
@@ -54,7 +61,7 @@ public abstract class Dinosaur extends Actor {
     }
 
     public boolean isThirsty(){
-        return thirstLevel>0;
+        return thirstLevel<0;
     }
 
     public int getUnconsciousTurns() {
