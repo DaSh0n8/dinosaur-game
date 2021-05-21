@@ -32,7 +32,6 @@ public class AdvancedGameMap extends GameMap {
             }
         }
         turns++;
-        System.out.println(rain);
         super.tick();
 
     }
