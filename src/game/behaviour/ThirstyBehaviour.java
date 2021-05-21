@@ -20,20 +20,22 @@ public class ThirstyBehaviour implements Behaviour {
     @Override
     public Action getAction(Actor actor, GameMap map) {
         if (!map.contains(actor) || !actor.hasCapability(Status.THIRSTY)) {
-            System.out.println("drinking behaviour ignored");
             return null;
         }
 
         Location here = map.locationOf(actor);
 
-        // first, if the current place is a valid water source, continue drinking
-        if(here.getGround().hasCapability(GroundType.LAKE)){
+        Location target = this.adjacentLake(here,GroundType.LAKE);
+
+
+        // first, if the adjacent place is a valid water source, continue drinking
+        if(target!=null){
             // if this lake has water, return drink action
             try{
-                Lake lake = (Lake) here.getGround();
+                Lake lake = (Lake) target.getGround();
                 if (lake.getSips() > 0){
                     System.out.println("Dinosaur is drinking");
-                    return new DrinkAction();
+                    return new DrinkAction(target);
                 }
                 else{
                     this.waterSource = null;
@@ -41,11 +43,8 @@ public class ThirstyBehaviour implements Behaviour {
             }catch (ClassCastException e){
                 System.out.println("Invalid ground");
             }
+        }
 
-        }
-        else{
-            findWaterSource(actor,map);
-        }
 
         // find a water source if the current Lake doesn't have one
         if (this.waterSource == null){
@@ -104,5 +103,75 @@ public class ThirstyBehaviour implements Behaviour {
 
     public String getName(){
         return name;
+    }
+
+    private Location adjacentLake (Location location, GroundType targetGroundType) {
+        GameMap map = location.map();
+        int x = location.x();
+        int y = location.y();
+        int maxX = map.getXRange().max();
+        int maxY = map.getYRange().max();
+        int minX = map.getXRange().min();
+        int minY = map.getYRange().min();
+
+        Ground target;
+        // check ground on above
+        if (y-1 >= minY) {
+            location = map.at(x, y-1);
+            target = location.getGround();
+            if (target.hasCapability(targetGroundType))
+                return location;
+        }
+        // check ground on upper right
+        if (x+1 <= maxX && y-1 >= minY) {
+            location = map.at(x+1, y-1);
+            target = location.getGround();
+            if (target.hasCapability(targetGroundType))
+                return location;
+        }
+        // check ground on right
+        if (x+1 <= maxX) {
+            location = map.at(x+1, y);
+            target = location.getGround();
+            if (target.hasCapability(targetGroundType))
+                return location;
+        }
+        // check ground on lower right
+        if (x+1 <= maxX && y+1 <= maxY) {
+            location = map.at(x+1, y+1);
+            target = location.getGround();
+            if (target.hasCapability(targetGroundType))
+                return location;
+        }
+        // check ground on below
+        if (y+1 <= maxY) {
+            location = map.at(x, y+1);
+            target = location.getGround();
+            if (target.hasCapability(targetGroundType))
+                return location;
+        }
+        // check ground on lower left
+        if (x-1 >= minX && y+1 <= maxY) {
+            location = map.at(x-1, y+1);
+            target = location.getGround();
+            if (target.hasCapability(targetGroundType))
+                return location;
+        }
+        // check ground on left
+        if (x-1 >= minX) {
+            location = map.at(x-1, y);
+            target = location.getGround();
+            if (target.hasCapability(targetGroundType))
+                return location;
+        }
+        // check ground on upper left
+        if (x-1 >= minX && y-1 >= minY) {
+            location = map.at(x-1, y-1);
+            target = location.getGround();
+            if (target.hasCapability(targetGroundType))
+                return location;
+        }
+
+        return null;
     }
 }

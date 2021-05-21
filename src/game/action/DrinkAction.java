@@ -11,13 +11,16 @@ import game.ground.Lake;
 
 public class DrinkAction extends Action {
 
-    public DrinkAction() {
+    private Location target;
+
+    public DrinkAction(Location target) {
+        this.target= target;
     }
 
     @Override
     public String execute(Actor actor, GameMap map) {
-        Location location = map.locationOf(actor);
-        Ground ground = location.getGround();
+
+        Ground ground = target.getGround();
         if(ground.hasCapability(GroundType.LAKE)){
             Lake lake = (Lake) ground;
             Dinosaur dinosaur = (Dinosaur) actor;
