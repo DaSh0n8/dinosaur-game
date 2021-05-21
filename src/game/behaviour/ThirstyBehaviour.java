@@ -34,7 +34,6 @@ public class ThirstyBehaviour implements Behaviour {
             try{
                 Lake lake = (Lake) target.getGround();
                 if (lake.getSips() > 0){
-                    System.out.println("Dinosaur is drinking");
                     return new DrinkAction(target);
                 }
                 else{
