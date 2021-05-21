@@ -115,7 +115,7 @@ public class Brachiosaur extends Dinosaur {
             Location location = map.locationOf(this);
             int x = location.x();
             int y = location.y();
-            System.out.println("Stegosaur at (" + x + ", " + y + ") is getting thirsty!");
+            System.out.println("Brachiosaur at (" + x + ", " + y + ") is getting thirsty!");
             this.addCapability(Status.THIRSTY);
         }else if (this.getThirstLevel() > THIRSTY_WATER_LEVEL){
             this.removeCapability(Status.THIRSTY);
