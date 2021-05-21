@@ -6,6 +6,7 @@ import game.behaviour.WanderBehaviour;
 import game.enumeration.DinosaurGender;
 import game.enumeration.DinosaurSpecies;
 import game.enumeration.GroundType;
+import game.enumeration.Status;
 
 public class Allosaur extends Dinosaur {
     private final static int MAX_HIT_POINTS = 100;
@@ -41,6 +42,13 @@ public class Allosaur extends Dinosaur {
             this.addCapability(DinosaurGender.FEMALE);
             this.oppositeGender = DinosaurGender.MALE;
         }
+    }
+
+    @Override
+    public void grownUp() {
+        this.removeCapability(Status.BABY);
+        this.addCapability(Status.ADULT);
+        this.displayChar = 'A';
     }
 
     @Override

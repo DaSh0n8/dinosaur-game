@@ -34,7 +34,8 @@ public class MateBehaviour implements Behaviour{
      */
     @Override
     public Action getAction(Actor actor, GameMap map) {
-        if (!map.contains(actor) || actor.hasCapability(Status.STARVE) || actor.hasCapability(Status.PREGNANT) || actor.hasCapability(Status.THIRSTY)) {
+        if (!map.contains(actor) || actor.hasCapability(Status.STARVE) || actor.hasCapability(Status.PREGNANT) ||
+                actor.hasCapability(Status.BABY) || actor.hasCapability(Status.THIRSTY)) {
             return null;
         }
 
@@ -78,7 +79,7 @@ public class MateBehaviour implements Behaviour{
 
     /**
      * The Dinosaur will checks if there is a valid target Dinosaur next to it.
-     * A valid target Dinosaur must have the same species, opposite sex, and not pregnant.
+     * A valid target Dinosaur must have the same species, opposite sex, not pregnant, and is adult.
      *
      * @param location location of this Dinosaur
      * @param map map where this Dinosaur located
@@ -98,7 +99,7 @@ public class MateBehaviour implements Behaviour{
             if (map.at(x, y-1).containsAnActor()) {
                 target = map.at(x, y-1).getActor();
                 if (target.hasCapability(this.targetSpecies) && target.hasCapability(this.targetGender)
-                        && !target.hasCapability(Status.PREGNANT))
+                        && !target.hasCapability(Status.PREGNANT) && target.hasCapability(Status.ADULT))
                     return target;
             }
         }
@@ -107,7 +108,7 @@ public class MateBehaviour implements Behaviour{
             if (map.at(x+1, y-1).containsAnActor()) {
                 target = map.at(x+1, y-1).getActor();
                 if (target.hasCapability(this.targetSpecies) && target.hasCapability(this.targetGender)
-                        && !target.hasCapability(Status.PREGNANT))
+                        && !target.hasCapability(Status.PREGNANT) && target.hasCapability(Status.ADULT))
                     return target;
             }
         }
@@ -116,7 +117,7 @@ public class MateBehaviour implements Behaviour{
             if (map.at(x+1, y).containsAnActor()) {
                 target = map.at(x+1, y).getActor();
                 if (target.hasCapability(this.targetSpecies) && target.hasCapability(this.targetGender)
-                        && !target.hasCapability(Status.PREGNANT))
+                        && !target.hasCapability(Status.PREGNANT) && target.hasCapability(Status.ADULT))
                     return target;
             }
         }
@@ -125,7 +126,7 @@ public class MateBehaviour implements Behaviour{
             if (map.at(x+1, y+1).containsAnActor()) {
                 target = map.at(x+1, y+1).getActor();
                 if (target.hasCapability(this.targetSpecies) && target.hasCapability(this.targetGender)
-                        && !target.hasCapability(Status.PREGNANT))
+                        && !target.hasCapability(Status.PREGNANT) && target.hasCapability(Status.ADULT))
                     return target;
             }
         }
@@ -134,7 +135,7 @@ public class MateBehaviour implements Behaviour{
             if (map.at(x, y+1).containsAnActor()) {
                 target = map.at(x, y+1).getActor();
                 if (target.hasCapability(this.targetSpecies) && target.hasCapability(this.targetGender)
-                        && !target.hasCapability(Status.PREGNANT))
+                        && !target.hasCapability(Status.PREGNANT) && target.hasCapability(Status.ADULT))
                     return target;
             }
         }
@@ -143,7 +144,7 @@ public class MateBehaviour implements Behaviour{
             if (map.at(x-1, y+1).containsAnActor()) {
                 target = map.at(x-1, y+1).getActor();
                 if (target.hasCapability(this.targetSpecies) && target.hasCapability(this.targetGender)
-                        && !target.hasCapability(Status.PREGNANT))
+                        && !target.hasCapability(Status.PREGNANT) && target.hasCapability(Status.ADULT))
                     return target;
             }
         }
@@ -152,7 +153,7 @@ public class MateBehaviour implements Behaviour{
             if (map.at(x-1, y).containsAnActor()) {
                 target = map.at(x-1, y).getActor();
                 if (target.hasCapability(this.targetSpecies) && target.hasCapability(this.targetGender)
-                        && !target.hasCapability(Status.PREGNANT))
+                        && !target.hasCapability(Status.PREGNANT) && target.hasCapability(Status.ADULT))
                     return target;
             }
         }
@@ -161,7 +162,7 @@ public class MateBehaviour implements Behaviour{
             if (map.at(x-1, y-1).containsAnActor()) {
                 target = map.at(x-1, y-1).getActor();
                 if (target.hasCapability(this.targetSpecies) && target.hasCapability(this.targetGender)
-                        && !target.hasCapability(Status.PREGNANT))
+                        && !target.hasCapability(Status.PREGNANT) && target.hasCapability(Status.ADULT))
                     return target;
             }
         }
@@ -170,7 +171,7 @@ public class MateBehaviour implements Behaviour{
     }
 
     /**
-     * Find the nearest valid Dinosaur which has the same species, opposite sex and not pregnant.
+     * Find the nearest valid Dinosaur which has the same species, opposite sex, not pregnant and is adult.
      *
      * @param actor Actor that want mating
      * @param map   Map that contains the Actor
@@ -194,7 +195,7 @@ public class MateBehaviour implements Behaviour{
                 if (map.at(x, y).containsAnActor()) {
                     Actor thisActor = thisLocation.getActor();
                     if (thisActor.hasCapability(this.targetSpecies) && thisActor.hasCapability(this.targetGender)
-                            && !thisActor.hasCapability(Status.PREGNANT)) {
+                            && !thisActor.hasCapability(Status.PREGNANT) && thisActor.hasCapability(Status.ADULT)) {
                         int thisDistance = distance(here, thisLocation);
                         if (thisDistance < minDistance && thisDistance != 0) {
                             minDistance = thisDistance;

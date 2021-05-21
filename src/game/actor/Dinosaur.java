@@ -10,19 +10,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class representing adult Dinosaur type
+ * Class representing Dinosaur type
  */
 public abstract class Dinosaur extends Actor {
 
+    private int waterLevel;
     private int satisfyHitPoints;
     private int hungryHitPoints;
     private int thirstyWaterLevel;
     private int maxUnconsciousTurns;
     private int maxPregnantTurns;
     private int maxWaterLevel;
-    private int waterLevel;
+    private int maxBabyTurns;
     private int unconsciousTurns = 0;
     private int pregnantTurns = 0;
+    private int babyTurns = 0;
     private List<Behaviour> actionFactories = new ArrayList<>();
 
     /**
@@ -56,18 +58,26 @@ public abstract class Dinosaur extends Actor {
             // if reached max unconscious turns, dinosaur dies
             if (this.unconsciousTurns == maxUnconsciousTurns) {
                 return new DeadAction();
-            }
-            else {
+            } else {
                 return new DoNothingAction();
             }
-        }
-        else {
+        } else {
             // reset unconscious turns
             if (this.unconsciousTurns > 0) {
                 this.unconsciousTurns = 0;
             }
             this.hurt(1);
             this.waterLevel--;
+        }
+
+        // if baby Dinosaur became adult, make it grown up
+        if (this.hasCapability(Status.BABY)) {
+            if (this.babyTurns == maxBabyTurns) {
+                this.grownUp();
+            }
+            else {
+                this.babyTurns++;
+            }
         }
 
         // if pregnancy is mature, lay an egg
@@ -149,6 +159,11 @@ public abstract class Dinosaur extends Actor {
      */
     public abstract void decideGender();
 
+    /**
+     * Modify baby Dinosaur to become and adult by changing its status and displayChar
+     */
+    public abstract void grownUp();
+
     public void setSatisfyHitPoints(int points) {
         this.satisfyHitPoints = points;
     }
@@ -171,6 +186,10 @@ public abstract class Dinosaur extends Actor {
 
     public void setMaxWaterLevel(int waterLevel) {
         this.maxWaterLevel = waterLevel;
+    }
+
+    public void setMaxBabyTurns(int turns) {
+        this.maxBabyTurns = turns;
     }
 
     /**

@@ -57,12 +57,12 @@ public class Application {
 		world.addPlayer(player, gameMap.at(9, 4));
 		
 		// Place 2 stegosaurs in the middle of the map, and another 4 brachiosaurs
-		gameMap.at(30, 12).addActor(new Stegosaur("Stegosaur"));
-		gameMap.at(32, 12).addActor(new Stegosaur("Stegosaur"));
-		gameMap.at(62, 2).addActor(new Brachiosaur("Brachiosaur"));
-		gameMap.at(70, 8).addActor(new Brachiosaur("Brachiosaur"));
-		gameMap.at(10, 20).addActor(new Brachiosaur("Brachiosaur"));
-		gameMap.at(20, 23).addActor(new Brachiosaur("Brachiosaur"));
+		gameMap.at(30, 12).addActor(new Stegosaur("Stegosaur", true));
+		gameMap.at(32, 12).addActor(new Stegosaur("Stegosaur", true));
+		gameMap.at(62, 2).addActor(new Brachiosaur("Brachiosaur", true));
+		gameMap.at(70, 8).addActor(new Brachiosaur("Brachiosaur", true));
+		gameMap.at(10, 20).addActor(new Brachiosaur("Brachiosaur", true));
+		gameMap.at(20, 23).addActor(new Brachiosaur("Brachiosaur", true));
 		gameMap.at(35,10).setGround(new VendingMachine());
 			
 		world.run();

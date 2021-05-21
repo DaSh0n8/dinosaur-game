@@ -11,6 +11,9 @@ import game.enumeration.Status;
 import game.ground.Dirt;
 import java.util.Random;
 
+/**
+ * A long neck herbivorous dinosaur. 'b' represents baby Brachiosaur, 'B' represents adult Brachiosaur.
+ */
 public class Brachiosaur extends Dinosaur {
 
     Random random = new Random();
@@ -21,6 +24,7 @@ public class Brachiosaur extends Dinosaur {
     private final static int MAX_UNCONSCIOUS_TURNS = 15;
     private final static int MAX_PREGNANT_TURNS = 30;
     private final static int MAX_WATER_LEVEL = 200;
+    private final static int MAX_BABY_TURNS = 50;
     private final static GroundType TARGET_FOOD_SOURCE_TYPE = GroundType.TREE;
     private final static GroundType TARGET_WATER_SOURCE_TYPE = GroundType.LAKE;
     private static int totalMale = 0;
@@ -29,20 +33,53 @@ public class Brachiosaur extends Dinosaur {
 
     /**
      * Constructor.
-     * All Brachiosaur are represented by a 'B' and have 160 max hit points but start with 100 hit points.
+     * All Brachiosaur are represented by a 'b' or 'B' and have 160 max hit points but start with 100 hit points.
      *
      * @param name the name of Brachiosaur
      */
     public Brachiosaur(String name) {
-        super(name, 'B', MAX_HIT_POINTS);
+        super(name, 'b', MAX_HIT_POINTS);
         this.hitPoints = 100;
         this.setWaterLevel(60);
+        this.addCapability(Status.BABY);
         this.setSatisfyHitPoints(SATISFY_HIT_POINTS);
         this.setHungryHitPoints(HUNGRY_HIT_POINTS);
         this.setThirstyWaterLevel(THIRSTY_WATER_LEVEL);
         this.setMaxUnconsciousTurns(MAX_UNCONSCIOUS_TURNS);
         this.setMaxPregnantTurns(MAX_PREGNANT_TURNS);
         this.setMaxWaterLevel(MAX_WATER_LEVEL);
+        this.setMaxBabyTurns(MAX_BABY_TURNS);
+        addCapability(DinosaurSpecies.BRACHIOSAUR);
+        this.decideGender();
+        this.addCapability(Status.HUNGRY);
+        this.addBehaviour(new ThirstyBehaviour(TARGET_WATER_SOURCE_TYPE));
+        this.addBehaviour(new MateBehaviour(DinosaurSpecies.BRACHIOSAUR, this.oppositeGender));
+        this.addBehaviour(new HungryBehaviour(TARGET_FOOD_SOURCE_TYPE));
+        this.addBehaviour(new WanderBehaviour());
+    }
+
+    /**
+     * Constructor, mainly for creating adult Brachiosaur at start of the game.
+     * All Brachiosaur are represented by a 'b' or 'B' and have 160 max hit points but start with 100 hit points.
+     *
+     * @param name the name of Brachiosaur
+     * @param isAdult boolean to set this Brachiosaur adult or not
+     */
+    public Brachiosaur(String name, boolean isAdult) {
+        super(name, 'b', MAX_HIT_POINTS);
+        this.hitPoints = 100;
+        this.setWaterLevel(60);
+        this.addCapability(Status.BABY);
+        if (isAdult) {
+            this.grownUp();
+        }
+        this.setSatisfyHitPoints(SATISFY_HIT_POINTS);
+        this.setHungryHitPoints(HUNGRY_HIT_POINTS);
+        this.setThirstyWaterLevel(THIRSTY_WATER_LEVEL);
+        this.setMaxUnconsciousTurns(MAX_UNCONSCIOUS_TURNS);
+        this.setMaxPregnantTurns(MAX_PREGNANT_TURNS);
+        this.setMaxWaterLevel(MAX_WATER_LEVEL);
+        this.setMaxBabyTurns(MAX_BABY_TURNS);
         addCapability(DinosaurSpecies.BRACHIOSAUR);
         this.decideGender();
         this.addCapability(Status.HUNGRY);
@@ -70,6 +107,12 @@ public class Brachiosaur extends Dinosaur {
         }
     }
 
+    @Override
+    public void grownUp() {
+        this.removeCapability(Status.BABY);
+        this.addCapability(Status.ADULT);
+        this.displayChar = 'B';
+    }
 
     /**
      * If Brachiosaur is conscious and not laying egg, it will either try mating, try eating, or wandering around.

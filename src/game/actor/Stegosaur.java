@@ -11,7 +11,7 @@ import game.enumeration.GroundType;
 import game.enumeration.Status;
 
 /**
- * A herbivorous dinosaur.
+ * A herbivorous dinosaur. 's' represents baby Stegosaur, 'S' represents adult Stegosaur.
  */
 public class Stegosaur extends Dinosaur {
 
@@ -22,6 +22,7 @@ public class Stegosaur extends Dinosaur {
     private final static int MAX_UNCONSCIOUS_TURNS = 20;
     private final static int MAX_PREGNANT_TURNS = 10;
     private final static int MAX_WATER_LEVEL = 100;
+    private final static int MAX_BABY_TURNS = 30;
     private final static GroundType TARGET_FOOD_SOURCE_TYPE = GroundType.FRUITPLANT;
     private final static GroundType TARGET_WATER_SOURCE_TYPE = GroundType.LAKE;
     private static int totalMale = 0;
@@ -30,20 +31,53 @@ public class Stegosaur extends Dinosaur {
 
     /**
      * Constructor.
-     * All Stegosaurs are represented by a 'd' and have 100 max hit points but start with 50 hit points.
+     * All Stegosaurs are represented by a 's' or 'S' and have 100 max hit points but start with 50 hit points.
      *
      * @param name the name of this Stegosaur
      */
     public Stegosaur(String name) {
-        super(name, 'S', MAX_HIT_POINTS);
+        super(name, 's', MAX_HIT_POINTS);
         this.hitPoints = 50;
         this.setWaterLevel(60);
+        this.addCapability(Status.BABY);
         this.setSatisfyHitPoints(SATISFY_HIT_POINTS);
         this.setHungryHitPoints(HUNGRY_HIT_POINTS);
         this.setThirstyWaterLevel(THIRSTY_WATER_LEVEL);
         this.setMaxUnconsciousTurns(MAX_UNCONSCIOUS_TURNS);
         this.setMaxPregnantTurns(MAX_PREGNANT_TURNS);
         this.setMaxWaterLevel(MAX_WATER_LEVEL);
+        this.setMaxBabyTurns(MAX_BABY_TURNS);
+        addCapability(DinosaurSpecies.STEGOSAUR);
+        this.decideGender();
+        this.addCapability(Status.HUNGRY);
+        this.addBehaviour(new ThirstyBehaviour(TARGET_WATER_SOURCE_TYPE));
+        this.addBehaviour(new MateBehaviour(DinosaurSpecies.STEGOSAUR, this.oppositeGender));
+        this.addBehaviour(new HungryBehaviour(TARGET_FOOD_SOURCE_TYPE));
+        this.addBehaviour(new WanderBehaviour());
+    }
+
+    /**
+     * Constructor, mainly for creating adult Stegosaur at start of the game.
+     * All Stegosaurs are represented by a 's' or 'S' and have 100 max hit points but start with 50 hit points.
+     *
+     * @param name the name of this Stegosaur
+     * @param isAdult boolean to set this Stegosaur adult or not
+     */
+    public Stegosaur(String name, boolean isAdult) {
+        super(name, 's', MAX_HIT_POINTS);
+        this.hitPoints = 50;
+        this.setWaterLevel(60);
+        this.addCapability(Status.BABY);
+        if (isAdult) {
+            this.grownUp();
+        }
+        this.setSatisfyHitPoints(SATISFY_HIT_POINTS);
+        this.setHungryHitPoints(HUNGRY_HIT_POINTS);
+        this.setThirstyWaterLevel(THIRSTY_WATER_LEVEL);
+        this.setMaxUnconsciousTurns(MAX_UNCONSCIOUS_TURNS);
+        this.setMaxPregnantTurns(MAX_PREGNANT_TURNS);
+        this.setMaxWaterLevel(MAX_WATER_LEVEL);
+        this.setMaxBabyTurns(MAX_BABY_TURNS);
         addCapability(DinosaurSpecies.STEGOSAUR);
         this.decideGender();
         this.addCapability(Status.HUNGRY);
@@ -69,6 +103,13 @@ public class Stegosaur extends Dinosaur {
             this.addCapability(DinosaurGender.FEMALE);
             this.oppositeGender = DinosaurGender.MALE;
         }
+    }
+
+    @Override
+    public void grownUp() {
+        this.removeCapability(Status.BABY);
+        this.addCapability(Status.ADULT);
+        this.displayChar = 'S';
     }
 
     /**
