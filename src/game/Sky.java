@@ -3,6 +3,8 @@ package game;
 import edu.monash.fit2099.engine.GameMap;
 import edu.monash.fit2099.engine.GroundFactory;
 
+import java.util.List;
+
 public class Sky extends GameMap {
     public static boolean rain;
     private int i=0;
@@ -13,6 +15,10 @@ public class Sky extends GameMap {
 
     public Sky(GroundFactory groundFactory, char groundChar, int width, int height) {
         super(groundFactory, groundChar, width, height);
+    }
+
+    public Sky(GroundFactory groundFactory, List<String> lines) {
+        super(groundFactory, lines);
     }
 
     @Override
