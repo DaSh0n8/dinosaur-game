@@ -19,21 +19,18 @@ public class AdvancedGameMap extends GameMap {
     @Override
     public void tick() {
         setRainFalse();
-        while (turns > 1 && turns%10 == 0){
+        if (turns > 1 && turns%10 == 0){
             if ((Math.random()*100) < 20){
                 System.out.println("It rains!");
                 setRainTrue();
                 rainfall = (calcRainfall() * 20);
-                turns++;
-            }else if((Math.random()*100)>20){
+            }else if((Math.random()*100)>20) {
                 System.out.println("Did not rain");
                 setRainFalse();
-                turns++;
             }
         }
         turns++;
         super.tick();
-
     }
 
     public double calcRainfall(){

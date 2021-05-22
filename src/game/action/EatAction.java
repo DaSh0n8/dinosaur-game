@@ -55,7 +55,9 @@ public class EatAction extends Action {
                     FruitPlant plant = (FruitPlant) ground;
                     do {
                         item = plant.getFruit();
-                        actor.heal(5);
+                        if (item != null) {
+                            actor.heal(5);
+                        }
                     } while (item != null);
                 }
                 catch (ClassCastException e) {

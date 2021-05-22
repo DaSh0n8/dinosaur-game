@@ -44,7 +44,6 @@ public class ThirstyBehaviour implements Behaviour {
             }
         }
 
-
         // find a water source if the current Lake doesn't have one
         if (this.waterSource == null){
             this.waterSource = findWaterSource(actor,map);

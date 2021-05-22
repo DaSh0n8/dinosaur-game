@@ -41,57 +41,56 @@ public class HungryBehaviour implements Behaviour {
 
         Location here = map.locationOf(actor);
 
-            // first, if the current place is a valid food source, continue eating
-            if (here.getGround().hasCapability(this.foodSourceType)) {
-                // if this fruit plant has fruit, return eat action
-                try {
-                    FruitPlant plant = (FruitPlant) here.getGround();
-                    // if Stegosaur on Bush or Brachiosaur under Tree
-                    if ((actor.hasCapability(DinosaurSpecies.STEGOSAUR) && plant.hasCapability(GroundType.BUSH)) ||
-                            (actor.hasCapability(DinosaurSpecies.BRACHIOSAUR) && plant.hasCapability(GroundType.TREE))) {
-                        if (plant.getTotalFruits() > 0) {
+        // first, if the current place is a valid food source, continue eating
+        if (here.getGround().hasCapability(this.foodSourceType)) {
+            // if this fruit plant has fruit, return eat action
+            try {
+                FruitPlant plant = (FruitPlant) here.getGround();
+                // if Stegosaur on Bush or Brachiosaur under Tree
+                if ((actor.hasCapability(DinosaurSpecies.STEGOSAUR) && plant.hasCapability(GroundType.BUSH)) ||
+                        (actor.hasCapability(DinosaurSpecies.BRACHIOSAUR) && plant.hasCapability(GroundType.TREE))) {
+                    if (plant.getTotalFruits() > 0) {
+                        return new EatAction();
+                    }
+                }
+                // if Stegosaur under Tree
+                else if (actor.hasCapability(DinosaurSpecies.STEGOSAUR) && plant.hasCapability(GroundType.TREE)) {
+                    for (Item thisItem : here.getItems()) {
+                        if (thisItem.hasCapability(ItemType.FRUIT)) {
                             return new EatAction();
                         }
                     }
-                    // if Stegosaur under Tree
-                    else if (actor.hasCapability(DinosaurSpecies.STEGOSAUR) && plant.hasCapability(GroundType.TREE)) {
-                        for (Item thisItem : here.getItems()) {
-                            if (thisItem.hasCapability(ItemType.FRUIT)) {
-                                return new EatAction();
-                            }
-                        }
-                    }
-                    else{
-                        this.foodSource = null;
-                    }
-                } catch (ClassCastException e) {
-                    System.out.println("Invalid ground");
+                }
+            } catch (ClassCastException e) {
+                System.out.println("Invalid ground");
+            }
+            // since nearest food source (current location) has no fruits, make Dinosaur target food source to null
+            this.foodSource = null;
+        }
+
+        // find a food source if the Dinosaur doesn't have one or is occupied by others
+        if (this.foodSource == null || this.foodSource.containsAnActor()) {
+            this.foodSource = findFoodSource(actor, map);
+        }
+
+        // travel to the food source
+        int currentDistance = distance(here, this.foodSource);
+        for (Exit exit : here.getExits()) {
+            Location newDestination = exit.getDestination();
+            if (newDestination.canActorEnter(actor)) {
+                int newDistance = distance(newDestination, this.foodSource);
+                if (newDistance < currentDistance) {
+                    return new MoveActorAction(newDestination, exit.getName());
                 }
             }
-
-            // find a food source if the Dinosaur doesn't have one
-            if (this.foodSource == null) {
-                this.foodSource = findFoodSource(actor, map);
-            }
-
-            // travel to the food source
-            int currentDistance = distance(here, this.foodSource);
-            for (Exit exit : here.getExits()) {
-                Location newDestination = exit.getDestination();
-                if (newDestination.canActorEnter(actor)) {
-                    int newDistance = distance(newDestination, this.foodSource);
-                    if (newDistance < currentDistance) {
-                        return new MoveActorAction(newDestination, exit.getName());
-                    }
-                }
-            }
+        }
 
         return null;
     }
 
     /**
      * Find a location of a nearest Bush or Tree for Stegasaur.
-     * Stegasaur current Location is not considered.
+     * Stegasaur current Location and location that contains actor are not considered.
      *
      * @param actor Actor that is hungry
      * @param map   Map that contains the Actor
@@ -116,9 +115,9 @@ public class HungryBehaviour implements Behaviour {
             for (int x : widths) {
                 Location thisLocation = map.at(x, y);
                 Ground thisGround = thisLocation.getGround();
-                if (thisGround.hasCapability(GroundType.FRUITPLANT)) {
+                if (thisGround.hasCapability(this.foodSourceType)) {
                     int thisDistance = distance(here, thisLocation);
-                    if (thisDistance < minDistance && thisDistance != 0) {
+                    if (thisDistance < minDistance && !thisLocation.containsAnActor()) {
                         minDistance = thisDistance;
                         there = thisLocation;
                     }
