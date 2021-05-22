@@ -21,10 +21,8 @@ public class Lake extends Ground {
     @Override
     public void tick(Location location) {
         super.tick(location);
-        System.out.println(sips);
         if (AdvancedGameMap.rain){
             sips += AdvancedGameMap.rainfall;
-            System.out.println(sips);
         }
         if (Math.random()*100 < 60){
             increaseFish();
