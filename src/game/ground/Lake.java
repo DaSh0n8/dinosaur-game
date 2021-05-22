@@ -3,6 +3,7 @@ package game.ground;
 import edu.monash.fit2099.engine.Actor;
 import edu.monash.fit2099.engine.Ground;
 import edu.monash.fit2099.engine.Location;
+import game.AdvancedGameMap;
 import game.Sky;
 import game.enumeration.GroundType;
 
@@ -20,8 +21,10 @@ public class Lake extends Ground {
     @Override
     public void tick(Location location) {
         super.tick(location);
-        if (Sky.rain){
-            sips += Sky.rainfall;
+        System.out.println(sips);
+        if (AdvancedGameMap.rain){
+            sips += AdvancedGameMap.rainfall;
+            System.out.println(sips);
         }
         if (Math.random()*100 < 60){
             increaseFish();
