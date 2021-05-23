@@ -83,15 +83,7 @@ public class Player extends Actor {
 		this.maxTurns = maxTurns;
 	}
 
-	private void checkVendingMachine(Location location){
-		GameMap map = location.map();
-		int x = location.x();
-		int y = location.y();
-		if (map.at(x,y).getGround().hasCapability(GroundType.VENDINGMACHINE)){
-			VendingMachine v1 = new VendingMachine();
-			//addItemToInventory(v1.displayMenu());
-		}
-	}
+
 
 //	public void pickFruit(Location location){
 //		GameMap map = location.map();
