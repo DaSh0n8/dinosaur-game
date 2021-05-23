@@ -25,7 +25,6 @@ public class AdvancedGameMap extends GameMap {
                 setRainTrue();
                 rainfall = (calcRainfall() * 20);
             }else if((Math.random()*100)>20) {
-                System.out.println("Did not rain");
                 setRainFalse();
             }
         }
