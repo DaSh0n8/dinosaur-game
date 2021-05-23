@@ -10,8 +10,15 @@ public class BuyAction extends Action {
 
     @Override
     public String execute(Actor actor, GameMap map) {
+
         Item item = VendingMachine.itemMenu();
-        actor.addItemToInventory(item);
+        if(item!=null){
+            actor.addItemToInventory(item);
+        }
+        else{
+            return null;
+        }
+
         return menuDescription(actor);
     }
 
