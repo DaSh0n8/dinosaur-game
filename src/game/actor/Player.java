@@ -89,7 +89,7 @@ public class Player extends Actor {
 		int y = location.y();
 		if (map.at(x,y).getGround().hasCapability(GroundType.VENDINGMACHINE)){
 			VendingMachine v1 = new VendingMachine();
-			addItemToInventory(v1.displayMenu());
+			//addItemToInventory(v1.displayMenu());
 		}
 	}
 

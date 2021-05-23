@@ -1,24 +1,25 @@
 package game.ground;
 
-import edu.monash.fit2099.engine.Item;
+import edu.monash.fit2099.engine.*;
 
 import java.util.Scanner;
-import edu.monash.fit2099.engine.Ground;
+
 import game.EcoPoints;
+import game.action.BuyAction;
 import game.enumeration.DinosaurSpecies;
 import game.enumeration.GroundType;
 import game.item.*;
 
 public class VendingMachine extends Ground {
 
-    private int itemPrice;
+    private static int itemPrice;
 
     public VendingMachine() {
         super('V');
         addCapability(GroundType.VENDINGMACHINE);
     }
 
-    public Item displayMenu(){
+    public static Item itemMenu(){
         Scanner scanner = new Scanner(System.in);
         int option;
         do{
@@ -56,7 +57,20 @@ public class VendingMachine extends Ground {
         return null;
     }
 
-    public Item buyFruit(){
+    @Override
+    public Actions allowableActions(Actor actor, Location location, String direction) {
+        Actions actions = super.allowableActions(actor, location, direction);
+        actions.add(new BuyAction());
+        return actions;
+
+    }
+
+    @Override
+    public boolean canActorEnter(Actor actor) {
+        return false;
+    }
+
+    public static Item buyFruit(){
         itemPrice = 30;
         if (EcoPoints.getEcoPoints() <= itemPrice){
             EcoPoints.decrease_points(itemPrice);
@@ -68,7 +82,7 @@ public class VendingMachine extends Ground {
         }
     }
 
-    public Item buyVegetarianMealKit(){
+    public static Item buyVegetarianMealKit(){
         itemPrice = 100;
         if (EcoPoints.getEcoPoints() <= itemPrice){
             EcoPoints.decrease_points(itemPrice);
@@ -80,7 +94,7 @@ public class VendingMachine extends Ground {
         }
     }
 
-    public Item buyCarnivoreMealKit(){
+    public static Item buyCarnivoreMealKit(){
         itemPrice = 500;
         if (EcoPoints.getEcoPoints() <= itemPrice){
             EcoPoints.decrease_points(itemPrice);
@@ -92,7 +106,7 @@ public class VendingMachine extends Ground {
         }
     }
 
-    public Item buyStegosaurEgg(){
+    public static Item buyStegosaurEgg(){
         itemPrice = 200;
         if (EcoPoints.getEcoPoints() <= itemPrice){
             EcoPoints.decrease_points(itemPrice);
@@ -104,7 +118,7 @@ public class VendingMachine extends Ground {
         }
     }
 
-    public Item buyBrachiosaurEgg(){
+    public static Item buyBrachiosaurEgg(){
         itemPrice = 500;
         if (EcoPoints.getEcoPoints() <= itemPrice){
             EcoPoints.decrease_points(itemPrice);
@@ -116,7 +130,7 @@ public class VendingMachine extends Ground {
         }
     }
 
-    public Item buyAllosaurEgg(){
+    public static Item buyAllosaurEgg(){
         itemPrice = 1000;
         if (EcoPoints.getEcoPoints() <= itemPrice){
             EcoPoints.decrease_points(itemPrice);
@@ -128,7 +142,7 @@ public class VendingMachine extends Ground {
         }
     }
 
-    public Item buyLaserGun(){
+    public static Item buyLaserGun(){
         itemPrice = 500;
         if (EcoPoints.getEcoPoints() <= itemPrice){
             EcoPoints.decrease_points(itemPrice);

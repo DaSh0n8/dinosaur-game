@@ -4,7 +4,6 @@ import edu.monash.fit2099.engine.Actor;
 import edu.monash.fit2099.engine.Ground;
 import edu.monash.fit2099.engine.Location;
 import game.AdvancedGameMap;
-import game.Sky;
 import game.enumeration.GroundType;
 
 public class Lake extends Ground {
