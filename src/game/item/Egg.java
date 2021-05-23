@@ -1,6 +1,7 @@
 package game.item;
 
 import edu.monash.fit2099.engine.*;
+import game.EcoPoints;
 import game.actor.Allosaur;
 import game.actor.Brachiosaur;
 import game.actor.Stegosaur;
@@ -21,16 +22,18 @@ public class Egg extends PortableItem {
     public void tick(Location currentLocation) {
         // egg hatches and produce a Dinosaur if situation allows
         if (this.developing_turns == HATCH_TURNS && !currentLocation.containsAnActor()) {
-            currentLocation.removeItem(this);
             if (this.hasCapability(DinosaurSpecies.STEGOSAUR)) {
                 currentLocation.addActor(new Stegosaur("Stegosaur"));
+                EcoPoints.increase_points(100);
             }
             else if (this.hasCapability(DinosaurSpecies.BRACHIOSAUR)) {
                 currentLocation.addActor(new Brachiosaur("Brachiosaur"));
+                EcoPoints.increase_points(1000);
             }
             else if (this.hasCapability(DinosaurSpecies.ALLOSAUR)) {
                 currentLocation.addActor(new Allosaur("Allosaur"));
             }
+            currentLocation.removeItem(this);
         }
 
         // if this Egg is on the ground, increment its developing turns
