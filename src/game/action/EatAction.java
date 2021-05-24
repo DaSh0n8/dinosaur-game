@@ -2,12 +2,10 @@ package game.action;
 
 import edu.monash.fit2099.engine.*;
 import game.actor.Dinosaur;
-import game.actor.Pterodactyl;
 import game.enumeration.DinosaurSpecies;
 import game.enumeration.GroundType;
 import game.enumeration.ItemType;
-import game.ground.Bush;
-import game.ground.Corpse;
+import game.item.Corpse;
 import game.ground.FruitPlant;
 import game.ground.Lake;
 

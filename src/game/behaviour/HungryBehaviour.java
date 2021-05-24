@@ -1,16 +1,11 @@
 package game.behaviour;
 
 import edu.monash.fit2099.engine.*;
-import game.action.DrinkAction;
 import game.action.EatAction;
-import game.actor.Dinosaur;
-import game.actor.Stegosaur;
-import game.behaviour.Behaviour;
 import game.enumeration.DinosaurSpecies;
 import game.enumeration.GroundType;
 import game.enumeration.ItemType;
 import game.enumeration.Status;
-import game.ground.Corpse;
 import game.ground.FruitPlant;
 import game.ground.Lake;
 

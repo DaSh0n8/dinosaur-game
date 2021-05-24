@@ -5,8 +5,7 @@ import edu.monash.fit2099.engine.Actor;
 import edu.monash.fit2099.engine.GameMap;
 import edu.monash.fit2099.engine.Location;
 import game.enumeration.DinosaurSpecies;
-import game.ground.Corpse;
-import game.item.Egg;
+import game.item.Corpse;
 
 public class DeadAction extends Action {
 

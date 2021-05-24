@@ -5,7 +5,7 @@ import game.enumeration.ItemType;
 
 public class LaserGun extends WeaponItem {
     public LaserGun() {
-        super("Laser Gun", 'L', 100, "Shoot");
+        super("Laser Gun", 'l', 100, "Shoot");
         addCapability(ItemType.LASERGUN);
     }
 }
