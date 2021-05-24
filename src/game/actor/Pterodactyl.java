@@ -45,7 +45,7 @@ public class Pterodactyl extends Dinosaur{
         this.decideGender();
         this.addCapability(Status.HUNGRY);
         this.addBehaviour(new ThirstyBehaviour(TARGET_WATER_SOURCE_TYPE));
-        //this.addBehaviour(new MateBehaviour(DinosaurSpecies.STEGOSAUR, this.oppositeGender));
+        //this.addBehaviour(new MateBehaviour(DinosaurSpecies.PTERODACTYL, this.oppositeGender));
         this.addBehaviour(new HungryBehaviour(TARGET_FOOD_SOURCE_TYPE));
         this.addBehaviour(new WanderBehaviour());
     }
@@ -69,7 +69,7 @@ public class Pterodactyl extends Dinosaur{
         this.decideGender();
         this.addCapability(Status.HUNGRY);
         this.addBehaviour(new ThirstyBehaviour(TARGET_WATER_SOURCE_TYPE));
-        //this.addBehaviour(new MateBehaviour(DinosaurSpecies.STEGOSAUR, this.oppositeGender));
+        //this.addBehaviour(new MateBehaviour(DinosaurSpecies.PTERODACTYL, this.oppositeGender));
         this.addBehaviour(new HungryBehaviour(TARGET_FOOD_SOURCE_TYPE));
         this.addBehaviour(new WanderBehaviour());
     }

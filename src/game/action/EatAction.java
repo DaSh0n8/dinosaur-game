@@ -7,6 +7,7 @@ import game.enumeration.DinosaurSpecies;
 import game.enumeration.GroundType;
 import game.enumeration.ItemType;
 import game.ground.Bush;
+import game.ground.Corpse;
 import game.ground.FruitPlant;
 import game.ground.Lake;
 
@@ -27,11 +28,11 @@ public class EatAction extends Action {
     public String execute (Actor actor, GameMap map) {
         Location location = map.locationOf(actor);
         Ground ground = location.getGround();
-        Item item = null;
-        // if the ground is Bush
-        if (ground.hasCapability(GroundType.BUSH)) {
-            // Stegosaur can eat Fruit in Bush
-            if (actor.hasCapability(DinosaurSpecies.STEGOSAUR)) {
+        Item item;
+        // Stegosaur eating
+        if (actor.hasCapability(DinosaurSpecies.STEGOSAUR)){
+            // if Stegosaur on Bush
+            if (ground.hasCapability(GroundType.BUSH)) {
                 try {
                     FruitPlant plant = (FruitPlant) ground;
                     item = plant.getFruit();
@@ -44,11 +45,9 @@ public class EatAction extends Action {
                 }
                 return actor + " eats fruit on bush";
             }
-        }
-        // if the ground is Tree
-        else if (ground.hasCapability(GroundType.TREE)) {
-            // Stegasaur can eat dropped Fruit
-            if (actor.hasCapability(DinosaurSpecies.STEGOSAUR)) {
+            // if Stegosaur under Tree
+            else if (ground.hasCapability(GroundType.TREE)) {
+                // Stegasaur can eat dropped Fruit
                 for (Item thisItem : location.getItems()) {
                     if (thisItem.hasCapability(ItemType.FRUIT)) {
                         location.removeItem(thisItem);
@@ -58,10 +57,14 @@ public class EatAction extends Action {
                 }
                 return actor + " eats fruit under tree";
             }
-            // Brachiosaur can eat many Fruit on Tree in a turn
-            else if (actor.hasCapability(DinosaurSpecies.BRACHIOSAUR)) {
+        }
+        // Brachiosaur eating
+        else if (actor.hasCapability(DinosaurSpecies.BRACHIOSAUR)) {
+            // if Brachiosaur under Tree
+            if (ground.hasCapability(GroundType.TREE)) {
                 try {
                     FruitPlant plant = (FruitPlant) ground;
+                    // Brachiosaur can eat many fruits in a turn
                     do {
                         item = plant.getFruit();
                         if (item != null) {
@@ -75,14 +78,30 @@ public class EatAction extends Action {
                 return actor + " eat fruits on tree";
             }
         }
-        // if the ground is lake
-        else if (ground.hasCapability(GroundType.LAKE)) {
-            // Pterodactyl can eat try to eat fish twice
-            if (actor.hasCapability(DinosaurSpecies.PTERODACTYL)) {
+        // Pterodactyl eating
+        else if (actor.hasCapability(DinosaurSpecies.PTERODACTYL)) {
+            // if Pterodactyl on location have corpse
+            for (Item thisItem : location.getItems()) {
+                if (thisItem.hasCapability(ItemType.CORPSE)) {
+                    // Pterodactyl eats only part of the corpse
+                    try {
+                        Corpse corpse = (Corpse) thisItem;
+                        int foodPoints = corpse.eatenPart(10);
+                        actor.heal(foodPoints);
+                    }
+                    catch (ClassCastException e) {
+                        System.out.println("Invalid item");
+                    }
+                    return actor + " eat parts of the corpse";
+                }
+            }
+            // if Pterodactyl on lake
+            if (ground.hasCapability(GroundType.LAKE)) {
                 try {
                     Lake lake = (Lake) ground;
                     Dinosaur dinosaur = (Dinosaur) actor;
                     int rand = random.nextInt(100) + 1;
+                    // Pterodactyl can try to eat fish twice
                     for (int i = 0; i < 2; i++) {
                         // 50% chance to catch fish, 100% chance to increase water level
                         if (lake.getFishAmount() > 0) {
@@ -93,8 +112,7 @@ public class EatAction extends Action {
                         }
                         dinosaur.increaseWaterLevel(30);
                     }
-                }
-                catch (ClassCastException e) {
+                } catch (ClassCastException e) {
                     System.out.println("Invalid ground/actor");
                 }
                 return actor + " eats fish in lake";

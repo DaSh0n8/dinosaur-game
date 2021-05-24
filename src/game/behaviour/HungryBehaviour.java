@@ -10,6 +10,7 @@ import game.enumeration.DinosaurSpecies;
 import game.enumeration.GroundType;
 import game.enumeration.ItemType;
 import game.enumeration.Status;
+import game.ground.Corpse;
 import game.ground.FruitPlant;
 import game.ground.Lake;
 
@@ -42,6 +43,40 @@ public class HungryBehaviour implements Behaviour {
 
         Location here = map.locationOf(actor);
 
+        // returns EatAction if this Dinosaur can eat at its current location
+        Action eatAction = this.checksCurrentLocation(actor, here);
+        if (eatAction != null) {
+            return eatAction;
+        }
+
+        // find a food source if the Dinosaur doesn't have one or is occupied by others
+        if (this.foodSource == null || this.foodSource.containsAnActor()) {
+            this.foodSource = findFoodSource(actor, map);
+        }
+
+        // travel to the food source
+        int currentDistance = distance(here, this.foodSource);
+        for (Exit exit : here.getExits()) {
+            Location newDestination = exit.getDestination();
+            if (newDestination.canActorEnter(actor)) {
+                int newDistance = distance(newDestination, this.foodSource);
+                if (newDistance < currentDistance) {
+                    return new MoveActorAction(newDestination, exit.getName());
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Checks Dinosaur current location, if the location contains food for this particular Dinosaur, returns EatAction.
+     *
+     * @param actor the Actor acting
+     * @param here the Actor current location
+     * @return EatAction if eating is possible at current location
+     */
+    public Action checksCurrentLocation(Actor actor, Location here) {
         // if Stegosaur/Brachiosaur on fruit plant, continue eating
         if (here.getGround().hasCapability(this.foodSourceType) && (actor.hasCapability(DinosaurSpecies.STEGOSAUR) ||
                 actor.hasCapability(DinosaurSpecies.BRACHIOSAUR))) {
@@ -66,7 +101,7 @@ public class HungryBehaviour implements Behaviour {
             } catch (ClassCastException e) {
                 System.out.println("Invalid ground");
             }
-            // since nearest food source (current location) has no fruits, make Dinosaur target food source to null
+            // since nearest food source (here) has no food, make target source to null to search for another one later
             this.foodSource = null;
         }
         // if Pterodactyl on lake, continue eating
@@ -80,22 +115,14 @@ public class HungryBehaviour implements Behaviour {
             catch (ClassCastException e) {
                 System.out.println("Invalid ground");
             }
+            // since nearest food source (here) has no food, make target source to null to search for another one later
             this.foodSource = null;
         }
-
-        // find a food source if the Dinosaur doesn't have one or is occupied by others
-        if (this.foodSource == null || this.foodSource.containsAnActor()) {
-            this.foodSource = findFoodSource(actor, map);
-        }
-
-        // travel to the food source
-        int currentDistance = distance(here, this.foodSource);
-        for (Exit exit : here.getExits()) {
-            Location newDestination = exit.getDestination();
-            if (newDestination.canActorEnter(actor)) {
-                int newDistance = distance(newDestination, this.foodSource);
-                if (newDistance < currentDistance) {
-                    return new MoveActorAction(newDestination, exit.getName());
+        // if Pterodactyl on location that has corpse, continue eating
+        else if (actor.hasCapability(DinosaurSpecies.PTERODACTYL)) {
+            for (Item thisItem : here.getItems()) {
+                if (thisItem.hasCapability(ItemType.CORPSE)) {
+                    return new EatAction();
                 }
             }
         }
@@ -142,7 +169,6 @@ public class HungryBehaviour implements Behaviour {
 
         return there;
     }
-
 
 
     /**
