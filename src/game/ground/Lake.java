@@ -40,8 +40,8 @@ public class Lake extends Ground {
         this.sips = Math.min(this.sips, maxSips);
     }
 
-    public void decreaseSips (int amount){
-        sips-=amount;
+    public void decreaseSips (){
+        sips--;
     }
 
     public int getFishAmount(){

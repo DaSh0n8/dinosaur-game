@@ -99,6 +99,8 @@ public class Application {
 				AdvancedGameMap gameMap2 = new AdvancedGameMap(groundFactory, map2);
 				world.addGameMap(gameMap2);
 
+				connectingMaps(gameMap,gameMap2);
+
 				// start game with the game mode user chose
 				if (choice == 1) {
 					startChallenge(world, gameMap);
@@ -195,6 +197,16 @@ public class Application {
 
 		System.out.println("Game starts");
 		world.run();
+	}
+
+	private static void connectingMaps(GameMap map1,GameMap map2){
+		for (int x = map1.getYRange().min() ; x < map1.getYRange().max() ; x++){
+			map1.at(x,map1.getYRange().min()).addExit(new Exit("to Map 2",map2.at(x,map2.getYRange().max()),"north"));
+		}
+
+		for(int x = map2.getYRange().min(); x < map2.getYRange().max(); x++){
+			map2.at(x,map2.getYRange().max()).addExit(new Exit("to Map 1",map1.at(x,map1.getYRange().min()),"south"));
+		}
 	}
 
 }
