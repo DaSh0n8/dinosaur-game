@@ -4,5 +4,5 @@ package game.enumeration;
  * Type of a dinosaur.
  */
 public enum DinosaurSpecies {
-    STEGOSAUR, BRACHIOSAUR, ALLOSAUR
+    STEGOSAUR, BRACHIOSAUR, ALLOSAUR, PTERODACTYL
 }

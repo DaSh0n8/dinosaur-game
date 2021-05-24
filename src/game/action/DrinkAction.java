@@ -26,7 +26,8 @@ public class DrinkAction extends Action {
             Dinosaur dinosaur = (Dinosaur) actor;
             if(lake.getSips()>0){
                 try {
-                    if (actor.hasCapability(DinosaurSpecies.STEGOSAUR) || actor.hasCapability(DinosaurSpecies.ALLOSAUR)) {
+                    if (actor.hasCapability(DinosaurSpecies.STEGOSAUR) || actor.hasCapability(DinosaurSpecies.ALLOSAUR)
+                            || actor.hasCapability(DinosaurSpecies.PTERODACTYL)) {
                         dinosaur.increaseWaterLevel(30);
                     } else if (actor.hasCapability(DinosaurSpecies.BRACHIOSAUR)) {
                         dinosaur.increaseWaterLevel(80);

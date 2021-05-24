@@ -4,6 +4,7 @@ import edu.monash.fit2099.engine.*;
 import game.action.DrinkAction;
 import game.action.EatAction;
 import game.actor.Dinosaur;
+import game.actor.Stegosaur;
 import game.behaviour.Behaviour;
 import game.enumeration.DinosaurSpecies;
 import game.enumeration.GroundType;
@@ -41,8 +42,9 @@ public class HungryBehaviour implements Behaviour {
 
         Location here = map.locationOf(actor);
 
-        // first, if the current place is a valid food source, continue eating
-        if (here.getGround().hasCapability(this.foodSourceType)) {
+        // if Stegosaur/Brachiosaur on fruit plant, continue eating
+        if (here.getGround().hasCapability(this.foodSourceType) && (actor.hasCapability(DinosaurSpecies.STEGOSAUR) ||
+                actor.hasCapability(DinosaurSpecies.BRACHIOSAUR))) {
             // if this fruit plant has fruit, return eat action
             try {
                 FruitPlant plant = (FruitPlant) here.getGround();
@@ -65,6 +67,19 @@ public class HungryBehaviour implements Behaviour {
                 System.out.println("Invalid ground");
             }
             // since nearest food source (current location) has no fruits, make Dinosaur target food source to null
+            this.foodSource = null;
+        }
+        // if Pterodactyl on lake, continue eating
+        else if (here.getGround().hasCapability(GroundType.LAKE) && actor.hasCapability(DinosaurSpecies.PTERODACTYL)) {
+            try {
+                Lake lake = (Lake) here.getGround();
+                if (lake.getFishAmount() > 0) {
+                    return new EatAction();
+                }
+            }
+            catch (ClassCastException e) {
+                System.out.println("Invalid ground");
+            }
             this.foodSource = null;
         }
 

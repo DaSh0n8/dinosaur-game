@@ -4,13 +4,15 @@ import edu.monash.fit2099.engine.Actor;
 import edu.monash.fit2099.engine.Ground;
 import edu.monash.fit2099.engine.Location;
 import game.AdvancedGameMap;
-import game.Sky;
+import game.enumeration.DinosaurSpecies;
 import game.enumeration.GroundType;
 
 public class Lake extends Ground {
 
+    private final static int maxSips = 25;
+    private final static int maxFishAmount = 25;
     private int sips = 25;
-    private int fish = 5;
+    private int fishAmount = 5;
 
 
     public Lake() {
@@ -22,19 +24,20 @@ public class Lake extends Ground {
     public void tick(Location location) {
         super.tick(location);
         if (AdvancedGameMap.rain){
-            sips += AdvancedGameMap.rainfall;
+            this.sips += AdvancedGameMap.rainfall;
         }
         if (Math.random()*100 < 60){
-            increaseFish();
+            increaseFishAmount();
         }
     }
 
     public int getSips(){
-        return sips;
+        return this.sips;
     }
 
     public void increaseSips (int amount){
-        sips+=amount;
+        this.sips += amount;
+        this.sips = Math.min(this.sips, maxSips);
     }
 
     public void decreaseSips (int amount){
@@ -42,19 +45,23 @@ public class Lake extends Ground {
     }
 
     public int getFishAmount(){
-        return fish;
+        return this.fishAmount;
     }
 
-    public void increaseFish(){
-        fish++;
+    public void increaseFishAmount(){
+        this.fishAmount++;
+        this.fishAmount = Math.min(this.fishAmount, maxFishAmount);
     }
 
-    public void decreaseFish(){
-        fish--;
+    public void decreaseFishAmount(){
+        this.fishAmount--;
     }
 
     @Override
     public boolean canActorEnter(Actor actor) {
+        if (actor.hasCapability(DinosaurSpecies.PTERODACTYL)) {
+            return true;
+        }
         return false;
     }
 }

@@ -24,6 +24,9 @@ public class DeadAction extends Action {
         else if (actor.hasCapability(DinosaurSpecies.ALLOSAUR)) {
             here.setGround(new Corpse(DinosaurSpecies.ALLOSAUR));
         }
+        else if (actor.hasCapability(DinosaurSpecies.PTERODACTYL)) {
+            here.setGround(new Corpse(DinosaurSpecies.PTERODACTYL));
+        }
         map.removeActor(actor);
 
         return menuDescription(actor);
