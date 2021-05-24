@@ -27,6 +27,7 @@ public class Pterodactyl extends Dinosaur{
     private static int totalMale = 0;
     private static int totalFemale = 0;
     private DinosaurGender oppositeGender;
+    private int flyingTurns = 0;
     private boolean onLand = false;
 
     public Pterodactyl(String name) {
@@ -101,6 +102,24 @@ public class Pterodactyl extends Dinosaur{
      */
     @Override
     public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
-        return super.playTurn(actions, lastAction, map, display);
+        Action action = super.playTurn(actions, lastAction, map, display);
+
+        // Pterodactyls can only fly 30 turns straight after leaving a tree
+        if (map.locationOf(this).getGround().hasCapability(TARGET_HOME_TYPE)) {
+            this.onLand = false;
+            this.flyingTurns = 0;
+        }
+        else {
+            if (this.flyingTurns < MAX_FLYING_TURNS) {
+                this.flyingTurns++;
+            }
+            else {
+                this.onLand = true;
+            }
+        }
+        System.out.println(this.onLand);
+
+        return action;
     }
+
 }
