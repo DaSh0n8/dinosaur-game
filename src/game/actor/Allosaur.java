@@ -26,6 +26,11 @@ public class Allosaur extends Dinosaur {
         this.behaviour = new WanderBehaviour();
     }
 
+    @Override
+    public void initialization() {
+
+    }
+
     /**
      * Try to maintain a same number of male and female Stegosaur. If the total are the same, produce a female Stegosaur.
      *

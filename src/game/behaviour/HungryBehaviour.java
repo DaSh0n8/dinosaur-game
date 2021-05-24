@@ -131,8 +131,8 @@ public class HungryBehaviour implements Behaviour {
     }
 
     /**
-     * Find a location of a nearest Bush or Tree for Stegasaur.
-     * Stegasaur current Location and location that contains actor are not considered.
+     * Find a location of a nearest food source for Dinosaur.
+     * Dinosaur current Location and location that contains actor are not considered.
      *
      * @param actor Actor that is hungry
      * @param map   Map that contains the Actor

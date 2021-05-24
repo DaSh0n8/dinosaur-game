@@ -146,6 +146,11 @@ public abstract class Dinosaur extends Actor {
     }
 
     /**
+     * Set the initial states of the Dinosaur.
+     */
+    public abstract void initialization();
+
+    /**
      * Add the behaviour this Dinosaur has. The order of the Behaviour added is important as the Dinosaur will consider
      * the first added Behaviour first.
      *

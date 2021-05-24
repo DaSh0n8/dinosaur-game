@@ -37,23 +37,7 @@ public class Stegosaur extends Dinosaur {
      */
     public Stegosaur(String name) {
         super(name, 's', MAX_HIT_POINTS);
-        this.hitPoints = 50;
-        this.setWaterLevel(60);
-        this.addCapability(Status.BABY);
-        this.setSatisfyHitPoints(SATISFY_HIT_POINTS);
-        this.setHungryHitPoints(HUNGRY_HIT_POINTS);
-        this.setThirstyWaterLevel(THIRSTY_WATER_LEVEL);
-        this.setMaxUnconsciousTurns(MAX_UNCONSCIOUS_TURNS);
-        this.setMaxPregnantTurns(MAX_PREGNANT_TURNS);
-        this.setMaxWaterLevel(MAX_WATER_LEVEL);
-        this.setMaxBabyTurns(MAX_BABY_TURNS);
-        addCapability(DinosaurSpecies.STEGOSAUR);
-        this.decideGender();
-        this.addCapability(Status.HUNGRY);
-        this.addBehaviour(new ThirstyBehaviour(TARGET_WATER_SOURCE_TYPE));
-        this.addBehaviour(new MateBehaviour(DinosaurSpecies.STEGOSAUR, this.oppositeGender));
-        this.addBehaviour(new HungryBehaviour(TARGET_FOOD_SOURCE_TYPE));
-        this.addBehaviour(new WanderBehaviour());
+        initialization();
     }
 
     /**
@@ -65,12 +49,17 @@ public class Stegosaur extends Dinosaur {
      */
     public Stegosaur(String name, boolean isAdult) {
         super(name, 's', MAX_HIT_POINTS);
-        this.hitPoints = 50;
-        this.setWaterLevel(60);
-        this.addCapability(Status.BABY);
+        initialization();
         if (isAdult) {
             this.grownUp();
         }
+    }
+
+    @Override
+    public void initialization() {
+        this.hitPoints = 50;
+        this.setWaterLevel(60);
+        this.addCapability(Status.BABY);
         this.setSatisfyHitPoints(SATISFY_HIT_POINTS);
         this.setHungryHitPoints(HUNGRY_HIT_POINTS);
         this.setThirstyWaterLevel(THIRSTY_WATER_LEVEL);

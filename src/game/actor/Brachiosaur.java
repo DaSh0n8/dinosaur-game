@@ -39,23 +39,7 @@ public class Brachiosaur extends Dinosaur {
      */
     public Brachiosaur(String name) {
         super(name, 'b', MAX_HIT_POINTS);
-        this.hitPoints = 100;
-        this.setWaterLevel(60);
-        this.addCapability(Status.BABY);
-        this.setSatisfyHitPoints(SATISFY_HIT_POINTS);
-        this.setHungryHitPoints(HUNGRY_HIT_POINTS);
-        this.setThirstyWaterLevel(THIRSTY_WATER_LEVEL);
-        this.setMaxUnconsciousTurns(MAX_UNCONSCIOUS_TURNS);
-        this.setMaxPregnantTurns(MAX_PREGNANT_TURNS);
-        this.setMaxWaterLevel(MAX_WATER_LEVEL);
-        this.setMaxBabyTurns(MAX_BABY_TURNS);
-        addCapability(DinosaurSpecies.BRACHIOSAUR);
-        this.decideGender();
-        this.addCapability(Status.HUNGRY);
-        this.addBehaviour(new ThirstyBehaviour(TARGET_WATER_SOURCE_TYPE));
-        this.addBehaviour(new MateBehaviour(DinosaurSpecies.BRACHIOSAUR, this.oppositeGender));
-        this.addBehaviour(new HungryBehaviour(TARGET_FOOD_SOURCE_TYPE));
-        this.addBehaviour(new WanderBehaviour());
+        initialization();
     }
 
     /**
@@ -67,12 +51,17 @@ public class Brachiosaur extends Dinosaur {
      */
     public Brachiosaur(String name, boolean isAdult) {
         super(name, 'b', MAX_HIT_POINTS);
-        this.hitPoints = 100;
-        this.setWaterLevel(60);
-        this.addCapability(Status.BABY);
+        initialization();
         if (isAdult) {
             this.grownUp();
         }
+    }
+
+    @Override
+    public void initialization() {
+        this.hitPoints = 100;
+        this.setWaterLevel(60);
+        this.addCapability(Status.BABY);
         this.setSatisfyHitPoints(SATISFY_HIT_POINTS);
         this.setHungryHitPoints(HUNGRY_HIT_POINTS);
         this.setThirstyWaterLevel(THIRSTY_WATER_LEVEL);
