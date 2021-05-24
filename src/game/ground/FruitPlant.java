@@ -23,6 +23,7 @@ public abstract class FruitPlant extends Ground {
         this.spawnFruitChance = spawnFruitChance;
     }
 
+
     /**
      * A FruitPlant has a certain chance to produce a ripe fruit.
      *
@@ -70,6 +71,23 @@ public abstract class FruitPlant extends Ground {
             return new Fruit();
         }
         return null;
+    }
+
+    public Fruit searchPlant(){
+        if (this.getTotalFruits()!= 0){
+            if(Math.random()*100 < 60){
+                return new Fruit();
+            }
+            else{
+                System.out.println("You search the tree or bush for fruit, but you can’t find any ripe ones");
+                return null;
+            }
+        }
+        else{
+            System.out.println("There are no fruits here");
+            return null;
+        }
+
     }
 
 }

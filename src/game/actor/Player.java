@@ -2,6 +2,7 @@ package game.actor;
 
 import edu.monash.fit2099.engine.*;
 import game.EcoPoints;
+import game.action.PluckAction;
 import game.action.QuitGameAction;
 import game.item.Fruit;
 import game.enumeration.GroundType;
@@ -43,6 +44,8 @@ public class Player extends Actor {
 
 	@Override
 	public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
+		Location here = map.locationOf(this);
+
 		// if player has maximum moves, checks if the ecoPoints is enough within the maximum moves
 		if (!reachMaxTurns() && EcoPoints.isEnough()) {
 			System.out.println(this.name + " won!");
@@ -53,6 +56,13 @@ public class Player extends Actor {
 		} else {
 			this.turns++;
 		}
+
+
+		//if(here.getGround().hasCapability(GroundType.FRUITPLANT)){
+		//	return new PluckAction(here);
+		//}
+
+
 
 		// Handle multi-turn Actions
 		if (lastAction.getNextAction() != null)

@@ -36,8 +36,8 @@ public class Lake extends Ground {
         sips+=amount;
     }
 
-    public void decreaseSips (int amount){
-        sips-=amount;
+    public void decreaseSips (){
+        sips--;
     }
 
     public int getFishAmount(){
