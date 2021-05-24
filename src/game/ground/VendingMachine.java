@@ -31,7 +31,7 @@ public class VendingMachine extends Ground {
             System.out.println("5) Brachiosaur egg                                          500 eco points");
             System.out.println("6) Allosaur egg                                            1000 eco points");
             System.out.println("7) Laser gun                                                500 eco points");
-            System.out.println("8) Exit");
+            System.out.println("8) Cancel");
             System.out.println("--------------------------------------------------------------------------");
             System.out.println("Enter item number: ");
             option = scanner.nextInt();
