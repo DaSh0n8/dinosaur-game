@@ -1,6 +1,7 @@
 package game.actor;
 
 import edu.monash.fit2099.engine.*;
+import game.action.ComaAction;
 import game.action.DeadAction;
 import game.action.LayEggAction;
 import game.behaviour.Behaviour;
@@ -59,7 +60,7 @@ public abstract class Dinosaur extends Actor {
             if (this.unconsciousTurns == maxUnconsciousTurns) {
                 return new DeadAction();
             } else {
-                return new DoNothingAction();
+                return new ComaAction();
             }
         } else {
             // reset unconscious turns
