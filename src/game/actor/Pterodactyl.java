@@ -5,10 +5,7 @@ import edu.monash.fit2099.engine.Actions;
 import edu.monash.fit2099.engine.Display;
 import edu.monash.fit2099.engine.GameMap;
 import game.behaviour.*;
-import game.enumeration.DinosaurGender;
-import game.enumeration.DinosaurSpecies;
-import game.enumeration.GroundType;
-import game.enumeration.Status;
+import game.enumeration.*;
 
 public class Pterodactyl extends Dinosaur{
 
@@ -56,6 +53,7 @@ public class Pterodactyl extends Dinosaur{
         this.setMaxWaterLevel(MAX_WATER_LEVEL);
         this.setMaxBabyTurns(MAX_BABY_TURNS);
         addCapability(DinosaurSpecies.PTERODACTYL);
+        addCapability(DinosaurDiet.CARNIVORE);
         this.decideGender();
         this.addCapability(Status.HUNGRY);
         this.addBehaviour(new ThirstyBehaviour(TARGET_WATER_SOURCE_TYPE));

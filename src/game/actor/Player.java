@@ -2,8 +2,10 @@ package game.actor;
 
 import edu.monash.fit2099.engine.*;
 import game.EcoPoints;
+import game.action.FeedAction;
 import game.action.PluckAction;
 import game.action.QuitGameAction;
+import game.enumeration.DinosaurDiet;
 import game.item.Fruit;
 import game.enumeration.GroundType;
 import game.ground.VendingMachine;
@@ -57,14 +59,20 @@ public class Player extends Actor {
 			this.turns++;
 		}
 
-		// player can pick fruit from bush and tree
-		if(here.getGround().hasCapability(GroundType.FRUITPLANT)){
-			actions.add(new PluckAction());
-		}
-
 		// Handle multi-turn Actions
 		if (lastAction.getNextAction() != null)
 			return lastAction.getNextAction();
+
+		// player can pick fruit from bush and tree
+		if (here.getGround().hasCapability(GroundType.FRUITPLANT)) {
+			actions.add(new PluckAction());
+		}
+
+		// player can feed an adjacent dinosaur if holding a valid food
+		if (this.canFeed(here)) {
+			actions.add(new FeedAction());
+		}
+
 		actions.add(new QuitGameAction());
 		return menu.showMenu(this, actions, display);
 	}
@@ -89,6 +97,39 @@ public class Player extends Actor {
 	 */
 	public void setMaxTurns(int maxTurns) {
 		this.maxTurns = maxTurns;
+	}
+
+	/**
+	 * Checks if inventory has valid food for adjacent dinosaur.
+	 *
+	 * @param here location of Player
+	 * @return true if feeding is allows
+	 */
+	private boolean canFeed(Location here) {
+		if (this.getInventory().isEmpty()) {
+			return false;
+		}
+
+		DinosaurDiet dinosaurDiet = null;
+		for (Exit thisExit : here.getExits()) {
+			Location destination = thisExit.getDestination();
+			if (destination.containsAnActor()) {
+				if (destination.getActor().hasCapability(DinosaurDiet.HERBIVORE)) {
+					dinosaurDiet = DinosaurDiet.HERBIVORE;
+				}
+				else if (destination.getActor().hasCapability(DinosaurDiet.CARNIVORE)) {
+					dinosaurDiet = DinosaurDiet.CARNIVORE;
+				}
+				for (Item thisItem : this.getInventory()) {
+					if (thisItem.hasCapability(dinosaurDiet)) {
+						return true;
+					}
+				}
+			}
+			dinosaurDiet = null;
+		}
+
+		return false;
 	}
 
 }

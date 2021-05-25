@@ -2,6 +2,7 @@ package game.item;
 
 import edu.monash.fit2099.engine.Actor;
 import edu.monash.fit2099.engine.Location;
+import game.enumeration.DinosaurDiet;
 import game.enumeration.ItemType;
 
 public class Fruit extends PortableItem {
@@ -12,6 +13,7 @@ public class Fruit extends PortableItem {
     public Fruit() {
         super("fruit", 'f');
         addCapability(ItemType.FRUIT);
+        addCapability(DinosaurDiet.HERBIVORE);
     }
 
     /**

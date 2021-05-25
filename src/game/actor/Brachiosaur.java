@@ -4,10 +4,7 @@ import edu.monash.fit2099.engine.*;
 import game.action.DeadAction;
 import game.action.LayEggAction;
 import game.behaviour.*;
-import game.enumeration.DinosaurGender;
-import game.enumeration.DinosaurSpecies;
-import game.enumeration.GroundType;
-import game.enumeration.Status;
+import game.enumeration.*;
 import game.ground.Dirt;
 import java.util.Random;
 
@@ -70,6 +67,7 @@ public class Brachiosaur extends Dinosaur {
         this.setMaxWaterLevel(MAX_WATER_LEVEL);
         this.setMaxBabyTurns(MAX_BABY_TURNS);
         addCapability(DinosaurSpecies.BRACHIOSAUR);
+        addCapability(DinosaurDiet.HERBIVORE);
         this.decideGender();
         this.addCapability(Status.HUNGRY);
         this.addBehaviour(new ThirstyBehaviour(TARGET_WATER_SOURCE_TYPE));

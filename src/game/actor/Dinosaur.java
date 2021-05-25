@@ -220,4 +220,12 @@ public abstract class Dinosaur extends Actor {
         return this.waterLevel == 0;
     }
 
+    /**
+     * Restores dinosaur hitpoints and water level to maximum.
+     */
+    public void fullRestoration() {
+        this.hitPoints = maxHitPoints;
+        this.waterLevel = maxWaterLevel;
+    }
+
 }

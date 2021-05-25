@@ -3,6 +3,7 @@ package game.item;
 import edu.monash.fit2099.engine.Ground;
 import edu.monash.fit2099.engine.Item;
 import edu.monash.fit2099.engine.Location;
+import game.enumeration.DinosaurDiet;
 import game.enumeration.DinosaurSpecies;
 import game.enumeration.GroundType;
 import game.enumeration.ItemType;
@@ -20,6 +21,7 @@ public class Corpse extends PortableItem {
     public Corpse(DinosaurSpecies species) {
         super("Corpse", 'c');
         addCapability(ItemType.CORPSE);
+        addCapability(DinosaurDiet.CARNIVORE);
         this.addCapability(species);
         // set exist turns
         if (this.hasCapability(DinosaurSpecies.STEGOSAUR)) {
