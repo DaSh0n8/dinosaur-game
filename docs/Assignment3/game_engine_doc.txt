@@ -1,0 +1,84 @@
+Recommendations for the game engine
+
+We think that the game engine provided to us was quite thorough and adhered the
+principles of object oriented design very well. We were able to implement our 
+functionalities with success either by following the code examples given or by 
+extending the existing classes and utilizing their functions. However, we do 
+have a few recommendations for some of the small changes this game engine could 
+make.
+
+
+Weapon Classes
+First of all, the abstract class WeaponItem implements Weapon. Since the 
+WeaponItem class does not really add anything to the Weapon class, it makes it
+seem like the two methods they share, damage() and verb() are redundant.  This 
+unnecessarily increases the complexity of the code and makes the code a little 
+repetitive. Instead, we recommend having WeaponItem extend Item, and create every
+weapon as a WeaponItem object. Since the necessary methods are already in the
+WeaponItem code, the interface only makes the code repetitive.
+
+
+Capabilities
+We also realized that throughout the Actor, Ground and Capabilities classes, 
+the three methods hasCapability(), addCapability() and removeCapability() are
+heavily repeated. This in turn, causes a lot of repetition throughout all those 
+classes, and might cause confusion as to what the differences are between them.
+
+
+Adjusting hit points in Actor class
+On top of that, we realized that the hurt() and heal() methods do not have data 
+validation. Meaning that negative numbers can be inserted into them. Since we
+were not able to change the engine classes, overriding these methods just to add
+the validations would cause repetition in the code. So our suggestion is to just
+add validations so that the parameter points can only be positive. Otherwise,
+we can also go another route by merging these two methods. Since the parameter 
+can take both positive and negative numbers, we could use this to our advantage 
+and utilize just one method to decrement or increment the hit points whenever 
+necessary. The disadvantage to this is that the parameter will need to be referred 
+whenever you check to see if actor is healed or hurt. 
+
+
+World Class
+We also think that the World class should store the number of turns it is 
+currently at. A few of the classes in our game requires access to the number of
+turns, but we believe that the same could also be said for other turn based games. 
+For example, in our game we are required to calculate the chances of raining 
+every 10 turns. We achieved this by storing the amount of turns in AdvancedGameMap.
+Our other usage of turns would be in the Player class, as the players are able 
+to choose a specified number of moves in challenge mode. Therefore, having turns
+declared in the World class makes more sense than having to define it in either 
+of these two classes. The only down side of this is if the game does not require 
+turns at all.
+
+
+Positive opinions on the game engine
+
+As for the positive side, the engine code we were provided was fairly easy to 
+work with. It was a little intimidating at first with the engine having so many 
+classes, but we found the classes and methods very useful in implementing the 
+features of our game. The Capability class hinted to us that we could store Dinosaur
+status as enumerations, instead of entering different behaviors depending on using 
+if statements on the actor’s variables. This class allowed us to check the capability
+of a certain object and perform tasks in accordance to it, and is utilized heavily 
+throughout our game code.
+
+
+Another feature that we found to be very easy to use was the allowableActions() 
+under the Actor and Ground classes. At first when we were creating the VendingMachine
+class. We thought that we would have to create a method for the player to check
+and see if there is a vending machine nearby every single turn. After we understood
+how the processActorTurn() in World worked, we realized that everything has already
+been done for us, and all we have to do is override the allowableAction() method
+in VendingMachine, and add a new BuyAction(). The advantage of having player turns 
+implemented this way is that interactions with other actors or grounds can be done
+very easily.
+
+
+Upon mastering the allowableActions() method, we thought we would be using the 
+same approach when it came to travelling between two maps. Initially, we thought
+of overriding the allowableActions() method in Ground class, and checking its 
+location to see if the player is able to travel to the next map, and then adding
+the MoveActorAction(). However, this is when we discovered that we could actually
+just add new Exits at both the top of the first map and the bottom of the second 
+map. This was another Class in the engine that we thought were very useful, and
+it helped save us a lot of work.
