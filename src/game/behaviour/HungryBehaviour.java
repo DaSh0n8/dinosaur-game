@@ -1,7 +1,9 @@
 package game.behaviour;
 
 import edu.monash.fit2099.engine.*;
+import game.action.AttackAction;
 import game.action.EatAction;
+import game.actor.Stegosaur;
 import game.enumeration.DinosaurSpecies;
 import game.enumeration.GroundType;
 import game.enumeration.ItemType;
@@ -106,26 +108,43 @@ public class HungryBehaviour implements Behaviour {
             // since nearest food source (here) has no food, make target source to null to search for another one later
             this.foodSource = null;
         }
-        // if Pterodactyl on lake, continue eating
-        else if (here.getGround().hasCapability(GroundType.LAKE) && actor.hasCapability(DinosaurSpecies.PTERODACTYL)) {
-            try {
-                Lake lake = (Lake) here.getGround();
-                if (lake.getFishAmount() > 0) {
-                    return new EatAction();
-                }
-            }
-            catch (ClassCastException e) {
-                System.out.println("Invalid ground");
-            }
-            // since nearest food source (here) has no food, make target source to null to search for another one later
-            this.foodSource = null;
-        }
-        // if Pterodactyl on location that has corpse, continue eating
-        else if (actor.hasCapability(DinosaurSpecies.PTERODACTYL)) {
+        else if (actor.hasCapability(DinosaurSpecies.ALLOSAUR)) {
+            // if Allosaur on location that has corpse, continue eating
             for (Item thisItem : here.getItems()) {
                 if (thisItem.hasCapability(ItemType.CORPSE)) {
                     return new EatAction();
                 }
+            }
+            // else if Allosaur is next to another Stegosaur that is not wounded, attack
+            for (Exit thisExit : here.getExits()) {
+                if (thisExit.getDestination().containsAnActor()) {
+                    Actor target = thisExit.getDestination().getActor();
+                    if (target.hasCapability(DinosaurSpecies.STEGOSAUR) && !target.hasCapability(Status.WOUNDED)) {
+                        return new AttackAction(target);
+                    }
+                }
+            }
+        }
+        else if (actor.hasCapability(DinosaurSpecies.PTERODACTYL)) {
+            // if Pterodactyl on location that has corpse, continue eating
+            for (Item thisItem : here.getItems()) {
+                if (thisItem.hasCapability(ItemType.CORPSE)) {
+                    return new EatAction();
+                }
+            }
+            // else if Pterodactyl on lake, continue eating
+            if (here.getGround().hasCapability(GroundType.LAKE)) {
+                try {
+                    Lake lake = (Lake) here.getGround();
+                    if (lake.getFishAmount() > 0) {
+                        return new EatAction();
+                    }
+                }
+                catch (ClassCastException e) {
+                    System.out.println("Invalid ground");
+                }
+                // since nearest food source (here) has no food, make target source to null to search another one later
+                this.foodSource = null;
             }
         }
 
@@ -141,7 +160,7 @@ public class HungryBehaviour implements Behaviour {
      * @return location of a FruitPlant
      */
     public Location findFoodSource(Actor actor, GameMap map) {
-        if (!map.contains(actor)) {
+        if (!map.contains(actor) || this.foodSourceType == null) {
             return null;
         }
 

@@ -20,11 +20,13 @@ public class Stegosaur extends Dinosaur {
     private final static int MAX_PREGNANT_TURNS = 10;
     private final static int MAX_WATER_LEVEL = 100;
     private final static int MAX_BABY_TURNS = 30;
+    private final static int MAX_WOUNDED_TURNS = 20;
     private final static GroundType TARGET_FOOD_SOURCE_TYPE = GroundType.FRUITPLANT;
     private final static GroundType TARGET_WATER_SOURCE_TYPE = GroundType.LAKE;
     private static int totalMale = 0;
     private static int totalFemale = 0;
     private DinosaurGender oppositeGender;
+    private int woundedTurns = 0;
 
     /**
      * Constructor.
@@ -114,7 +116,18 @@ public class Stegosaur extends Dinosaur {
      */
     @Override
     public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
-        return super.playTurn(actions, lastAction, map, display);
+        Action action = super.playTurn(actions, lastAction, map, display);
+
+        // if recovered from attack set isWounded back to false and reset woundedTurns
+        if (this.hasCapability(Status.WOUNDED)) {
+            if (this.woundedTurns == MAX_WOUNDED_TURNS) {
+                this.removeCapability(Status.WOUNDED);
+                this.woundedTurns = 0;
+            }
+            this.woundedTurns++;
+        }
+
+        return action;
     }
 
 }

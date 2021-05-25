@@ -8,6 +8,8 @@ import edu.monash.fit2099.engine.Actor;
 import edu.monash.fit2099.engine.GameMap;
 import edu.monash.fit2099.engine.Item;
 import edu.monash.fit2099.engine.Weapon;
+import game.enumeration.DinosaurSpecies;
+import game.enumeration.Status;
 import game.item.PortableItem;
 
 /**
@@ -35,6 +37,29 @@ public class AttackAction extends Action {
 
 	@Override
 	public String execute(Actor actor, GameMap map) {
+
+		// if Allosaur attacks Stegosaur
+		String description = null;
+		if (actor.hasCapability(DinosaurSpecies.ALLOSAUR) && this.target.hasCapability(DinosaurSpecies.STEGOSAUR)) {
+			if (actor.hasCapability(Status.ADULT)) {
+				this.target.hurt(20);
+				actor.heal(20);
+			}
+			else if (actor.hasCapability(Status.BABY)) {
+				this.target.hurt(10);
+				actor.heal(10);
+			}
+			// return description
+			if (this.target.isConscious()) {
+				this.target.addCapability(Status.WOUNDED);
+				description = actor + " attacks " + this.target;
+			}
+			else {
+				description = actor + " kills " + this.target;
+				map.removeActor(this.target);
+			}
+			return description;
+		}
 
 		Weapon weapon = actor.getWeapon();
 

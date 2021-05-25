@@ -1,34 +1,50 @@
 package game.actor;
 
 import edu.monash.fit2099.engine.*;
-import game.behaviour.Behaviour;
-import game.behaviour.WanderBehaviour;
-import game.enumeration.DinosaurGender;
-import game.enumeration.DinosaurSpecies;
-import game.enumeration.GroundType;
-import game.enumeration.Status;
+import game.behaviour.*;
+import game.enumeration.*;
 
 public class Allosaur extends Dinosaur {
+
     private final static int MAX_HIT_POINTS = 100;
-    private final static int SATISFIED_HIT_POINTS = 90;
+    private final static int SATISFY_HIT_POINTS = 90;
     private final static int HUNGRY_HIT_POINTS = 50;
+    private final static int THIRSTY_WATER_LEVEL = 40;
     private final static int MAX_UNCONSCIOUS_TURNS = 20;
+    private final static int MAX_PREGNANT_TURNS = 10;
+    private final static int MAX_WATER_LEVEL = 100;
+    private final static int MAX_BABY_TURNS = 50;
+    private final static GroundType TARGET_FOOD_SOURCE_TYPE = null; // Allosaur don't have a target food source
+    private final static GroundType TARGET_WATER_SOURCE_TYPE = GroundType.LAKE;
     private static int totalMale = 0;
     private static int totalFemale = 0;
     private DinosaurGender oppositeGender;
-    private int unconsciousTurns = 0;
-    private int pregnantTurns = 0;
-    private Behaviour behaviour;
 
     public Allosaur(String name) {
         super(name, 'a', MAX_HIT_POINTS);
-        this.hurt(50);
-        this.behaviour = new WanderBehaviour();
+        initialization();
     }
 
     @Override
     public void initialization() {
-
+        this.hitPoints = 50;
+        this.setWaterLevel(60);
+        this.addCapability(Status.BABY);
+        this.setSatisfyHitPoints(SATISFY_HIT_POINTS);
+        this.setHungryHitPoints(HUNGRY_HIT_POINTS);
+        this.setThirstyWaterLevel(THIRSTY_WATER_LEVEL);
+        this.setMaxUnconsciousTurns(MAX_UNCONSCIOUS_TURNS);
+        this.setMaxPregnantTurns(MAX_PREGNANT_TURNS);
+        this.setMaxWaterLevel(MAX_WATER_LEVEL);
+        this.setMaxBabyTurns(MAX_BABY_TURNS);
+        addCapability(DinosaurSpecies.ALLOSAUR);
+        addCapability(DinosaurDiet.CARNIVORE);
+        this.decideGender();
+        this.addCapability(Status.HUNGRY);
+        this.addBehaviour(new ThirstyBehaviour(TARGET_WATER_SOURCE_TYPE));
+        this.addBehaviour(new MateBehaviour(DinosaurSpecies.ALLOSAUR, this.oppositeGender));
+        this.addBehaviour(new HungryBehaviour(TARGET_FOOD_SOURCE_TYPE));
+        this.addBehaviour(new WanderBehaviour());
     }
 
     /**
@@ -58,51 +74,7 @@ public class Allosaur extends Dinosaur {
 
     @Override
     public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
-        return null;
-    }
-
-//    @Override
-//    public Location findFoodSource(GameMap map) {
-//        if (!map.contains(this)){
-//            return null;
-//        }
-//
-//        Location here = map.locationOf(this);
-//        int topLeftX = map.getXRange().min();
-//        int topLeftY = map.getYRange().min();
-//        Location there = map.at(topLeftX,topLeftY);
-//        int minDistance = distance(here,there);
-//        // find a nearest corpse
-//        NumberRange heights = map.getYRange();
-//        NumberRange widths = map.getXRange();
-//        for(int y : heights){
-//            for(int x : widths){
-//                Location location = new Location(map,x,y);
-//                Location thisLocation = map.at(x,y);
-//                Ground thisGround = thisLocation.getGround();
-//                if(thisGround.hasCapability(GroundType.CORPSE) ){
-//                    int thisDistance = distance(here,thisLocation);
-//                    if (thisDistance<minDistance && thisDistance != 0){
-//                        minDistance = thisDistance;
-//                        there = thisLocation;
-//                    }
-//                }else if (location.containsAnActor()){
-//                    Actor thisActor = location.getActor();
-//                    if(thisActor.hasCapability(DinosaurSpecies.STEGOSAUR)){
-//                        int thisDistance = distance(here,thisLocation);
-//                        if(thisDistance<minDistance && thisDistance != 0){
-//                            minDistance = thisDistance;
-//                            there = thisLocation;
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        return there;
-//    }
-
-    private static int distance(Location a, Location b) {
-        return Math.abs(a.x() - b.x()) + Math.abs(a.y() - b.y());
+        return super.playTurn(actions, lastAction, map, display);
     }
 
 }
