@@ -9,7 +9,6 @@ import game.enumeration.GroundType;
 public class Bush extends FruitPlant {
 
     private final static int SPAWN_FRUIT_CHANCE = 10;	// 10%
-    private double rand = Math.random();
 
     public Bush() {
         super('=', SPAWN_FRUIT_CHANCE);

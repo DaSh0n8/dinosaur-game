@@ -17,7 +17,6 @@ import game.enumeration.ItemType;
 public class Player extends Actor {
 
 	private Menu menu = new Menu();
-	private double rand = Math.random();
 	private int maxTurns = 0;
 	private int turns = 0;
 

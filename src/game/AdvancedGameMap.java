@@ -30,7 +30,7 @@ public class AdvancedGameMap extends GameMap {
             if (rand <= RAINFALL_CHANCE){
                 setIsRaining(true);
                 calcWaterAmount();
-            }else if((Math.random()*100)>20) {
+            }else {
                 setIsRaining(false);
             }
         }
