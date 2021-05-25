@@ -1,6 +1,7 @@
 package game.action;
 
 import edu.monash.fit2099.engine.*;
+import game.EcoPoints;
 import game.actor.Dinosaur;
 import game.enumeration.DinosaurDiet;
 import game.enumeration.DinosaurSpecies;
@@ -25,6 +26,7 @@ public class FeedAction extends Action {
 
     /**
      * Choose a target adjacent dinosaur, and feed with the first valid food in inventory.
+     * Feeding always increase 10 ecoPoints.
      *
      * @param actor The actor performing the action.
      * @param map The map the actor is on.
@@ -77,6 +79,7 @@ public class FeedAction extends Action {
                 description = actor + " feeds " + this.target + " meal kit";
             }
             actor.removeItemFromInventory(item);
+            EcoPoints.increase_points(10);
             return description;
         }
 

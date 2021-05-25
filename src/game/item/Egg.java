@@ -4,6 +4,7 @@ import edu.monash.fit2099.engine.*;
 import game.EcoPoints;
 import game.actor.Allosaur;
 import game.actor.Brachiosaur;
+import game.actor.Pterodactyl;
 import game.actor.Stegosaur;
 import game.enumeration.DinosaurSpecies;
 import game.enumeration.ItemType;
@@ -31,7 +32,12 @@ public class Egg extends PortableItem {
                 EcoPoints.increase_points(1000);
             }
             else if (this.hasCapability(DinosaurSpecies.ALLOSAUR)) {
+                EcoPoints.increase_points(1000);
                 currentLocation.addActor(new Allosaur("Allosaur"));
+            }
+            else if (this.hasCapability(DinosaurSpecies.PTERODACTYL)) {
+                EcoPoints.increase_points(1000);
+                currentLocation.addActor(new Pterodactyl("Pterodactyl"));
             }
             currentLocation.removeItem(this);
         }

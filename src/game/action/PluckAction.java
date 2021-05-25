@@ -1,6 +1,7 @@
 package game.action;
 
 import edu.monash.fit2099.engine.*;
+import game.EcoPoints;
 import game.enumeration.GroundType;
 import game.ground.FruitPlant;
 
@@ -19,6 +20,7 @@ public class PluckAction extends Action {
     /**
      * When player try to pick fruit from empty fruitplant, he will not found any ripe fruits. If there is a ripe fruit
      * on the fruitplant, player has 40% chance to pluck the fruit.
+     * Picking fruit always increase 10 ecoPoints.
      *
      * @param actor The actor performing the action.
      * @param map The map the actor is on.
@@ -35,6 +37,7 @@ public class PluckAction extends Action {
                     int rand = random.nextInt(100) + 1;
                     if (rand <= PLUCK_SUCCESS_RATE) {
                         actor.addItemToInventory(plant.getFruit());
+                        EcoPoints.increase_points(10);
                         return actor + " picks a fruit";
                     }
                     else {
