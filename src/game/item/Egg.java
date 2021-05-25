@@ -6,6 +6,7 @@ import game.actor.Allosaur;
 import game.actor.Brachiosaur;
 import game.actor.Pterodactyl;
 import game.actor.Stegosaur;
+import game.enumeration.DinosaurDiet;
 import game.enumeration.DinosaurSpecies;
 import game.enumeration.ItemType;
 
@@ -17,6 +18,7 @@ public class Egg extends PortableItem {
     public Egg(DinosaurSpecies dinosaurSpecies) {
         super("Egg", 'e');
         addCapability(ItemType.EGG);
+        addCapability(DinosaurDiet.CARNIVORE);
         this.addCapability(dinosaurSpecies);
     }
 

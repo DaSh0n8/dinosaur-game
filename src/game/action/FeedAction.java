@@ -78,6 +78,10 @@ public class FeedAction extends Action {
                 this.target.fullRestoration();
                 description = actor + " feeds " + this.target + " meal kit";
             }
+            else if (item.hasCapability(ItemType.EGG)) {
+                this.target.heal(10);
+                description = actor + " feeds " + this.target + " egg";
+            }
             actor.removeItemFromInventory(item);
             EcoPoints.increase_points(10);
             return description;

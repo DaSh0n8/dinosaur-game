@@ -115,7 +115,6 @@ public class Pterodactyl extends Dinosaur{
                 this.onLand = true;
             }
         }
-        System.out.println(this.onLand);
 
         return action;
     }
