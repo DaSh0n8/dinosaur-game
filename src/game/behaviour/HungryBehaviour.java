@@ -45,8 +45,16 @@ public class HungryBehaviour implements Behaviour {
         }
 
         // find a food source if the Dinosaur doesn't have one or is occupied by others
-        if (this.foodSource == null || this.foodSource.containsAnActor()) {
+        if (this.foodSource == null) {
             this.foodSource = findFoodSource(actor, map);
+        }
+        else if (this.foodSource.containsAnActor()) {
+            this.foodSource = findFoodSource(actor, map);
+        }
+
+        // return null if can't finds any food source
+        if (this.foodSource == null) {
+            return null;
         }
 
         // travel to the food source
@@ -75,26 +83,25 @@ public class HungryBehaviour implements Behaviour {
         // if Stegosaur/Brachiosaur on fruit plant, continue eating
         if (here.getGround().hasCapability(this.foodSourceType) && (actor.hasCapability(DinosaurSpecies.STEGOSAUR) ||
                 actor.hasCapability(DinosaurSpecies.BRACHIOSAUR))) {
-            // if this fruit plant has fruit, return eat action
-            try {
-                FruitPlant plant = (FruitPlant) here.getGround();
-                // if Stegosaur on Bush or Brachiosaur under Tree
-                if ((actor.hasCapability(DinosaurSpecies.STEGOSAUR) && plant.hasCapability(GroundType.BUSH)) ||
-                        (actor.hasCapability(DinosaurSpecies.BRACHIOSAUR) && plant.hasCapability(GroundType.TREE))) {
+            // if Stegosaur on Bush or Brachiosaur under Tree
+            if ((actor.hasCapability(DinosaurSpecies.STEGOSAUR) && here.getGround().hasCapability(GroundType.BUSH)) ||
+                    (actor.hasCapability(DinosaurSpecies.BRACHIOSAUR) && here.getGround().hasCapability(GroundType.TREE))) {
+                try {
+                    FruitPlant plant = (FruitPlant) here.getGround();
                     if (plant.getTotalFruits() > 0) {
                         return new EatAction();
                     }
+                } catch (ClassCastException e) {
+                    System.out.println("Invalid ground");
                 }
-                // if Stegosaur under Tree
-                else if (actor.hasCapability(DinosaurSpecies.STEGOSAUR) && plant.hasCapability(GroundType.TREE)) {
-                    for (Item thisItem : here.getItems()) {
-                        if (thisItem.hasCapability(ItemType.FRUIT)) {
-                            return new EatAction();
-                        }
+            }
+            // if Stegosaur under Tree
+            else if (actor.hasCapability(DinosaurSpecies.STEGOSAUR) && here.getGround().hasCapability(GroundType.TREE)) {
+                for (Item thisItem : here.getItems()) {
+                    if (thisItem.hasCapability(ItemType.FRUIT)) {
+                        return new EatAction();
                     }
                 }
-            } catch (ClassCastException e) {
-                System.out.println("Invalid ground");
             }
             // since nearest food source (here) has no food, make target source to null to search for another one later
             this.foodSource = null;

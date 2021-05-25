@@ -4,44 +4,58 @@ import edu.monash.fit2099.engine.GameMap;
 import edu.monash.fit2099.engine.GroundFactory;
 
 import java.util.List;
+import java.util.Random;
 
 public class AdvancedGameMap extends GameMap {
-    public static boolean rain;
+
+    private final static int RAINFALL_CHANCE = 20; // 20/100
+    private final static int MIN_RAINFALL = 1; // 10/100
+    private final static int MAX_RAINFALL = 6; // 60/100
+    private static Random random = new Random();
+    private boolean isRaining;
+    private int waterAmount;
     private int turns=0;
-    public static double rainfall;
-    private double min = 0.1;
-    private double max = 0.6;
 
     public AdvancedGameMap(GroundFactory groundFactory, List<String> lines) {
         super(groundFactory, lines);
     }
 
+    /**
+     * In addition to the gameMap function, calculate the water amount when it's raining in this gameMap in this turn.
+     */
     @Override
     public void tick() {
-        setRainFalse();
-        if (turns > 1 && turns%10 == 0){
-            if ((Math.random()*100) < 20){
-                System.out.println("It rains!");
-                setRainTrue();
-                rainfall = (calcRainfall() * 20);
+        if (this.turns > 1 && this.turns%10 == 0){
+            int rand = random.nextInt(100) + 1;
+            if (rand <= RAINFALL_CHANCE){
+                setIsRaining(true);
+                calcWaterAmount();
             }else if((Math.random()*100)>20) {
-                setRainFalse();
+                setIsRaining(false);
             }
         }
-        turns++;
+        this.turns++;
         super.tick();
     }
 
-    public double calcRainfall(){
-        return (float) ((Math.random()*(max-min))+min);
+    /**
+     * The water amount is 2 * rainFall. Water amount is the amount for each lake.
+     */
+    public void calcWaterAmount(){
+        int rainFall = random.nextInt(MAX_RAINFALL) + 1;
+        this.waterAmount = 2 * rainFall;
     }
 
-    public void setRainTrue(){
-        rain = true;
+    public int getWaterAmount() {
+        return this.waterAmount;
     }
 
-    public void setRainFalse(){
-        rain = false;
+    public void setIsRaining(boolean isRaining){
+        this.isRaining = isRaining;
+    }
+
+    public boolean getIsRaining() {
+        return this.isRaining;
     }
 
 }

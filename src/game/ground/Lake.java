@@ -7,11 +7,18 @@ import game.AdvancedGameMap;
 import game.enumeration.DinosaurSpecies;
 import game.enumeration.GroundType;
 
+import java.util.Random;
+
+/**
+ * Class represents the water square.
+ */
 public class Lake extends Ground {
 
-    private final static int maxSips = 25;
-    private final static int maxFishAmount = 25;
-    private int sips = 25;
+    private Random random = new Random();
+    private final static int MAX_SIPS = 25;
+    private final static int MAX_FISH_AMOUNT = 25;
+    private final static int BORN_FISH_CHANCE = 60;
+    private int sips = 5;
     private int fishAmount = 5;
 
 
@@ -20,14 +27,26 @@ public class Lake extends Ground {
         addCapability(GroundType.LAKE);
     }
 
+    /**
+     * Lake has 60% chance to born a fish in every turn, and will increase the water amount when it's raining.
+     *
+     * @param location The location of the Ground
+     */
     @Override
     public void tick(Location location) {
         super.tick(location);
-        if (AdvancedGameMap.rain){
-            this.sips += AdvancedGameMap.rainfall;
+        try {
+            AdvancedGameMap map = (AdvancedGameMap) location.map();
+            if (map.getIsRaining()) {
+                increaseSips(map.getWaterAmount());
+            }
+            int rand = random.nextInt();
+            if (rand <= BORN_FISH_CHANCE) {
+                increaseFishAmount();
+            }
         }
-        if (Math.random()*100 < 60){
-            increaseFishAmount();
+        catch (ClassCastException e) {
+            System.out.println("Error when using AdvancedGameMap class");
         }
     }
 
@@ -37,26 +56,32 @@ public class Lake extends Ground {
 
     public void increaseSips (int amount){
         this.sips += amount;
-        this.sips = Math.min(this.sips, maxSips);
+        this.sips = Math.min(this.sips, MAX_SIPS);
     }
 
     public void decreaseSips (){
-        sips--;
+        this.sips--;
     }
 
     public int getFishAmount(){
         return this.fishAmount;
     }
 
-    public void increaseFishAmount(){
+    private void increaseFishAmount(){
         this.fishAmount++;
-        this.fishAmount = Math.min(this.fishAmount, maxFishAmount);
+        this.fishAmount = Math.min(this.fishAmount, MAX_FISH_AMOUNT);
     }
 
     public void decreaseFishAmount(){
         this.fishAmount--;
     }
 
+    /**
+     * Only Pterodactyl can enter lake.
+     *
+     * @param actor the Actor to check
+     * @return false except for Pterodactyl
+     */
     @Override
     public boolean canActorEnter(Actor actor) {
         if (actor.hasCapability(DinosaurSpecies.PTERODACTYL)) {
