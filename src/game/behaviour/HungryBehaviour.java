@@ -12,7 +12,7 @@ import game.ground.FruitPlant;
 import game.ground.Lake;
 
 /**
- * A class that will move the actor one step closer to its food source.
+ * A class that will makes the actor eats or moves the actor one step closer to its food source.
  */
 public class HungryBehaviour implements Behaviour {
 

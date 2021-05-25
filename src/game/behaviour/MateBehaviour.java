@@ -58,7 +58,7 @@ public class MateBehaviour implements Behaviour{
         Location here = map.locationOf(actor);
 
         // if there is a valid Dinosaur next to it, try continue mating
-        Actor target = this.adjacentMatingPartner(here, map);
+        Actor target = this.adjacentMatingPartner(here);
         if (target != null) {
             // if no specific type of ground is needed, start mating
             if (this.matingGroundType == null) {
@@ -110,85 +110,15 @@ public class MateBehaviour implements Behaviour{
      * A valid target Dinosaur must have the same species, opposite sex, not pregnant, and is adult.
      *
      * @param location location of this Dinosaur
-     * @param map map where this Dinosaur located
      * @return valid target Dinosaur next to it
      */
-    public Actor adjacentMatingPartner(Location location, GameMap map) {
-        int x = location.x();
-        int y = location.y();
-        int maxX = map.getXRange().max();
-        int maxY = map.getYRange().max();
-        int minX = map.getXRange().min();
-        int minY = map.getYRange().min();
-
+    public Actor adjacentMatingPartner(Location location) {
         Actor target;
-        // check Dinosaur on above
-        if (y-1 >= minY) {
-            if (map.at(x, y-1).containsAnActor()) {
-                target = map.at(x, y-1).getActor();
-                if (target.hasCapability(this.targetSpecies) && target.hasCapability(this.targetGender)
-                        && !target.hasCapability(Status.PREGNANT) && target.hasCapability(Status.ADULT))
-                    return target;
-            }
-        }
-        // check Dinosaur on upper right
-        if (x+1 <= maxX && y-1 >= minY) {
-            if (map.at(x+1, y-1).containsAnActor()) {
-                target = map.at(x+1, y-1).getActor();
-                if (target.hasCapability(this.targetSpecies) && target.hasCapability(this.targetGender)
-                        && !target.hasCapability(Status.PREGNANT) && target.hasCapability(Status.ADULT))
-                    return target;
-            }
-        }
-        // check Dinosaur on right
-        if (x+1 <= maxX) {
-            if (map.at(x+1, y).containsAnActor()) {
-                target = map.at(x+1, y).getActor();
-                if (target.hasCapability(this.targetSpecies) && target.hasCapability(this.targetGender)
-                        && !target.hasCapability(Status.PREGNANT) && target.hasCapability(Status.ADULT))
-                    return target;
-            }
-        }
-        // check Dinosaur on lower right
-        if (x+1 <= maxX && y+1 <= maxY) {
-            if (map.at(x+1, y+1).containsAnActor()) {
-                target = map.at(x+1, y+1).getActor();
-                if (target.hasCapability(this.targetSpecies) && target.hasCapability(this.targetGender)
-                        && !target.hasCapability(Status.PREGNANT) && target.hasCapability(Status.ADULT))
-                    return target;
-            }
-        }
-        // check Dinosaur on below
-        if (y+1 <= maxY) {
-            if (map.at(x, y+1).containsAnActor()) {
-                target = map.at(x, y+1).getActor();
-                if (target.hasCapability(this.targetSpecies) && target.hasCapability(this.targetGender)
-                        && !target.hasCapability(Status.PREGNANT) && target.hasCapability(Status.ADULT))
-                    return target;
-            }
-        }
-        // check Dinosaur on lower left
-        if (x-1 >= minX && y+1 <= maxY) {
-            if (map.at(x-1, y+1).containsAnActor()) {
-                target = map.at(x-1, y+1).getActor();
-                if (target.hasCapability(this.targetSpecies) && target.hasCapability(this.targetGender)
-                        && !target.hasCapability(Status.PREGNANT) && target.hasCapability(Status.ADULT))
-                    return target;
-            }
-        }
-        // check Dinosaur on left
-        if (x-1 >= minX) {
-            if (map.at(x-1, y).containsAnActor()) {
-                target = map.at(x-1, y).getActor();
-                if (target.hasCapability(this.targetSpecies) && target.hasCapability(this.targetGender)
-                        && !target.hasCapability(Status.PREGNANT) && target.hasCapability(Status.ADULT))
-                    return target;
-            }
-        }
-        // check Dinosaur on upper left
-        if (x-1 >= minX && y-1 >= minY) {
-            if (map.at(x-1, y-1).containsAnActor()) {
-                target = map.at(x-1, y-1).getActor();
+
+        // checks adjacent actor
+        for (Exit thisExit : location.getExits()) {
+            if (thisExit.getDestination().containsAnActor()) {
+                target = thisExit.getDestination().getActor();
                 if (target.hasCapability(this.targetSpecies) && target.hasCapability(this.targetGender)
                         && !target.hasCapability(Status.PREGNANT) && target.hasCapability(Status.ADULT))
                     return target;

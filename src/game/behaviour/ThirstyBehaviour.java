@@ -7,6 +7,9 @@ import game.enumeration.GroundType;
 import game.enumeration.Status;
 import game.ground.Lake;
 
+/**
+ * A class that will makes the actor drinks the adjacent water or moves the actor one step closer to its water source.
+ */
 public class ThirstyBehaviour implements Behaviour {
 
     private final static String name = "TRAVEL";
@@ -17,6 +20,14 @@ public class ThirstyBehaviour implements Behaviour {
         this.waterSourceType = waterSourceType;
     }
 
+    /**
+     * If this Dinosaur is next to a valid water source, drink the water. Otherwise, this thirsty Dinosaur will moves
+     * one step closer to its target water source.
+     *
+     * @param actor the Actor acting
+     * @param map the GameMap containing the Actor
+     * @return DrinkAction if drinking is valid
+     */
     @Override
     public Action getAction(Actor actor, GameMap map) {
         if (!map.contains(actor) || !actor.hasCapability(Status.THIRSTY)) {
@@ -103,71 +114,19 @@ public class ThirstyBehaviour implements Behaviour {
         return name;
     }
 
+    /**
+     * Checks adjacent ground and return the location of the adjacent ground that allows drinking
+     *
+     * @param location location of this Dinosaur
+     * @param targetGroundType GroundType for Dinosaur to drink
+     * @return location of the valid ground for drinking
+     */
     private Location adjacentLake (Location location, GroundType targetGroundType) {
-        GameMap map = location.map();
-        int x = location.x();
-        int y = location.y();
-        int maxX = map.getXRange().max();
-        int maxY = map.getYRange().max();
-        int minX = map.getXRange().min();
-        int minY = map.getYRange().min();
-
-        Ground target;
-        // check ground on above
-        if (y-1 >= minY) {
-            location = map.at(x, y-1);
-            target = location.getGround();
-            if (target.hasCapability(targetGroundType))
-                return location;
-        }
-        // check ground on upper right
-        if (x+1 <= maxX && y-1 >= minY) {
-            location = map.at(x+1, y-1);
-            target = location.getGround();
-            if (target.hasCapability(targetGroundType))
-                return location;
-        }
-        // check ground on right
-        if (x+1 <= maxX) {
-            location = map.at(x+1, y);
-            target = location.getGround();
-            if (target.hasCapability(targetGroundType))
-                return location;
-        }
-        // check ground on lower right
-        if (x+1 <= maxX && y+1 <= maxY) {
-            location = map.at(x+1, y+1);
-            target = location.getGround();
-            if (target.hasCapability(targetGroundType))
-                return location;
-        }
-        // check ground on below
-        if (y+1 <= maxY) {
-            location = map.at(x, y+1);
-            target = location.getGround();
-            if (target.hasCapability(targetGroundType))
-                return location;
-        }
-        // check ground on lower left
-        if (x-1 >= minX && y+1 <= maxY) {
-            location = map.at(x-1, y+1);
-            target = location.getGround();
-            if (target.hasCapability(targetGroundType))
-                return location;
-        }
-        // check ground on left
-        if (x-1 >= minX) {
-            location = map.at(x-1, y);
-            target = location.getGround();
-            if (target.hasCapability(targetGroundType))
-                return location;
-        }
-        // check ground on upper left
-        if (x-1 >= minX && y-1 >= minY) {
-            location = map.at(x-1, y-1);
-            target = location.getGround();
-            if (target.hasCapability(targetGroundType))
-                return location;
+        // checks adjacent ground
+        for (Exit thisExit : location.getExits()) {
+            if (thisExit.getDestination().getGround().hasCapability(targetGroundType)) {
+                return thisExit.getDestination();
+            }
         }
 
         return null;

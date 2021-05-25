@@ -1,5 +1,6 @@
 package game.ground;
 
+import edu.monash.fit2099.engine.Exit;
 import edu.monash.fit2099.engine.GameMap;
 import edu.monash.fit2099.engine.Ground;
 import edu.monash.fit2099.engine.Location;
@@ -49,54 +50,13 @@ public class Dirt extends Ground {
 	 * @return the total of the adjoining Ground of a GroundType
 	 */
 	private int countAdjoiningGround(Location location, GroundType targetGroundType) {
-		GameMap map = location.map();
-		int x = location.x();
-		int y = location.y();
-		int maxX = map.getXRange().max();
-		int maxY = map.getYRange().max();
-		int minX = map.getXRange().min();
-		int minY = map.getYRange().min();
 		int count = 0;
 
-		// check ground on above
-		if (y-1 >= minY) {
-			if (map.at(x, y-1).getGround().hasCapability(targetGroundType))
+		// checks all adjacent locations
+		for (Exit thisExit : location.getExits()) {
+			if (thisExit.getDestination().getGround().hasCapability(targetGroundType)) {
 				count++;
-		}
-		// check ground on upper right
-		if (x+1 <= maxX && y-1 >= minY) {
-			if (map.at(x+1, y-1).getGround().hasCapability(targetGroundType))
-				count++;
-		}
-		// check ground on right
-		if (x+1 <= maxX) {
-			if (map.at(x+1, y).getGround().hasCapability(targetGroundType))
-				count++;
-		}
-		// check ground on lower right
-		if (x+1 <= maxX && y+1 <= maxY) {
-			if (map.at(x+1, y+1).getGround().hasCapability(targetGroundType))
-				count++;
-		}
-		// check ground on below
-		if (y+1 <= maxY) {
-			if (map.at(x, y+1).getGround().hasCapability(targetGroundType))
-				count++;
-		}
-		// check ground on lower left
-		if (x-1 >= minX && y+1 <= maxY) {
-			if (map.at(x-1, y+1).getGround().hasCapability(targetGroundType))
-				count++;
-		}
-		// check ground on left
-		if (x-1 >= minX) {
-			if (map.at(x-1, y).getGround().hasCapability(targetGroundType))
-				count++;
-		}
-		// check ground on upper left
-		if (x-1 >= minX && y-1 >= minY) {
-			if (map.at(x-1, y-1).getGround().hasCapability(targetGroundType))
-				count++;
+			}
 		}
 
 		return count;
