@@ -1,3 +1,76 @@
+Dirt, trees and bushes feature:
+
+Create new classes called Dirt & Bush, both inherits from class Ground.
+Create a new class called FruitPlant, which is the parent class of tree and bush.
+Create a new class called Fruit, inherits from class Item.
+Create a new enum called GroundType.
+Create a new class called PluckAction.
+
+To grow from dirt to bush, Dirt will have a method that counts number of adjacent grounds with specific GroundType enum value. Doing this way, all
+dirts can decide whether to grow or not all by themselves.
+
+Both Tree & Bush will inherits FruitPlant, because FruitPlant will stores the number of ripe fruits it has. Inheritance is used here for avoid duplicated codes. FruitPlant will also has a method to return a Fruit object and decrease the amount of ripe fruits, so that other classes can get fruits from FruitPlant.
+
+Player with the same location as a FruitPlant can picks fruit from it using PluckAction. This PluckAction will use the method in FruitPlant to retrieve a FruitObject.
+
+
+
+Hungry dinosaur:
+
+Create new enums called DinosaurDiet, DinosaurSpecies, and GroundType.
+Create a new class called HungryBehaviour, implements interface Behaviour.
+Create new classes called EatAction and FeedAction, inherits from class Action.
+Create a new abstract class called Dinosaur.
+
+As all dinosaurs are similar and do almost the same things, we create an abstract parent class Dinosaur and define all the same parts in this parent class. Dinosaur is abstract as this class should not be used straight away because, it is only for storing common details of all dinosaur. Those details are hidden for reducing dependencies as much as possible 
+
+HungryBehaviour is created for all dinosaurs. This class knows what all dinosaurs will do when they are hungry. If dinosaur current location have its food, HungryBehaviour will return EatAction to make the dinosaur eat. If not, HungryBehaviour will find a foodsource with a specific GroundType enum value for the specific dinosaur, then return MoveActorAction to move dinosaur towards its foodsource. This class is important because this is the only place for implementing what a hungry dinosaurs will do, and it makes the program clean and tidy.
+
+Player can feed an adjacent dinosaur through FeedAction. FeedAction will checks the which DinosaurDiet enum value the adjacent dinosaurs has and the food player holding has. Then it will determine which adjacent dinosaurs can be fed and let user choose a valid dinosaur.
+
+
+
+Breeding:
+
+Create new enums called DinosaurGender, DinosaurSpecies, and Status
+Create a new class called MateBehaviour, implements Behaviour.
+Create new classes called BreedAction and LayEggAction, inherits from class Action.
+Create a new class called Egg, inherits from class PortableItem.
+
+Similar to HungryBehaviour, MateBehaviour knows what all dinosaurs will do when they want to breed. Only Dinosaurs with different DinosaurGender enum value, same DinosaurSpecies enum value, and has Status enum adult value can breed. MateBehaviour will checks all adjacent mating partner for the dinosaur who wants to mate. If there is a valid mating partner, BreedAction will be returned. BreedAction is for making male dinosaur to impregnate or making female dinosaur to wait for male dinosaur. But if there is no valid adjacent mating partner, MateBehaviour will finds the nearest mating partner for the dinosaur, and return MoveActorAction to move the dinosaur towards its target mating partner. Same as Hungry Behaviour, MateBehaviour makes the program tidier and cleaner.
+
+When a dinosaur pregnancy is mature, it will use LayEggAction to lay an egg. LayEggAction will produce an Egg object with the same DinosaurSpecies enum value as its mother, then put the egg under its mother.
+
+When a baby dinosaur comes out from the egg, it will have the Status enum value of BABY. The Status enum value will only be changed to ADULT when the baby have becomes an adult.
+
+Notice that we keep storing enum values in actor classes and item classes, the reason of this is because we want to comply with the principle ÒClasses should be responsible for its own propertiesÓ. Another benefit is that this makes checking much more easy.
+
+
+
+Eco points and purchasing:
+
+Create a new class called EcoPoints, which is static
+Create a new class called VendingMachine, which inherits from ground.
+Create a new class called MealKit inherits from class PortableItem.
+Create a new class called LaserGun, inherits from class WeaponItem.
+Create a new class called BuyAction, inherits from class Action.
+
+To use a currency in game, we create EcoPoints for holding only class
+attributes and class methods. There will have a class attribute for storing the amount of points and class methods for adding and subtracting the points. This class will not be instantiated.
+
+As for the VendingMachine, upon standing next to it, player will notice the VendingMachine and buy option will appears under the player's menu. If the player chooses to interact with it, BuyAction will be triggered for player to buy items. What the BuyAction will do is first, it will show a list of items. After player have chosen an item, BuyAction will add the item into player inventory if eco points is sufficient.
+
+
+
+Death:
+Create a new class called Corpse, which inherits from Item class.
+Create new class called DeadAction and ComaAction, which inherits from Action.
+
+If a dinosaur is unconscious, it will return ComaAction. ComaAction makes dinosaur does nothing, and tell user it is unconscious. Once the dinosaur is dead, the dinosaur will return DeadAction. DeadAction will removes dinosaur from the game, and at the location create a Corpse object that has the DinosaurSpecies enum value same as the dead dinosaur.
+
+
+
+
 Following our previous iteration, we will continue adding
 new classes into the packages we have created. For this iteration,
 we have added a new package to store all the enumerations.
@@ -14,13 +87,19 @@ to ensure that land actors are able to go into the lake.
 On the other hand, the AdvancedGameMap class monitors the rainfall. It holds a 
 Boolean that will return true whenever it rains, which is controlled by a method
 calculating its chances. Whenever it returns true, lakes will increase their 
-water level depending on the rainfall calculated.
+water level depending on the rainfall calculated. The reason making map
+responsible for raining is because we assume each map will rain separately. Since
+raining is the job of a map, we declare and define the attributes and methods
+related to rain inside the AdvancedGameMap. This respects the principle "Declare
+things inside the tightest scope".
+
 
 
 Thirsty Dinosaurs:
 
 Add THIRSTY under the enumeration â€˜Statusâ€™
 Create a new class called ThirstyBehaviour, which is a child class of Behaviour
+Create a new class called DrinkAction.
 
 Similar to eating and mating. All dinosaur classes add ThirstyBehaviour into 
 actionFactories. The actionFactories array list will be run through and the
@@ -28,15 +107,24 @@ dinosaur will enter whichever behaviour depending to their current status.
 Under the getAction method, the adjacentLake method will be run at the beginning
 of every turn to see if the dinosaur is currently adjacent to a lake and able to
 drink water. If not, the findWaterSource method will be run and the dinosaur 
-will travel to the water source by using MoveActorAction method.
+will travel to the water source by using MoveActorAction method. We save
+behaviours in the actionFactories arraylist, which is a private attribute, 
+because we want to minimise the dependencies that across the boundaries. Other
+classes won't know what behaviours a dinosaur has.
+
+
 
 Second Map:
 
 Create a second map in Application.
 Create a new method called connecting
 
-Maps that adds exits at the end of the north side of map1 and the south side of
-map2, connecting both of the maps. Upon arriving at the edge of each maps, the
-user will have the ability to choose if they want to travel to the other map. 
-The world.run method for both maps is called in the beginning so that both maps 
-stay running even when the player is on the other one.
+Adds exit for locations at the end of the north side of map1 and also for locations at the south side of map2. By doing this, the maps are connected because actor can exit from one of the locations to another map. This way of implementing utilizes all exist functions, which avoided a big amount of duplicated code.
+
+
+
+Sophisticated game driver:
+
+Create a QuitGameAction:
+
+Before starting a game, a list of game modes will be shown for user to choose. If user chooses Challenge mode, the application will ask user to give a specific amount of moves and ecopoints. The maximum moves will be save in Player, so that once Player win or lose, the QuitGameAction will be triggered and player will be forced to quite the game with a game result description. Maximum moves is stored in Player, because of the principle ÒClasses should be responsible for their own propertiesÓ, player should quit himself automatically when game is end. Besides that, player can also utilize QuitGameAction to quite the game before the game ends.
