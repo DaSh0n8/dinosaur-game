@@ -1,0 +1,42 @@
+Following our previous iteration, we will continue adding
+new classes into the packages we have created. For this iteration,
+we have added a new package to store all the enumerations.
+
+
+Lake and rainfall:
+
+Create a new class called Lake, which is a child class of Ground
+Create a new class called AdvancedGameMap, which is a child class of GameMap
+
+This Lake class will hold methods to change the amount of water or fish it 
+contains. In addition, it also overrides the method canActorEnter from Ground 
+to ensure that land actors are able to go into the lake.
+On the other hand, the AdvancedGameMap class monitors the rainfall. It holds a 
+Boolean that will return true whenever it rains, which is controlled by a method
+calculating its chances. Whenever it returns true, lakes will increase their 
+water level depending on the rainfall calculated.
+
+
+Thirsty Dinosaurs:
+
+Add THIRSTY under the enumeration ‘Status’
+Create a new class called ThirstyBehaviour, which is a child class of Behaviour
+
+Similar to eating and mating. All dinosaur classes add ThirstyBehaviour into 
+actionFactories. The actionFactories array list will be run through and the
+dinosaur will enter whichever behaviour depending to their current status.
+Under the getAction method, the adjacentLake method will be run at the beginning
+of every turn to see if the dinosaur is currently adjacent to a lake and able to
+drink water. If not, the findWaterSource method will be run and the dinosaur 
+will travel to the water source by using MoveActorAction method.
+
+Second Map:
+
+Create a second map in Application.
+Create a new method called connecting
+
+Maps that adds exits at the end of the north side of map1 and the south side of
+map2, connecting both of the maps. Upon arriving at the edge of each maps, the
+user will have the ability to choose if they want to travel to the other map. 
+The world.run method for both maps is called in the beginning so that both maps 
+stay running even when the player is on the other one.
