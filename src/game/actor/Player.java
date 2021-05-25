@@ -57,12 +57,10 @@ public class Player extends Actor {
 			this.turns++;
 		}
 
-
-		//if(here.getGround().hasCapability(GroundType.FRUITPLANT)){
-		//	return new PluckAction(here);
-		//}
-
-
+		// player can pick fruit from bush and tree
+		if(here.getGround().hasCapability(GroundType.FRUITPLANT)){
+			actions.add(new PluckAction());
+		}
 
 		// Handle multi-turn Actions
 		if (lastAction.getNextAction() != null)
@@ -91,51 +89,6 @@ public class Player extends Actor {
 	 */
 	public void setMaxTurns(int maxTurns) {
 		this.maxTurns = maxTurns;
-	}
-
-
-
-//	public void pickFruit(Location location){
-//		GameMap map = location.map();
-//		int x = location.x();
-//		int y = location.y();
-//		if (map.at(x,y).getGround().hasCapability(GroundType.TREE)){
-//			Tree tree = new Tree();
-//			if(tree.getFruitOnTreeAmount()!= 0){
-//				if (rand*100 < 60) {
-//					addItemToInventory(new Fruit());
-//				}
-//				else{
-//					System.out.println("You search the tree or bush for fruit, but you can’t find any ripe ones.");
-//				}
-//			}
-//
-//		}else if(map.at(x,y).getGround().hasCapability(GroundType.BUSH)){
-//			Bush bush = new Bush();
-//			if(bush.getFruitAmount()!= 0){
-//				if (rand*100 < 60) {
-//					addItemToInventory(new Fruit());
-//				}
-//				else{
-//					System.out.println("You search the tree or bush for fruit, but you can’t find any ripe ones.");
-//				}
-//			}
-//
-//		}
-//	}
-
-	public void pickUpFruit(Location location){
-		GameMap map = location.map();
-		int x = location.x();
-		int y = location.y();
-		Ground thisGround = map.at(x, y).getGround();
-		if (thisGround.hasCapability(GroundType.FRUITPLANT)) {
-			for (Item thisItem: location.getItems()) {
-				if (thisItem.hasCapability(ItemType.FRUIT))
-					addItemToInventory(new Fruit());
-					break;
-			}
-		}
 	}
 
 }
